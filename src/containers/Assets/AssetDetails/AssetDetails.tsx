@@ -167,7 +167,7 @@ class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
         onClose={this.toggleAlertDrawer}
       >
         <div className={classes.DrawerContainer}>
-          <AssetFilter />
+          <AssetFilter cancleForm={this.toggleAlertDrawer} />
         </div>
       </Drawer>
     );

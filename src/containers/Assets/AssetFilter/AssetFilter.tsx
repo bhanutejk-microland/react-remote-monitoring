@@ -8,7 +8,9 @@ import classes from "./AssetFilter.css";
 import { AssetFilterFormModel } from '../../../interfaceModels/AssetFilterFormModel';
 import { FormInputModel } from "../../../interfaceModels/FormInputModel";
 
-interface AssetFilterProps { }
+interface AssetFilterProps { 
+  cancleForm: (event: any) => void;
+}
 
 interface AssetFilterState {
   filterForm: AssetFilterFormModel;
@@ -134,7 +136,7 @@ class AssetFilter extends Component<AssetFilterProps, AssetFilterState> {
           );
         })}
         <div className={classes.BtnGroup}>
-          <Button btnType="default" disabled={false} icon={<CancelIcon />}>
+          <Button clicked={this.props.cancleForm} btnType="default" disabled={false} icon={<CancelIcon />}>
             CANCEL
           </Button>
           <Button
