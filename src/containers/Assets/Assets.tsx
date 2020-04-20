@@ -96,8 +96,10 @@ class Assets extends Component<AssetProps, AssetState> {
         onClose={this.toggleDeviceDrawer}
       >
         <div className={classes.DrawerContainer}>
-          <DeviceFormComponent closeDrawer={(status) => this.closeDrawer(status)}
-          addToDeviceList={(deviceData) => this.props.addAssetToListDispatcher(deviceData)} />
+          <DeviceFormComponent 
+            closeDrawer={(status) => this.closeDrawer(status)}
+            addToDeviceList={(deviceData) => this.props.addAssetToListDispatcher(deviceData)} 
+            cancleForm={this.toggleDeviceDrawer}/>
         </div>
       </Drawer>
     );

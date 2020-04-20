@@ -12,6 +12,7 @@ import { unixTimestampToDateTimeconverter } from '../../../utilities/timeStampCo
 
 interface DeviceFormProps { 
   closeDrawer(status: any): any;
+  cancleForm: (event: any) => void;
   addToDeviceList(deviceData: any): any;
 }
 
@@ -282,7 +283,7 @@ class DeviceForm extends Component<DeviceFormProps, DeviceFormState> {
           );
         })}
         <div className={classes.BtnGroup}>
-          <Button btnType="default" disabled={false} icon={<CancelIcon />}>
+          <Button clicked={this.props.cancleForm} btnType="default" disabled={false} icon={<CancelIcon />}>
             CANCEL
           </Button>
           <Button

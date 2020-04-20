@@ -5,7 +5,7 @@ interface UIButtonProps {
   disabled: boolean;
   btnType: string;
   icon?: any | null;
-  clicked?: () => void;
+  clicked?: (event?: any) => void;
   width?: string | null
 }
 
