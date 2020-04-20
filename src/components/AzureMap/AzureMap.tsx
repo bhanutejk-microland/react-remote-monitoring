@@ -24,7 +24,7 @@ export default class AzureMap extends Component<AzureMapProps, AzureMapState> {
 
   componentDidMount() {
     let map = new atlas.Map("map", {
-      center: [12.984056, 77.6906928],
+      center: [78.9629, 20.5937],
       zoom: 2,
       view: "Auto",
       language: "en-US",
