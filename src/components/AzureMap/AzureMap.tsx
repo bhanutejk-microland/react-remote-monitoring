@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import * as atlas from "azure-maps-control";
 
-import Aux from "../../hoc/Aux";
+// import Aux from "../../hoc/Aux";
 import keys from '../../config/keys';
 
 interface AzureMapProps {
@@ -124,7 +124,7 @@ export default class AzureMap extends Component<AzureMapProps, AzureMapState> {
 
   render() {
     return (
-      <Aux>
+      <Fragment>
         <div
           id="map"
           style={{
@@ -132,7 +132,7 @@ export default class AzureMap extends Component<AzureMapProps, AzureMapState> {
             height: "calc(100 % - 50px)"
           }}
         ></div>
-      </Aux>
+      </Fragment>
     );
   }
 }

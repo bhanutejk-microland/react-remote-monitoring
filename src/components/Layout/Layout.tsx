@@ -1,4 +1,4 @@
-import React, { Component, MouseEvent } from "react";
+import React, { Component, MouseEvent, Fragment } from "react";
 import {
   faTachometerAlt,
   faChartLine,
@@ -8,7 +8,7 @@ import {
   faBell,
 } from "@fortawesome/free-solid-svg-icons";
 
-import Aux from "../../hoc/Aux";
+// import Aux from "../../hoc/Aux";
 import Header from "../Header/Header";
 import LeftMenu from "../LeftMenu/LeftMenu";
 import FilterBar from "../FilterBar/FilterBar";
@@ -190,7 +190,7 @@ class Layout extends Component<LayoutProps, LayoutState> {
 
   render() {
     return (
-      <Aux>
+      <Fragment>
         <Header
           clickForMiniMenu={this.toggleMiniLeftMenu}
           clickForFilterBar={this.toggleFilterBar}
@@ -207,7 +207,7 @@ class Layout extends Component<LayoutProps, LayoutState> {
         <MainContent showMaxContent={this.state.showMiniLeftMenu}>
           {this.props.children}
         </MainContent>
-      </Aux>
+      </Fragment>
     );
   }
 }
