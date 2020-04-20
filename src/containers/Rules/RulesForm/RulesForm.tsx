@@ -13,6 +13,7 @@ import { unixTimestampToDateTimeconverter } from '../../../utilities/timeStampCo
 interface RulesFormProps { 
   closeDrawer(status: any): any;
   addToRulesList(rulesData: any): any;
+  cancleForm: (event: any) => void;
 }
 
 interface RulesFormState {
@@ -227,7 +228,7 @@ class RulesForm extends Component<RulesFormProps, RulesFormState> {
           );
         })}
         <div className={classes.BtnGroup}>
-          <Button btnType="default" disabled={false} icon={<CancelIcon />}>
+          <Button clicked={this.props.cancleForm} btnType="default" disabled={false} icon={<CancelIcon />}>
             CANCEL
           </Button>
           <Button
