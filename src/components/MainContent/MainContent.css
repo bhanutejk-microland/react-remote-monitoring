@@ -1,0 +1,10 @@
+.ContentWrapper {
+  z-index: 800;
+  transition: transform 0.3s ease-in-out, margin 0.3s ease-in-out;
+  margin-left: 230px;
+  margin-top: 15px;
+}
+
+.MaxContentWrapper {
+    margin-left: 50px;
+}

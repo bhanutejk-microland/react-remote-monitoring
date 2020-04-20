@@ -1,0 +1,44 @@
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom";
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
+import thunk from 'redux-thunk';
+
+
+import App from "./components/App";
+import "./index.css";
+import dashboardReducer from './store/reducers/dashboard/dashboard';
+import dashboardAlertsReducer from './store/reducers/dashboard/alerts';
+import dashboardMapInfoReducer from './store/reducers/dashboard/mapInfo';
+import assetsReducer from './store/reducers/assets/assets';
+import assetDetailReducer from './store/reducers/assets/assetDetails';
+import assetPropertiesReducer from './store/reducers/assets/assetProperties';
+import assetAnomaliesReducer from './store/reducers/assets/assetAnomalies';
+import rulesReducer from './store/reducers/rules/rules';
+
+const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] as typeof compose || compose;
+
+const rootReducer = combineReducers({
+  dashboard: dashboardReducer,
+  dashboardAlerts: dashboardAlertsReducer,
+  dashboardMapInfo: dashboardMapInfoReducer,
+  assetsInfo: assetsReducer,
+  assetDetail: assetDetailReducer,
+  assetProperties: assetPropertiesReducer,
+  assetAnomalies: assetAnomaliesReducer,
+  rulesInfo: rulesReducer
+});
+
+const store = createStore(rootReducer, composeEnhancers(
+  applyMiddleware(thunk)
+));
+
+ReactDOM.render(
+  <Provider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>,
+  document.getElementById("app")
+);

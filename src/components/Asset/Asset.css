@@ -1,0 +1,23 @@
+.ListContent {
+  flex: none !important;
+}
+
+.FirstList {
+  width: 50%;
+}
+
+.AssetListContent {
+  border-left: 1px solid #d5d5d5;
+}
+
+.AssetPanelHeader {
+  border-bottom: 1px solid #ddd !important;
+  margin-bottom: 15px !important;
+}
+
+.AssetCardDetails {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-evenly;
+}

@@ -1,0 +1,35 @@
+html {
+  height: auto;
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: auto;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #333;
+}
+
+* {
+  font-family: "Montserrat", sans-serif !important;
+}
+
+.canvasjs-chart-container {
+  display: flex !important;
+  justify-content: center !important;
+}
+
+a.canvasjs-chart-credit {
+  display: none !important;
+}
+
+::-webkit-datetime-edit-year-field:not([aria-valuenow]),
+::-webkit-datetime-edit-month-field:not([aria-valuenow]),
+::-webkit-datetime-edit-day-field:not([aria-valuenow]) {
+    color: transparent !important;
+}

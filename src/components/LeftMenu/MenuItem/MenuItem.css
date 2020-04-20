@@ -1,0 +1,25 @@
+.MenuItemWrapper {
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    text-decoration: none;
+    border-left: 3px solid transparent;
+}
+
+.MenuItemWrapper:hover, .ActiveRouteLink {
+    background-color: #364a5285;
+    border-left-color:#3c8dbc;
+}
+
+.MenuItemWrapper > svg {
+    padding: 17px;
+}
+
+.MenuLabel {
+    display: block;
+}
+
+.MiniMenuLabel {
+    display: none;
+}

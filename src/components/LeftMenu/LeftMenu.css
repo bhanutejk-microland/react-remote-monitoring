@@ -1,0 +1,22 @@
+.MainSidebar {
+  background-color: #222d32;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: 50px;
+  min-height: calc(100vh);
+  width: 230px;
+  z-index: 810;
+  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+}
+
+.MiniSidebar {
+  width: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+}
+
+aside {
+  display: block;
+}

@@ -1,0 +1,16 @@
+.ListContent {
+  display: flex;
+  width: 50%;
+}
+
+.AssetPropertyCard {
+  background: linear-gradient(to left, #00dcff14, #7deadb7a);
+  margin: 15px;
+  border-radius: 4px;
+}
+
+.AssetPropertyList {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}

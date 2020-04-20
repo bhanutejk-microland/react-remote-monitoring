@@ -1,0 +1,47 @@
+.MainFilterbar {
+  background-color: #222d32;
+  margin-left: 230px;
+  height: 70px;
+  min-width: 100%;
+  z-index: 1810000;
+  visibility: visible;
+  transition: visibility 0.4s, opacity 0.5s linear, transform 0.3s ease-in-out, height 0.3s ease-in-out;
+  border-bottom: 1px solid #28b2ef;
+  padding: 0 12px;
+  background-color: #ffffff;
+}
+
+.HideFilterbar {
+  height: 0;
+  visibility: hidden;
+  opacity: 0;
+  transition: transform 0.3s ease-in-out, height 0.3s ease-in-out;
+}
+
+aside {
+  display: block;
+}
+
+.ContentWrapper {
+  margin-left: 230px;
+}
+
+.MaxContentWrapper {
+  margin-left: 50px;
+}
+
+.MaxFilterGrid {
+    width: calc(100% + 170px) !important;
+}
+
+.MinFilterGrid {
+    width: calc(100% - 45px) !important;
+}
+
+.formControl {
+    width: 100% !important;
+}
+
+.FilterGridContent {
+    padding: 4px 16px !important;
+}
