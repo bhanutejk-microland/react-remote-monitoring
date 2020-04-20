@@ -6,6 +6,7 @@ import {
   faCubes,
   faList,
   faBell,
+  faCogs
 } from "@fortawesome/free-solid-svg-icons";
 
 // import Aux from "../../hoc/Aux";
@@ -54,7 +55,8 @@ const menuList = [
   { label: "Analytics", menuIcon: faChartLine, path: "/analytics" },
   { label: "Alerts", menuIcon: faBell, path: "/alerts" },
   { label: "Rules", menuIcon: faList, path: "/rules" },
-  { label: "Trends", menuIcon: faChartBar, path: "/trends" }
+  { label: "Trends", menuIcon: faChartBar, path: "/trends" },
+  { label: "Configuration", menuIcon: faCogs, path: "/configuration" }
 ];
 
 class Layout extends Component<LayoutProps, LayoutState> {
