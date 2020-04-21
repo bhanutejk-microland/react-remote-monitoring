@@ -13,7 +13,9 @@ import { DeviceListModel } from '../../interfaceModels/DeviceListModel';
 import axios from '../../axios';
 import { unixTimestampToDateTimeconverter } from '../../utilities/timeStampConverter';
 
-interface DevicesProps { }
+interface DevicesProps {
+  cancleForm: (event?: any) => void;
+}
 
 interface DevicesState {
   showDeviceDrawer: boolean;
@@ -117,8 +119,10 @@ class Devices extends Component<DevicesProps, DevicesState> {
         onClose={this.toggleDeviceDrawer}
       >
         <div className={classes.DrawerContainer}>
-          <DeviceFormComponent closeDrawer={(status) => this.closeDrawer(status)}
-          addToDeviceList={(deviceData) => this.addToDeviceList(deviceData)} />
+          <DeviceFormComponent 
+            closeDrawer={(status) => this.closeDrawer(status)}
+            addToDeviceList={(deviceData) => this.addToDeviceList(deviceData)}
+            cancleForm={this.toggleDeviceDrawer} />
         </div>
       </Drawer>
     );
