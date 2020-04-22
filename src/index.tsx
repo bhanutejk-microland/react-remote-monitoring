@@ -16,6 +16,8 @@ import assetDetailReducer from './store/reducers/assets/assetDetails';
 import assetPropertiesReducer from './store/reducers/assets/assetProperties';
 import assetAnomaliesReducer from './store/reducers/assets/assetAnomalies';
 import rulesReducer from './store/reducers/rules/rules';
+import alertsReducer from './store/reducers/alerts/alerts';
+import deviceTelemetryReducer from './store/reducers/alerts/deviceTelemetry';
 
 const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] as typeof compose || compose;
 
@@ -27,7 +29,9 @@ const rootReducer = combineReducers({
   assetDetail: assetDetailReducer,
   assetProperties: assetPropertiesReducer,
   assetAnomalies: assetAnomaliesReducer,
-  rulesInfo: rulesReducer
+  rulesInfo: rulesReducer,
+  alertsInfo: alertsReducer,
+  deviceTelemetryInfo: deviceTelemetryReducer
 });
 
 const store = createStore(rootReducer, composeEnhancers(

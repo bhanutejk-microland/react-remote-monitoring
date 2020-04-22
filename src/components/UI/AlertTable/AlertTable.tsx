@@ -232,7 +232,7 @@ interface TableProps {
   headerCells: HeadCell[];
   dataCells: any;
   uniqueCol: string;
-  renderTelemetry: (event: React.MouseEvent) => void;
+  renderTelemetry: (deviceId: any) => void;
   defaultRowText: string;
 }
 
@@ -321,6 +321,8 @@ export default function EnhancedTable(props: TableProps) {
           {stableSort(dataCells, getComparator(order, orderBy))
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row, index) => {
+              console.log("SSSSSSSSSSSSSSSSSSSSSSSSS", row);
+              let deviceId = '';
               const isItemSelected = isSelected(`${row[uniqueCol]}`);
               const labelId = `enhanced-table-checkbox-${index}`;
               return (
@@ -342,6 +344,7 @@ export default function EnhancedTable(props: TableProps) {
                     />
                   </TableCell> */}
                   {headerCells.map(header => {
+                    deviceId = header.id;
                     return (
                       <TableCell
                         component="th"
@@ -363,7 +366,7 @@ export default function EnhancedTable(props: TableProps) {
                     >
                       View
                     </Button> */}
-                    <Button variant="contained" color="primary" onClick={(event) => renderTelemetry(event)}>
+                    <Button variant="contained" color="primary" onClick={() => renderTelemetry(row['assetId'])}>
                       View
                     </Button>
                   </TableCell>

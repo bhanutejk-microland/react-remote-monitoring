@@ -21,3 +21,11 @@ export {
   initRules, 
   addToRulesList 
 } from './rules/rules';
+
+export {
+  initAlerts
+} from './alerts/alerts';
+
+export {
+  initDeviceTelemetry
+} from './alerts/deviceTelemetry';

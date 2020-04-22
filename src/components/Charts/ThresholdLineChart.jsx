@@ -22,9 +22,9 @@ class ThresholdLineChart extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.count !== this.props.count) {
+    // if (prevProps.count !== this.props.count) {
       this.initChart();
-    }
+    // }
   }
 
   initChart() {
@@ -37,27 +37,28 @@ class ThresholdLineChart extends Component {
 
     // console.log(">>><<<<<<<<<<<<<<<>>>>>>>>>>>>>>>", propData);
     // chart.data = data;
-    let data = [];
-    let visits = 10;
-    for (let i = 1; i < 10; i++) {
-      visits += Math.round((Math.random() < 0.5 ? 1 : 1) * Math.random() * 10);
-      data.push({
-        date: ""+new Date(2018, i, 0).getMonth(),
-        value: visits
-      });
-    }
+    let data = this.props.teleData || [];
+    // let visits = 10;
+    // for (let i = 1; i < 10; i++) {
+    //   visits += Math.round((Math.random() < 0.5 ? 1 : 1) * Math.random() * 10);
+    //   data.push({
+    //     date: ""+new Date(2018, i, 0).getMonth(),
+    //     value: visits
+    //   });
+    // }
     chart.data = data;
     // Create axes
     let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
     categoryAxis.dataFields.category = "date";
     categoryAxis.renderer.minGridDistance = 50;
+    categoryAxis.renderer.labels.template.rotation = -45;
     categoryAxis.renderer.grid.template.location = 0.5;
     categoryAxis.startLocation = 0.5;
     categoryAxis.endLocation = 0.5;
 
     // Create value axis
     let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-    valueAxis.baseValue = 30;
+    valueAxis.baseValue = 82;
 
     // Create series
     let series = chart.series.push(new am4charts.LineSeries());
@@ -71,21 +72,21 @@ class ThresholdLineChart extends Component {
     bullet.tooltipText = "{valueY}";
 
     bullet.adapter.add("fill", function (fill, target) {
-      if (target.dataItem.valueY > 30) {
+      if (target.dataItem.valueY > 82) {
         return am4core.color("#ff0000");
       }
       return fill;
     })
     let range = valueAxis.createSeriesRange(series);
-    range.value = 30;
+    range.value = 82;
     range.endValue = 300;
     range.contents.stroke = am4core.color("#ff0000");
     range.contents.fill = range.contents.stroke;
 
     // Add scrollbar
-    let scrollbarX = new am4charts.XYChartScrollbar();
-    scrollbarX.series.push(series);
-    chart.scrollbarX = scrollbarX;
+    // let scrollbarX = new am4charts.XYChartScrollbar();
+    // scrollbarX.series.push(series);
+    // chart.scrollbarX = scrollbarX;
 
     chart.cursor = new am4charts.XYCursor();
   }
