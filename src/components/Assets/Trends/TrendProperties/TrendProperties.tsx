@@ -15,9 +15,9 @@ interface TrendPropertiesState {
   formIsValid: boolean;
   trendPropertyList: any;
   trendPropertiesForm: {
-    whereProperty: FormInputModel;
+    // whereProperty: FormInputModel;
     measure: FormDropdownModel;
-    splityBy: FormDropdownModel;
+    // splityBy: FormDropdownModel;
   },
   trendInfo: any;
 }
@@ -54,18 +54,18 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
       trendPropertyList: [],
       trendInfo: [],
       trendPropertiesForm: {
-        whereProperty: {
-          elementType: "input",
-          elementConfig: {
-            label: "WHERE"
-          },
-          value: "",
-          validation: {
-            required: false
-          },
-          valid: false,
-          touched: false
-        },
+        // whereProperty: {
+        //   elementType: "input",
+        //   elementConfig: {
+        //     label: "WHERE"
+        //   },
+        //   value: "",
+        //   validation: {
+        //     required: false
+        //   },
+        //   valid: false,
+        //   touched: false
+        // },
         measure: {
           elementType: "dropdown",
           elementConfig: {
@@ -79,19 +79,19 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
           valid: false,
           touched: false
         },
-        splityBy: {
-          elementType: "dropdown",
-          elementConfig: {
-            label: "SPLIT BY",
-            options: ["temperature", "pressure", "humidity"]
-          },
-          value: "",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        }
+        // splityBy: {
+        //   elementType: "dropdown",
+        //   elementConfig: {
+        //     label: "SPLIT BY",
+        //     options: ["temperature", "pressure", "humidity"]
+        //   },
+        //   value: "",
+        //   validation: {
+        //     required: true
+        //   },
+        //   valid: false,
+        //   touched: false
+        // }
       }
     }
   }
@@ -156,21 +156,21 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
       trendPropertyList: [...list]
     }, () => {
       let newTrendInfo = new Array;
-      for(let i = 0; i < temperatureTrend.length; i++) {
-        newTrendInfo.push({date: temperatureTrend[i].date, temperature: null, humidity: null, pressure: null})
+      for (let i = 0; i < temperatureTrend.length; i++) {
+        newTrendInfo.push({ date: temperatureTrend[i].date, temperature: null, humidity: null, pressure: null })
       }
-      if(this.state.trendPropertyList.includes('temperature')) {
-        for(let i = 0; i < newTrendInfo.length; i++) {
+      if (this.state.trendPropertyList.includes('temperature')) {
+        for (let i = 0; i < newTrendInfo.length; i++) {
           newTrendInfo[i].temperature = temperatureTrend[i].temperature
         }
       }
-      if(this.state.trendPropertyList.includes('humidity')) {
-        for(let i = 0; i < newTrendInfo.length; i++) {
+      if (this.state.trendPropertyList.includes('humidity')) {
+        for (let i = 0; i < newTrendInfo.length; i++) {
           newTrendInfo[i].humidity = humidityTrend[i].humidity
         }
       }
-      if(this.state.trendPropertyList.includes('pressure')) {
-        for(let i = 0; i < newTrendInfo.length; i++) {
+      if (this.state.trendPropertyList.includes('pressure')) {
+        for (let i = 0; i < newTrendInfo.length; i++) {
           newTrendInfo[i].pressure = pressureTrend[i].pressure
         }
       }
