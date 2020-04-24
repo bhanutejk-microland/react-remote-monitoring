@@ -53,20 +53,20 @@ class XyComparisonChart extends Component {
     if (propData.length > 0) {
 
       Object.keys(propData[0]).map((propDataKey) => {
-        if (propDataKey !== 'date') {
+        if (propDataKey !== 'timestamp') {
           if (propData[0][propDataKey]) {
             let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
             valueAxis.tooltip.disabled = true;
             valueAxis.marginTop = 30;
             valueAxis.zIndex = 3;
             valueAxis.renderer.baseGrid.disabled = true;
-  
+
             // Set up axis
             valueAxis.renderer.inside = false;
             valueAxis.renderer.labels.template.verticalCenter = "bottom";
             valueAxis.renderer.labels.template.padding(2, 2, 2, 2);
             valueAxis.renderer.fontSize = "0.8em"
-  
+
             // uncomment these lines to fill plot area of this axis with some color
             valueAxis.renderer.gridContainer.background.fill = interfaceColors.getFor("alternativeBackground");
             valueAxis.renderer.gridContainer.background.fillOpacity = 0.05;
@@ -80,26 +80,26 @@ class XyComparisonChart extends Component {
   }
 
   addSeries = (valueY, valueAxis, chart) => {
-  console.log("???????", valueY);
-  let series = new am4charts.LineSeries();
-  var seriesId = chart.series.length + 1;
+    console.log("???????", valueY);
+    let series = new am4charts.LineSeries();
+    var seriesId = chart.series.length + 1;
 
-  // series.stacked = true;
+    // series.stacked = true;
 
-  series.dataFields.dateX = "date";
-  series.dataFields.valueY = valueY;
-  series.yAxis = valueAxis;
-  series.tooltipText = "{valueY.value}";
-  series.name = "Series #" + seriesId;
-  series = chart.series.push(series);
-}
+    series.dataFields.dateX = "timestamp";
+    series.dataFields.valueY = valueY;
+    series.yAxis = valueAxis;
+    series.tooltipText = "{valueY.value}";
+    series.name = "Series #" + seriesId;
+    series = chart.series.push(series);
+  }
 
-render() {
-  const chartIndexing = `XyComparisonChartdiv${this.props.indexing || 0}`;
-  return (
-    <div id={chartIndexing} style={{ width: "100%", height: "450px" }}></div>
-  );
-}
+  render() {
+    const chartIndexing = `XyComparisonChartdiv${this.props.indexing || 0}`;
+    return (
+      <div id={chartIndexing} style={{ width: "100%", height: "450px" }}></div>
+    );
+  }
 }
 
 export default XyComparisonChart;

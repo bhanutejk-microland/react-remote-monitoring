@@ -18,6 +18,7 @@ import assetAnomaliesReducer from './store/reducers/assets/assetAnomalies';
 import rulesReducer from './store/reducers/rules/rules';
 import alertsReducer from './store/reducers/alerts/alerts';
 import deviceTelemetryReducer from './store/reducers/alerts/deviceTelemetry';
+import trendsReducer from './store/reducers/trends/trends';
 
 const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] as typeof compose || compose;
 
@@ -31,7 +32,8 @@ const rootReducer = combineReducers({
   assetAnomalies: assetAnomaliesReducer,
   rulesInfo: rulesReducer,
   alertsInfo: alertsReducer,
-  deviceTelemetryInfo: deviceTelemetryReducer
+  deviceTelemetryInfo: deviceTelemetryReducer,
+  trendsInfo: trendsReducer
 });
 
 const store = createStore(rootReducer, composeEnhancers(

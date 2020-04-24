@@ -3,8 +3,11 @@ export { initDashboardMapInfo } from './dashboard/mapInfo';
 export { initAssetDetails } from './assets/assetDetails';
 export { initAssetProperties } from './assets/assetProperties';
 export { initAssetAnomalies } from './assets/assetAnomalies';
-export { 
-  initKpiTotalAssetsInfo, 
+export { initDeviceTelemetry } from './alerts/deviceTelemetry';
+export { initAlerts } from './alerts/alerts';
+export { initTrends } from './trends/trends';
+export {
+  initKpiTotalAssetsInfo,
   initKpiTotalActiveInfo,
   initKpiTotalTrippedInfo,
   initKpiTotalInactiveInfo,
@@ -12,20 +15,12 @@ export {
   initKpiTotalFletupTimeInfo
 } from './dashboard/dashboard';
 
-export { 
+export {
   initAssets,
   addAssetToList
 } from './assets/assets';
 
-export { 
-  initRules, 
-  addToRulesList 
+export {
+  initRules,
+  addToRulesList
 } from './rules/rules';
-
-export {
-  initAlerts
-} from './alerts/alerts';
-
-export {
-  initDeviceTelemetry
-} from './alerts/deviceTelemetry';

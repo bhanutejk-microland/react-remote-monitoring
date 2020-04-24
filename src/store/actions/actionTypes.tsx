@@ -16,3 +16,4 @@ export const SET_RULES = 'SET_RULES';
 export const SET_ADD_TO_RULES_LIST = 'SET_ADD_TO_RULES_LIST';
 export const SET_ALERTS = 'SET_ALERTS';
 export const SET_ALERT_TELEMETRY = 'SET_ALERT_TELEMETRY';
+export const SET_TRENDS = 'SET_TRENDS';

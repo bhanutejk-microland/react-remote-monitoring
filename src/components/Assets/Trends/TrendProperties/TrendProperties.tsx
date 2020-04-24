@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Grid from "@material-ui/core/Grid";
 import CancelIcon from "@material-ui/icons/Cancel";
+import { withRouter } from "react-router";
+import { connect } from 'react-redux';
 
 import Input from "../../../UI/Input/Input";
 import Button from "../../../UI/Button/Button";
@@ -8,8 +10,14 @@ import { FormInputModel } from "../../../../interfaceModels/FormInputModel";
 import { FormDropdownModel } from "../../../../interfaceModels/FormDropdownModel";
 import PropertySelectors from '../PropertySelectors/PropertySelectors';
 import TrendComparisons from '../TrendComparisons/TrendComparisons';
+import axios from '../../../../axios';
+import * as actions from '../../../../store/actions/index';
 
-interface TrendPropertiesProps { }
+interface TrendPropertiesProps {
+  match: any;
+  onInitTrends: (payload: any) => void;
+  trendInfo: any;
+}
 
 interface TrendPropertiesState {
   formIsValid: boolean;
@@ -140,6 +148,12 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
       updatedPropertyList.push(propertyList);
     }
     this.updateTrendPropertyListState(updatedPropertyList);
+    //========
+    const payload = {
+      deviceId: this.props.match.params.assetId || '',
+      messures: updatedPropertyList
+    }
+    this.props.onInitTrends(payload);
   }
 
   deletePropertySelector = (property) => {
@@ -148,6 +162,11 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
     if (index > -1) {
       updatedPropertyList.splice(index, 1);
     }
+    const payload = {
+      deviceId: this.props.match.params.assetId || '',
+      messures: updatedPropertyList
+    }
+    this.props.onInitTrends(payload);
     this.updateTrendPropertyListState(updatedPropertyList);
   }
 
@@ -236,11 +255,23 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
           </div>
         </Grid>
         <Grid item xs={10}>
-          <TrendComparisons trendInfo={this.state.trendInfo} />
+          <TrendComparisons trendInfo={this.props.trendInfo} />
         </Grid>
       </Grid>
     </div>
   }
 }
 
-export default TrendProperties;
+const mapStateToProps = state => {
+  return {
+    trendInfo: state.trendsInfo.trends
+  };
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onInitTrends: (payload) => dispatch(actions.initTrends(payload))
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(TrendProperties));
