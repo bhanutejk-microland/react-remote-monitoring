@@ -104,8 +104,8 @@ class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
   }
 
   private setAssetDetails = assetId => {
-      const asset = this.props.assets.find((asset) => asset.assetId === assetId) || {};
-      this.updateAssetDetails(asset);
+    const asset = this.props.assets.find((asset) => asset.assetId === assetId) || {};
+    this.updateAssetDetails(asset);
   };
 
   private fetchAssetDetails = assetId => {
@@ -124,7 +124,7 @@ class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
     const assetTabInfo = {
       properties: [...this.props.assetProperties],
       trends: [...this.state.assetDetails.assetTabInfo.trends],
-      anomaly: [...this.props.assetAnomalies]
+      anomaly: { ...this.props.assetAnomalies }
     }
 
     return (
@@ -152,7 +152,7 @@ class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
     let assetDetailInfo = {};
     if (this.props.assets.length > 0) {
       const asset = this.props.assets.find((asset) => asset.assetId === assetId) || {};
-      assetDetailInfo = {...asset};
+      assetDetailInfo = { ...asset };
     } else {
       assetDetailInfo = this.props.assetDetails;
     }
@@ -213,5 +213,5 @@ const mapDispatchToProps = dispatch => {
     onInitAssetAnomalies: (assetId) => dispatch(actions.initAssetAnomalies(assetId))
   }
 }
- 
-export default connect( mapStateToProps, mapDispatchToProps )( AssetDetails );
+
+export default connect(mapStateToProps, mapDispatchToProps)(AssetDetails);

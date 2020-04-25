@@ -102,25 +102,6 @@ export default function FullWidthTabs(props: TabProps) {
   };
 
   const renderAnamolyData = (anamolies, index = 0) => {
-    if (anamolies.length !== 0) {
-      return (
-        <TabPanel
-          value={value}
-          index={index}
-          dir={theme.direction}
-          key={"assetTabPanel" + index}
-        >
-          {anamolies.map((anamoly, index) => {
-            return (
-              <AssetAnamoly
-                anamoly={anamoly}
-                key={"AssetAnamoly" + index}
-              />
-            );
-          })}
-        </TabPanel>
-      );
-    }
     return (
       <TabPanel
         value={value}
@@ -128,9 +109,38 @@ export default function FullWidthTabs(props: TabProps) {
         dir={theme.direction}
         key={"assetTabPanel" + index}
       >
-        <AssetAnamoly anamoly={null} key="AssetAnamoly0" />
+        <AssetAnamoly anamoly={...anamolies} indexing={"AssetAnamoly0"} key="AssetAnamoly0" />
       </TabPanel>
     );
+    // if (anamolies.length !== 0) {
+    // return (
+    //   <TabPanel
+    //     value={value}
+    //     index={index}
+    //     dir={theme.direction}
+    //     key={"assetTabPanel" + index}
+    //   >
+    //     {anamolies.map((anamoly, index) => {
+    //       return (
+    //         <AssetAnamoly
+    //           anamoly={anamoly}
+    //           key={"AssetAnamoly" + index}
+    //         />
+    //       );
+    //     })}
+    //   </TabPanel>
+    // );
+    // }
+    // return (
+    //   <TabPanel
+    //     value={value}
+    //     index={index}
+    //     dir={theme.direction}
+    //     key={"assetTabPanel" + index}
+    //   >
+    //     <AssetAnamoly anamoly={null} key="AssetAnamoly0" />
+    //   </TabPanel>
+    // );
   }
 
   return (

@@ -12,12 +12,16 @@ import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
 import Divider from "@material-ui/core/Divider";
 
 import ComparisonLineChart from '../../Charts/ComparisonLineChart';
+import AnomalyBulletChart from '../../Charts/AnomalyBulletChart';
 
 interface AssetAnamolyProps {
-  anamoly: any
+  anamoly: any,
+  indexing: string
 }
 
-const AssetAnamoly: FunctionComponent<AssetAnamolyProps> = ({ anamoly }) => {
+const AssetAnamoly: FunctionComponent<AssetAnamolyProps> = ({ anamoly, indexing }) => {
+
+  console.log("ASSETANOMALIES>>>>>>>>>>>>>>>>>", anamoly);
 
   const renderAssetPropertySkeleten = () => {
     return (
@@ -45,25 +49,10 @@ const AssetAnamoly: FunctionComponent<AssetAnamolyProps> = ({ anamoly }) => {
   };
 
   const renderAssetAnamolyContent = () => {
-    if (anamoly && anamoly.length > 0) {
+    console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQ~~~~~~~~~~", anamoly);
+    return Object.keys(anamoly).map((anomalyKey, indexing) => {
       return (
         <Grid container spacing={2}>
-          {/* <Grid item xs={6} md={4} className={classes.AssetPropertyList}>
-            {Object.keys(property).map((propertyKey, index) => {
-              return propertyKey !== "telemetry" ? (
-                <ListItem key={"AssetProperty" + propertyKey + index}>
-                  <ListItemText
-                    className={classes.ListContent}
-                    primary={propertyKey}
-                  />
-                  <ListItemText
-                    className={classes.ListContent}
-                    primary={property[propertyKey].toString()}
-                  />
-                </ListItem>
-              ) : null;
-            })}
-          </Grid> */}
           <Grid item xs={12}>
             <ExpansionPanel defaultExpanded>
               <ExpansionPanelSummary
@@ -74,15 +63,15 @@ const AssetAnamoly: FunctionComponent<AssetAnamolyProps> = ({ anamoly }) => {
               >
                 <div className="">
                   <Typography className="">
-                    <b style={{textTransform: 'uppercase'}}>{anamoly[0]}</b>
+                    <b style={{ textTransform: 'uppercase' }}>{anomalyKey}</b>
                   </Typography>
                 </div>
 
               </ExpansionPanelSummary>
               <ExpansionPanelDetails className="">
-                <ComparisonLineChart
-                  indexing={anamoly[0]}
-                  data={anamoly[1]}
+                <AnomalyBulletChart
+                  indexing={indexing}
+                  data={[...anamoly[anomalyKey]]}
                   chartHeight="300px"
                 />
               </ExpansionPanelDetails>
@@ -90,9 +79,56 @@ const AssetAnamoly: FunctionComponent<AssetAnamolyProps> = ({ anamoly }) => {
           </Grid>
         </Grid>
       );
-    } else {
-      return renderAssetPropertySkeleten();
-    }
+    });
+    // if (anamoly && anamoly.length > 0) {
+    // console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQ~~~~~~~~~~");
+    // return (
+    //   <Grid container spacing={2}>
+    //     {/* <Grid item xs={6} md={4} className={classes.AssetPropertyList}>
+    //       {Object.keys(property).map((propertyKey, index) => {
+    //         return propertyKey !== "telemetry" ? (
+    //           <ListItem key={"AssetProperty" + propertyKey + index}>
+    //             <ListItemText
+    //               className={classes.ListContent}
+    //               primary={propertyKey}
+    //             />
+    //             <ListItemText
+    //               className={classes.ListContent}
+    //               primary={property[propertyKey].toString()}
+    //             />
+    //           </ListItem>
+    //         ) : null;
+    //       })}
+    //     </Grid> */}
+    //     <Grid item xs={12}>
+    //       <ExpansionPanel defaultExpanded>
+    //         <ExpansionPanelSummary
+    //           expandIcon={<ExpandMoreIcon />}
+    //           aria-controls="panel1c-content"
+    //           id="panel1c-header"
+    //         // className={classes.AssetPanelHeader}
+    //         >
+    //           <div className="">
+    //             <Typography className="">
+    //               <b style={{ textTransform: 'uppercase' }}>qqqqqq</b>
+    //             </Typography>
+    //           </div>
+
+    //         </ExpansionPanelSummary>
+    //         <ExpansionPanelDetails className="">
+    //           <AnomalyBulletChart
+    //             indexing={indexing}
+    //             data={[...anamoly]}
+    //             chartHeight="300px"
+    //           />
+    //         </ExpansionPanelDetails>
+    //       </ExpansionPanel>
+    //     </Grid>
+    //   </Grid>
+    // );
+    // } else {
+    //   return renderAssetPropertySkeleten();
+    // }
   }
 
   return (
