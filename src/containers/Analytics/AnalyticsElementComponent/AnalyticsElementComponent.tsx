@@ -3,6 +3,7 @@ import Grid from "@material-ui/core/Grid";
 
 import StatusCardComponent from "./ElementStatusCard/StatusCardComponent";
 import HalfDoughnutChart from '../../../components/Charts/HalfDoughnutChart';
+import GaugeChart from "../../../components/Charts/GaugeChart";
 import classes from "../Analytics.css";
 
 interface AnalyticsElementComponentProps {
@@ -33,12 +34,19 @@ class AnalyticsElementComponent extends Component<
     return (
       <Grid container spacing={2}>
         <Grid item xs={10}>
-          <Grid container spacing={2}>
+          <Grid container >
             {this.props.analyticalElementInfo.map((element, index) => {
               return (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={element.name}>
                   <div className={classes.ElementCard}>
-                    <StatusCardComponent
+                    <h3 style={{textAlign: "center"}}>{element.name}</h3>
+                    {/* <StatusCardComponent
+                      name={element.name}
+                      min={element.min}
+                      max={element.max}
+                      value={element.value}
+                    /> */}
+                    <GaugeChart 
                       name={element.name}
                       min={element.min}
                       max={element.max}
@@ -51,7 +59,10 @@ class AnalyticsElementComponent extends Component<
           </Grid>
         </Grid>
         <Grid item xs={2}>
-          Status
+          <div className={classes.ElementCard}>
+            <h3 style={{textAlign: "center"}}>Status</h3>
+            <p style={{textAlign: "center", height: "200px"}}>HEALTHY</p>
+          </div>          
         </Grid>
       </Grid>
     );

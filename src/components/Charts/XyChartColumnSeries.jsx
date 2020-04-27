@@ -30,12 +30,19 @@ class XyChartColumnSeries extends Component {
     categoryAxis.dataFields.category = "name";
     categoryAxis.title.text = this.props.analyticalInfo.categoryAxes;
     categoryAxis.renderer.grid.template.location = 0;
-    categoryAxis.renderer.minGridDistance = 90;
+    categoryAxis.renderer.minGridDistance = 25;
+    categoryAxis.renderer.labels.template.valign = "top";    
+    categoryAxis.renderer.labels.template.rotation = 330;
+    categoryAxis.renderer.cellStartLocation = 0.2;
+    categoryAxis.renderer.cellEndLocation = 0.9;
+    categoryAxis.renderer.labels.template.horizontalCenter = "right";
+    categoryAxis.renderer.labels.template.verticalCenter = "middle";
 
 
     let  valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
     valueAxis.title.text = this.props.analyticalInfo.valueAxes;
     valueAxis.min = 0;
+
 
     // Create series
     let series = chart.series.push(new am4charts.ColumnSeries());

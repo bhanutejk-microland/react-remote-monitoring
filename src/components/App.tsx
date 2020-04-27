@@ -11,7 +11,8 @@ import AssetDetails from "../containers/Assets/AssetDetails/AssetDetails";
 import Rules from '../containers/Rules/Rules';
 import Alerts from '../containers/Alerts/Alerts';
 import Trends from '../containers/Trends/Trends';
-import Configuration from '../containers/Configuration/Configuration';
+import AmchartsComponent from "../containers/Amcharts/AmchartsComponent";
+import FusionChart from "../containers/Fusioncharts/FusionChart";
 
 class App extends Component {
   render() {
@@ -25,7 +26,9 @@ class App extends Component {
             <Route path="/alerts" component={Alerts} />
             <Route path="/rules" component={Rules} />
             <Route path="/trends" component={Trends} />
-            <Route path="/configuration" component={Configuration} />
+            <Route path="/amcharts" component={AmchartsComponent} />
+            <Route path="/fusioncharts" component={FusionChart} />
+            FusionChart
             <Route path="/assetDetails/:assetId" exact component={AssetDetails} />
           </Switch>
         </Layout>
