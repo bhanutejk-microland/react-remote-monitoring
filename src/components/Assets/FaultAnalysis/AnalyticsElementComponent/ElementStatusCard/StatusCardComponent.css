@@ -1,0 +1,9 @@
+.CardHeader {
+  padding: 15px;
+  border-bottom: 1px solid #d5d5d5;
+}
+
+.CardHeaderTitle {
+  font-size: 1rem;
+  font-weight: 500;
+}

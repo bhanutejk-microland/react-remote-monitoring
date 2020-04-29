@@ -1,0 +1,20 @@
+.ElementCard {
+    box-shadow: 1px 1px 8px 3px #d5d5d5;
+    margin: 15px;
+    border-radius: 4px;
+    border-top: 2px solid red;
+  }
+  
+  a.canvasjs-chart-credit {
+    display: none !important;
+  }
+  
+  p.statusIndicator {
+    text-align: center;
+    height: 134px;
+    line-height: 134px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+  }
+  
