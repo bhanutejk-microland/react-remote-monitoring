@@ -8,3 +8,12 @@
 a.canvasjs-chart-credit {
   display: none !important;
 }
+
+p.statusIndicator {
+  text-align: center;
+  height: 134px;
+  line-height: 134px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+}
