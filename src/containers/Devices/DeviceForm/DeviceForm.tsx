@@ -233,7 +233,7 @@ class DeviceForm extends Component<DeviceFormProps, DeviceFormState > {
         createdBy: {
           elementType: "",
           elementConfig: {
-            label: "Created By"
+            label: "Created By User"
           },
           value: "",
           validation: {
@@ -245,7 +245,7 @@ class DeviceForm extends Component<DeviceFormProps, DeviceFormState > {
         createdAt: {
           elementType: "",
           elementConfig: {
-            label: "Created At"
+            label: "Created Date"
           },
           value: "",
           validation: {
@@ -363,6 +363,10 @@ class DeviceForm extends Component<DeviceFormProps, DeviceFormState > {
     });
   }
 
+  addDeviceGroupHandler = () => {
+    
+  }
+
 
 
   renderForm = () => {
@@ -455,8 +459,7 @@ class DeviceForm extends Component<DeviceFormProps, DeviceFormState > {
                                     {this.state.inputsStatic.map((input,id) => 
                                       <Grid container key={input}>
                                         <Grid item md={10}>
-                                          <TextField  id={`${input}`} label="Static Properties" style={{margin: "5px 0", width : "100%"}} />
-                    
+                                          <TextField  id={`${input}`} label="Static Properties" style={{margin: "5px 0", width : "100%"}} />                    
                                         </Grid>
                                         <Grid item md={2}>
                                           <Button clicked={this.deleteStaticInput(id)} btnType="primary" disabled={false} icon={<CancelIcon />} width='50%' >
@@ -507,7 +510,7 @@ class DeviceForm extends Component<DeviceFormProps, DeviceFormState > {
             btnType="primary"
             disabled={!this.state.formIsValid}
             icon={<AddIcon />}
-            clicked={this.addDeviceHandler}
+            clicked={this.addDeviceGroupHandler}
           >
             Add Device Group
           </Button>

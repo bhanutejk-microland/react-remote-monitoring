@@ -61,6 +61,7 @@ export default function FullWidthTabs(props: TabProps) {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
+  console.log(tabHeaderInfo);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
@@ -155,7 +156,8 @@ export default function FullWidthTabs(props: TabProps) {
           variant="fullWidth"
           aria-label="full width tabs example"
         >
-          {Object.keys(assetTabInfo).map((tabHeader, index) => {
+          {
+          tabHeaderInfo.map((tabHeader, index) => {
             return (
               <Tab
                 className={value === index ? cssClasses.SelectedTab : ""}
@@ -201,7 +203,15 @@ export default function FullWidthTabs(props: TabProps) {
             // );
           }else{
             return(
-              <FaultAnalysis />
+              <TabPanel
+                value={value}
+                index={index}
+                dir={theme.direction}
+                key={"tabPanel" + index}
+              >
+                <FaultAnalysis />
+              </TabPanel>
+              
             )
           }
         })}

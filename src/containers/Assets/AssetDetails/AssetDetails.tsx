@@ -32,7 +32,7 @@ interface AssetDetailsState {
   assetDetails: AssetModel;
 }
 
-const tabHeaderInfo = ["PROPERTIES", "TRENDS", "ANOMALY","FAULTS"];
+const tabHeaderInfo = ["PROPERTIES", "TRENDS", "ANOMALY","FAULTS CLASSIFICATION"];
 
 class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
   constructor(props: AssetDetailsProps) {
@@ -50,7 +50,7 @@ class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
           // properties: [],
           trends: [],
           anomaly: [],
-          faultAnalysis: []
+          faultClassification: []
         }
       }
     };
@@ -130,7 +130,7 @@ class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
         properties: [...this.props.assetProperties],
         trends: [...this.state.assetDetails.assetTabInfo.trends],
         anomaly: { ...this.props.assetAnomalies },
-        faultAnalysis: [...this.state.assetDetails.assetTabInfo.faultAnalysis]
+        faultClassification: [...this.state.assetDetails.assetTabInfo.faultClassification]
       }
     }else{
       assetTabInfo = {

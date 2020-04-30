@@ -6,7 +6,7 @@ export interface AssetModel extends IndividualAssetModel {
     // properties: Array<AssetPropertyModel>;
     trends: any;
     anomaly: any;
-    faultAnalysis: any;
+    faultClassification: any;
   };
 }
 
