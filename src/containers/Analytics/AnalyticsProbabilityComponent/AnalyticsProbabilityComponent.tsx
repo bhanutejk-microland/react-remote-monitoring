@@ -54,7 +54,6 @@ class AnalyticsProbabilityComponent extends Component<AnalyticsElementComponentP
   }
 
   render() {
-    const { classes } = this.props;
     return (      
       <Fragment>
         <Grid container spacing={2} justify="space-between">
