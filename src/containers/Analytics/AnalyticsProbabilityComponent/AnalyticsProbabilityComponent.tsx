@@ -8,7 +8,7 @@ import XyChartColumnSeries from '../../../components/Charts/XyChartColumnSeries'
 interface AnalyticsElementComponentProps {
   analyticalProbabilityInfo: analyticalProbabilityProperties,
   analyticalCountInfo: analyticalCountProperties,
-  classes: any
+  // classes: any
 }
 
 interface analyticalProbabilityElement{
