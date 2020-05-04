@@ -19,6 +19,8 @@ import rulesReducer from './store/reducers/rules/rules';
 import alertsReducer from './store/reducers/alerts/alerts';
 import deviceTelemetryReducer from './store/reducers/alerts/deviceTelemetry';
 import trendsReducer from './store/reducers/trends/trends';
+import devicesTelePropsReducer from './store/reducers/trends/deviceTeleProps';
+import deviceTelePropsDetailsReducer from './store/reducers/trends/deviceTelePropsDetails';
 
 const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] as typeof compose || compose;
 
@@ -33,7 +35,9 @@ const rootReducer = combineReducers({
   rulesInfo: rulesReducer,
   alertsInfo: alertsReducer,
   deviceTelemetryInfo: deviceTelemetryReducer,
-  trendsInfo: trendsReducer
+  trendsInfo: trendsReducer,
+  devicesTeleProps: devicesTelePropsReducer,
+  deviceTelePropsDetailsInfo: deviceTelePropsDetailsReducer
 });
 
 const store = createStore(rootReducer, composeEnhancers(

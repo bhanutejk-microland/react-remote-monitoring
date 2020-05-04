@@ -6,6 +6,8 @@ export { initAssetAnomalies } from './assets/assetAnomalies';
 export { initDeviceTelemetry } from './alerts/deviceTelemetry';
 export { initAlerts } from './alerts/alerts';
 export { initTrends } from './trends/trends';
+export { initDevicesWithTeleProps } from './trends/deviceTeleProps';
+export { initDevicesWithTelePropsDetails } from './trends/deviceTelePropsDetails';
 export {
   initKpiTotalAssetsInfo,
   initKpiTotalActiveInfo,
