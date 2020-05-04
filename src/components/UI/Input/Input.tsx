@@ -22,6 +22,7 @@ interface InputProps {
   elementConfig: any;
   value: string;
   changed(event: any): void;
+  options?: any;
 }
 
 const Input: FunctionComponent<InputProps> = ({
@@ -31,7 +32,8 @@ const Input: FunctionComponent<InputProps> = ({
   elementConfig,
   elementType,
   value,
-  changed
+  changed,
+  options
 }) => {
   let inputElement: any = null;
 
@@ -77,7 +79,7 @@ const Input: FunctionComponent<InputProps> = ({
             onChange={changed}
             value={value}
           >
-            {elementConfig.options.map(option => {
+            {options.map(option => {
               return (
                 <MenuItem value={option} key={option}>
                   {option}

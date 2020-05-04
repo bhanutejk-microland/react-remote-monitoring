@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import Grid from "@material-ui/core/Grid";
 import { connect } from 'react-redux';
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 
 import Input from "../../components/UI/Input/Input";
 import Button from "../../components/UI/Button/Button";
@@ -22,11 +18,10 @@ interface TrendsProps {
 
 interface TrendsState {
   trendPropertyList: Array<any>;
-  formIsValid: Boolean;
+  formIsValid: boolean;
   trendsInfo: Array<any>;
-  selectedDevice: String | null;
   deviceTeleProps: Array<any>;
-  selectedMeasure: String | null;
+  trendTelemetryForm: any;
 }
 
 interface FormElement {
@@ -39,18 +34,136 @@ class Trends extends Component<TrendsProps, TrendsState> {
   constructor(props: TrendsProps) {
     super(props);
     this.state = {
-      selectedDevice: null,
       deviceTeleProps: [],
-      selectedMeasure: null,
       formIsValid: false,
       trendPropertyList: [],
       trendsInfo: [],
+      trendTelemetryForm: {
+        devices: {
+          elementType: "dropdown",
+          elementConfig: {
+            label: "DEVICES",
+            options: []
+          },
+          value: "",
+          validation: {
+            required: true
+          },
+          valid: false,
+          touched: false
+        },
+        measures: {
+          elementType: "dropdown",
+          elementConfig: {
+            label: "MEASURES",
+            options: []
+          },
+          value: "",
+          validation: {
+            required: true
+          },
+          valid: false,
+          touched: false
+        }
+      }
     }
   }
 
   componentDidMount() {
     this.props.onInitDevicesWithTeleProps();
   }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.devicesWithTeleProps !== this.props.devicesWithTeleProps) {
+      this.devicesTelePropsComponentForm();
+    }
+  }
+
+  private updatePropertyListState = (selectedDevice, selectedMeasure, updatedPropertyList) => {
+    const deviseMeasures = [selectedMeasure];
+    updatedPropertyList.push({
+      deviceName: selectedDevice,
+      deviceMeasures: [...deviseMeasures]
+    });
+    this.setState({
+      trendPropertyList: [...updatedPropertyList],
+    }, () => {
+      this.props.onInitDevicesWithTelePropsDetails(this.state.trendPropertyList);
+    })
+  }
+
+  private updateTrendPropertyListState = (propertyHirc) => {
+    let updatedPropertyList = [...this.state.trendPropertyList];
+    updatedPropertyList = updatedPropertyList.filter(function (obj) {
+      return obj.deviceName !== propertyHirc[0];
+    });
+    this.setState({
+      trendPropertyList: [...updatedPropertyList]
+    }, () => {
+      this.props.onInitDevicesWithTelePropsDetails(this.state.trendPropertyList);
+    })
+  }
+
+  updatePropertyList = () => {
+    const selectedDevice = this.state.trendTelemetryForm.devices.value;
+    const selectedMeasure = this.state.trendTelemetryForm.measures.value;
+    const updatedPropertyList = [...this.state.trendPropertyList];
+    const deviceObj = updatedPropertyList.find(({ deviceName }) => deviceName === selectedDevice);
+    if (updatedPropertyList.length === 0 || deviceObj === undefined) {
+      this.updatePropertyListState(selectedDevice, selectedMeasure, updatedPropertyList);
+    } else {
+      const deviceMeasures = [...deviceObj.deviceMeasures];
+      if (!deviceMeasures.includes(selectedMeasure)) {
+        deviceObj.deviceMeasures.push(selectedMeasure);
+        this.setState(prevState => ({
+          trendPropertyList: prevState.trendPropertyList.map(
+            obj => (obj.divceName === selectedDevice ? Object.assign(obj, { deviceMesures: [...deviceObj.deviceMesures] }) : obj)
+          )
+        }), () => {
+          this.props.onInitDevicesWithTelePropsDetails(this.state.trendPropertyList);
+        });
+      }
+    }
+  }
+
+  inputChangedHandler = (event, inputIdentifier) => {
+    const updatedTrendPropertiesForm = {
+      ...this.state.trendTelemetryForm
+    };
+    const updatedFormElement = {
+      ...updatedTrendPropertiesForm[inputIdentifier]
+    };
+    updatedFormElement.value = event.target.value;
+    updatedFormElement.valid = this.checkValidity(
+      updatedFormElement.value,
+      updatedFormElement.validation
+    );
+    updatedFormElement.touched = true;
+    updatedTrendPropertiesForm[inputIdentifier] = updatedFormElement;
+    let formIsValid = true;
+    for (let inputIdentifier in updatedTrendPropertiesForm) {
+      formIsValid = updatedTrendPropertiesForm[inputIdentifier].valid && formIsValid;
+    }
+
+    if (inputIdentifier === 'devices') {
+      let updatedDeviceTeleProps = new Array();
+      this.props.devicesWithTeleProps.map((tProp) => {
+        if (tProp.assetId === event.target.value) {
+          updatedDeviceTeleProps = [...tProp.teleProps];
+        }
+      })
+      this.setState({
+        trendTelemetryForm: updatedTrendPropertiesForm,
+        formIsValid: formIsValid,
+        deviceTeleProps: [...updatedDeviceTeleProps]
+      });
+    }
+
+    this.setState({
+      trendTelemetryForm: updatedTrendPropertiesForm,
+      formIsValid: formIsValid
+    });
+  };
 
   checkValidity = (value, rules) => {
     let isValid = true;
@@ -65,126 +178,6 @@ class Trends extends Component<TrendsProps, TrendsState> {
     return isValid;
   };
 
-  updatePropertyList = () => {
-    const updatedPropertyList = [...this.state.trendPropertyList];
-    if (updatedPropertyList.length === 0) {
-      const deviseMeasures = [this.state.selectedMeasure];
-      updatedPropertyList.push({
-        deviceName: this.state.selectedDevice,
-        deviceMeasures: [...deviseMeasures]
-      });
-      this.setState({
-        trendPropertyList: [...updatedPropertyList],
-      }, () => {
-        this.props.onInitDevicesWithTelePropsDetails(this.state.trendPropertyList);
-      })
-    } else {
-      const divceName = this.state.selectedDevice;
-      const deviceObj = updatedPropertyList.find(({ deviceName }) => deviceName === divceName);
-      if (deviceObj === undefined) {
-        const deviseMeasures = [this.state.selectedMeasure];
-        updatedPropertyList.push({
-          deviceName: this.state.selectedDevice,
-          deviceMeasures: [...deviseMeasures]
-        })
-        this.setState({
-          trendPropertyList: [...updatedPropertyList]
-        }, () => {
-          this.props.onInitDevicesWithTelePropsDetails(this.state.trendPropertyList);
-        })
-      } else {
-        const deviceMeasures = [...deviceObj.deviceMeasures];
-        const deviceMeasure = this.state.selectedMeasure;
-        if (!deviceMeasures.includes(deviceMeasure)) {
-          deviceObj.deviceMeasures.push(deviceMeasure);
-          this.setState(prevState => ({
-            trendPropertyList: prevState.trendPropertyList.map(
-              obj => (obj.divceName === divceName ? Object.assign(obj, { deviceMesures: [...deviceObj.deviceMesures] }) : obj)
-            )
-          }), () => {
-            this.props.onInitDevicesWithTelePropsDetails(this.state.trendPropertyList);
-          });
-        }
-      }
-    }
-  }
-
-  handleDeviceSelector = (event) => {
-    const selectedDevice = event.target.value;
-    let updatedDeviceTeleProps = new Array();
-    this.props.devicesWithTeleProps.map((tProp) => {
-      if (tProp.assetId === selectedDevice) {
-        updatedDeviceTeleProps = [...tProp.teleProps];
-      }
-    })
-    this.setState({
-      selectedDevice: selectedDevice,
-      deviceTeleProps: [...updatedDeviceTeleProps]
-    })
-  }
-
-  handleTeleMeasureSelector = (event) => {
-    const selectedMeasure = event.target.value;
-
-    this.setState({
-      selectedMeasure: selectedMeasure
-    })
-  }
-
-  devicesTelePropsComponent = () => {
-    return (
-      <div className={classes.formContainer}>
-        <div className={classes.formContent}>
-          <FormControl className={classes.InputElement}>
-            <InputLabel id="demo-simple-select-label">
-              DEVICES
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              onChange={(event) => this.handleDeviceSelector(event)}
-              value={this.state.selectedDevice}
-            >
-              {this.props.devicesWithTeleProps.map(option => {
-                return (
-                  <MenuItem value={option.assetId} key={option.assetId}>
-                    {option.assetId}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-        </div>
-        <div className={classes.formContent}>
-          <FormControl className={classes.InputElement}>
-            <InputLabel id="demo-simple-select-label">
-              MEASURES
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              onChange={(event) => this.handleTeleMeasureSelector(event)}
-              value={this.state.selectedMeasure}
-            >
-              {this.state.deviceTeleProps.map(option => {
-                return (
-                  <MenuItem value={option} key={option}>
-                    {option}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-        </div>
-        <div className={classes.formContent} style={{ width: '60px', paddingTop: '15px' }}>
-          <Button btnType="primary" disabled={this.state.selectedDevice === null || this.state.selectedMeasure === null} clicked={this.updatePropertyList} width='100%'>
-            Add
-          </Button>
-        </div>
-      </div>
-    )
-  }
-
   deletePropertySelector = (property) => {
     const propertyHirc = property.split(",");
     if (propertyHirc.length > 1) {
@@ -194,29 +187,66 @@ class Trends extends Component<TrendsProps, TrendsState> {
         return property !== propertyHirc[1]
       });
       if (updatedDeviceMesures.length === 0) {
-        let updatedPropertyList = [...this.state.trendPropertyList];
-        updatedPropertyList = updatedPropertyList.filter(function (obj) {
-          return obj.deviceName !== propertyHirc[0];
-        });
-        this.setState({
-          trendPropertyList: [...updatedPropertyList]
-        })
+        this.updateTrendPropertyListState(propertyHirc);
       } else {
         this.setState(prevState => ({
           trendPropertyList: prevState.trendPropertyList.map(
             obj => (obj.deviceName === propertyHirc[0] ? Object.assign(obj, { deviceMeasures: [...updatedDeviceMesures] }) : obj)
           )
-        }));
+        }), () => {
+          this.props.onInitDevicesWithTelePropsDetails(this.state.trendPropertyList);
+        });
       }
     } else {
-      let updatedPropertyList = [...this.state.trendPropertyList];
-      updatedPropertyList = updatedPropertyList.filter(function (obj) {
-        return obj.deviceName !== propertyHirc[0];
-      });
-      this.setState({
-        trendPropertyList: [...updatedPropertyList]
-      })
+      this.updateTrendPropertyListState(propertyHirc);
     }
+  }
+
+  devicesTelePropsComponentForm = () => {
+    const formElementsArray: FormElement[] = [];
+    for (let key in this.state.trendTelemetryForm) {
+      const formElement: FormElement = {
+        id: key,
+        config: this.state.trendTelemetryForm[key]
+      };
+      formElementsArray.push(formElement);
+    }
+
+    let form = (
+      <form className={classes.PropertyForm}>
+        {formElementsArray.map(formElement => {
+          let options = new Array;
+          if (formElement.config.elementConfig.label === 'DEVICES') {
+            options = this.props.devicesWithTeleProps.map((device) => { return device.assetId })
+          } else {
+            options = [...this.state.deviceTeleProps]
+          }
+          return (
+            <div key={formElement.id} style={{ margin: '15px', width: '100%' }}>
+              <Input
+                elementType={formElement.config.elementType}
+                elementConfig={formElement.config.elementConfig}
+                value={formElement.config.value}
+                invalid={!formElement.config.valid}
+                shouldValidate={formElement.config.validation}
+                touched={formElement.config.touched}
+                options={options}
+                changed={event =>
+                  this.inputChangedHandler(event, formElement.id)
+                }
+              />
+            </div>
+          );
+        })}
+        <div style={{ padding: '25px', width: '50px' }}>
+          <Button btnType="primary" disabled={!this.state.formIsValid} clicked={this.updatePropertyList} width='100%'>
+            Add
+          </Button>
+        </div>
+      </form>
+    );
+
+    return form;
   }
 
   renderRulesListAndComparisonCharts = () => {
@@ -266,7 +296,7 @@ class Trends extends Component<TrendsProps, TrendsState> {
   render() {
     return (
       <div>
-        <this.devicesTelePropsComponent />
+        <this.devicesTelePropsComponentForm />
         <this.renderRulesListAndComparisonCharts />
       </div>
     )
