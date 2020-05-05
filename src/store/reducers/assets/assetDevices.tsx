@@ -16,7 +16,7 @@ const setDevicesGroup = (state, action) => {
         });
       });
     }
-    const updatedDeviceGroupList = updateArrayObject(state.deviceGroupList, newDeviceGroupList );
+    const updatedDeviceGroupList = updateArrayObject([], newDeviceGroupList );
     const updatedState = {
         deviceGroupList: updatedDeviceGroupList
       }

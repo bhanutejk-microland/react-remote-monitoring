@@ -29,3 +29,11 @@ export {
   initDeviceGroupList,
   initAllDeviceGroupDetails
 } from './assets/assetDevices';
+
+export {
+  addDeviceFormData
+} from './assets/assetAddDeviceForm';
+
+export {
+  addDeviceGroupFormData
+} from './assets/assetAddDeviceGroupForm';
