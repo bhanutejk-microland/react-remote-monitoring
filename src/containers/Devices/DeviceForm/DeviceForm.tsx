@@ -21,7 +21,6 @@ import Typography from '@material-ui/core/Typography';
 
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
@@ -99,18 +98,6 @@ class DeviceForm extends Component<DeviceFormProps, DeviceFormState > {
           valid: false,
           touched: false
         },
-        // deviceGroup: {
-        //   elementType: "input",
-        //   elementConfig: {
-        //     label: "Device Group"
-        //   },
-        //   value: "",
-        //   validation: {
-        //     required: true
-        //   },
-        //   valid: false,
-        //   touched: false
-        // },
         addrerss: {
           elementType: "input",
           elementConfig: {
@@ -147,54 +134,6 @@ class DeviceForm extends Component<DeviceFormProps, DeviceFormState > {
           valid: false,
           touched: false
         },
-        // makeNModel: {
-        //   elementType: "input",
-        //   elementConfig: {
-        //     label: "Device Make n Model"
-        //   },
-        //   value: "",
-        //   validation: {
-        //     required: true
-        //   },
-        //   valid: false,
-        //   touched: false
-        // },
-        // propertyDescription: {
-        //   elementType: "input",
-        //   elementConfig: {
-        //     label: "Property Description"
-        //   },
-        //   value: "",
-        //   validation: {
-        //     required: true
-        //   },
-        //   valid: false,
-        //   touched: false
-        // },
-        // type: {
-        //   elementType: "input",
-        //   elementConfig: {
-        //     label: "Property Type"
-        //   },
-        //   value: "",
-        //   validation: {
-        //     required: true
-        //   },
-        //   valid: false,
-        //   touched: false
-        // },
-        // firmWare: {
-        //   elementType: "input",
-        //   elementConfig: {
-        //     label: "Firm Ware"
-        //   },
-        //   value: "",
-        //   validation: {
-        //     required: true
-        //   },
-        //   valid: false,
-        //   touched: false
-        // },
         createdAt: {
           elementType: "",
           elementConfig: {
@@ -232,31 +171,7 @@ class DeviceForm extends Component<DeviceFormProps, DeviceFormState > {
           },
           valid: false,
           touched: false
-        },
-        // createdBy: {
-        //   elementType: "",
-        //   elementConfig: {
-        //     label: "Created By User"
-        //   },
-        //   value: "",
-        //   validation: {
-        //     required: true
-        //   },
-        //   valid: false,
-        //   touched: false
-        // },
-        // createdAt: {
-        //   elementType: "",
-        //   elementConfig: {
-        //     label: "Created Date"
-        //   },
-        //   value: "",
-        //   validation: {
-        //     required: true
-        //   },
-        //   valid: false,
-        //   touched: false
-        // }
+        }
       }
     }
 

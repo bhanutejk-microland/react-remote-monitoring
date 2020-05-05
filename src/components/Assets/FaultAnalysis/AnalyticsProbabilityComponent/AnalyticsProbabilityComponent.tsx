@@ -1,14 +1,9 @@
 import React, { Component, Fragment } from "react";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from '@material-ui/core/styles';
-// import InputLabel from '@material-ui/core/InputLabel';
-// import MenuItem from '@material-ui/core/MenuItem';
-// import FormControl from '@material-ui/core/FormControl';
-// import Select from '@material-ui/core/Select';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-// import Aux from "../../../hoc/Aux";
 import XyChartColumnSeries from '../../../Charts/XyChartColumnSeries';
 
 interface AnalyticsElementComponentProps {
@@ -38,12 +33,6 @@ interface analyticalCountProperties{
   categoryAxes : string;
   countList : analyticalCountElement[];
 }
-
-// const useStyles = makeStyles({
-//   root: {
-//     flexGrow: 1,
-//   },
-// });
 
 const useStyles = theme => ({
   root: {
@@ -83,21 +72,6 @@ class AnalyticsProbabilityComponent extends Component<AnalyticsElementComponentP
             <h2>Probability of Status</h2>
           </Grid>
           <Grid item xs={12} sm={6}>
-            {/* <FormControl variant="outlined" style={{minWidth : "200px",marginLeft : "60%", marginTop : "2%"}}>
-              <InputLabel id="demo-simple-select-outlined-label">Filter</InputLabel>
-              <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
-                label="Filter"
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value={"lastDay"}>Last Day</MenuItem>
-                <MenuItem value={"lastWeek"}>Last Week</MenuItem>
-                <MenuItem value={"lastMonth"}>Last Month</MenuItem>
-              </Select>
-            </FormControl> */}
             <Paper className={classes.root}>
               <Tabs
                 
