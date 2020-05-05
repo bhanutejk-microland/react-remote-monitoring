@@ -24,3 +24,8 @@ export {
   initRules,
   addToRulesList
 } from './rules/rules';
+
+export {
+  initDeviceGroupList,
+  initAllDeviceGroupDetails
+} from './assets/assetDevices';

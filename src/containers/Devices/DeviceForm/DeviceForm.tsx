@@ -10,18 +10,30 @@ import Button from '../../../components/UI/Button/Button';
 import axios from '../../../axios';
 import { unixTimestampToDateTimeconverter } from '../../../utilities/timeStampConverter';
 import { DeviceGroupFormModel } from '../../../interfaceModels/DeviceGroupFormModel';
-import TextField from '@material-ui/core/TextField';
+import * as actions from '../../../store/actions/index';
+import { connect } from 'react-redux';
 
+import TextField from '@material-ui/core/TextField';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
+
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 
 interface DeviceFormProps { 
   closeDrawer(status: any): any;
   cancleForm: (event: any) => void;
   addToDeviceList(deviceData: any): any;
+  onInitDeviceGroup: () => void;
+  onInitAllDeviceGroupDetails: () => void;
+  devicesGroup: any;
+  allDeviceGroupDetails: any;
 }
 
 interface DeviceFormState {
@@ -34,6 +46,11 @@ interface DeviceFormState {
   inputsDynamic: any;
   inputsStaticValues: any[],
   inputsDynamicvalues: any[],
+  staticProperties: any[],
+  dynamicProperties: any[],
+  staticPropertiesValues: any[],
+  dynamicPropertiesValues: any[],
+  deviceGroupValue: string
 }
 
 interface FormElement {
@@ -52,6 +69,11 @@ class DeviceForm extends Component<DeviceFormProps, DeviceFormState > {
       inputsDynamic: ['inputsDynamic-0'],
       inputsStaticValues: [],
       inputsDynamicvalues: [],
+      staticProperties: [],
+      dynamicProperties: [],
+      staticPropertiesValues: [],
+      dynamicPropertiesValues: [],
+      deviceGroupValue: "",
       deviceForm: {
         deviceName: {
           elementType: "input",
@@ -77,18 +99,18 @@ class DeviceForm extends Component<DeviceFormProps, DeviceFormState > {
           valid: false,
           touched: false
         },
-        deviceGroup: {
-          elementType: "input",
-          elementConfig: {
-            label: "Device Group"
-          },
-          value: "",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
+        // deviceGroup: {
+        //   elementType: "input",
+        //   elementConfig: {
+        //     label: "Device Group"
+        //   },
+        //   value: "",
+        //   validation: {
+        //     required: true
+        //   },
+        //   valid: false,
+        //   touched: false
+        // },
         addrerss: {
           elementType: "input",
           elementConfig: {
@@ -125,54 +147,54 @@ class DeviceForm extends Component<DeviceFormProps, DeviceFormState > {
           valid: false,
           touched: false
         },
-        makeNModel: {
-          elementType: "input",
-          elementConfig: {
-            label: "Device Make n Model"
-          },
-          value: "",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        propertyDescription: {
-          elementType: "input",
-          elementConfig: {
-            label: "Property Description"
-          },
-          value: "",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        type: {
-          elementType: "input",
-          elementConfig: {
-            label: "Property Type"
-          },
-          value: "",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        firmWare: {
-          elementType: "input",
-          elementConfig: {
-            label: "Firm Ware"
-          },
-          value: "",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
+        // makeNModel: {
+        //   elementType: "input",
+        //   elementConfig: {
+        //     label: "Device Make n Model"
+        //   },
+        //   value: "",
+        //   validation: {
+        //     required: true
+        //   },
+        //   valid: false,
+        //   touched: false
+        // },
+        // propertyDescription: {
+        //   elementType: "input",
+        //   elementConfig: {
+        //     label: "Property Description"
+        //   },
+        //   value: "",
+        //   validation: {
+        //     required: true
+        //   },
+        //   valid: false,
+        //   touched: false
+        // },
+        // type: {
+        //   elementType: "input",
+        //   elementConfig: {
+        //     label: "Property Type"
+        //   },
+        //   value: "",
+        //   validation: {
+        //     required: true
+        //   },
+        //   valid: false,
+        //   touched: false
+        // },
+        // firmWare: {
+        //   elementType: "input",
+        //   elementConfig: {
+        //     label: "Firm Ware"
+        //   },
+        //   value: "",
+        //   validation: {
+        //     required: true
+        //   },
+        //   valid: false,
+        //   touched: false
+        // },
         createdAt: {
           elementType: "",
           elementConfig: {
@@ -242,6 +264,11 @@ class DeviceForm extends Component<DeviceFormProps, DeviceFormState > {
     this.appendDynamicInput = this.appendDynamicInput.bind(this);
   }
 
+  componentDidMount(){
+    this.props.onInitDeviceGroup();
+    this.props.onInitAllDeviceGroupDetails();
+  }
+
   checkValidity = (value, rules) => {
     let isValid = true;
     if (!rules) {
@@ -290,7 +317,7 @@ class DeviceForm extends Component<DeviceFormProps, DeviceFormState > {
       data: {
         id: this.state.deviceForm.deviceId.value,
         displayName: this.state.deviceForm.deviceName.value,
-        deviceGroups: this.state.deviceForm.deviceGroup.value,
+        deviceGroups: this.state.deviceGroupValue,
         location: [
           {
             address: this.state.deviceForm.addrerss.value,
@@ -298,16 +325,20 @@ class DeviceForm extends Component<DeviceFormProps, DeviceFormState > {
             longitude: this.state.deviceForm.longitude.value
           }
         ],
-        properties: [
-          {
-            makeNmodel: this.state.deviceForm.makeNModel.value,
-            description: this.state.deviceForm.propertyDescription.value,
-            typeOfRefrigerant: this.state.deviceForm.type.value,
-            firmwareVersion: this.state.deviceForm.firmWare.value,
-            firmwareUpdateStatus: "Updated",
-            deviceStatus: "Online"
-          }
-        ]
+        // properties: [
+        //   {
+        //     // makeNmodel: this.state.deviceForm.makeNModel.value,
+        //     // description: this.state.deviceForm.propertyDescription.value,
+        //     // typeOfRefrigerant: this.state.deviceForm.type.value,
+        //     // firmwareVersion: this.state.deviceForm.firmWare.value,
+        //     staticProperties: this.state.staticPropertiesValues,
+        //     dynamicProperties: this.state.dynamicPropertiesValues,
+        //     firmwareUpdateStatus: "Updated",
+        //     deviceStatus: "Online"
+        //   }
+        // ],
+        properties:[...this.state.staticPropertiesValues],
+        teleProperties: [...this.state.dynamicPropertiesValues]
       }
     }
     axios.post("http://localhost:3000/api/devices/add", deviceData)
@@ -317,9 +348,9 @@ class DeviceForm extends Component<DeviceFormProps, DeviceFormState > {
         const newDeviceData = {
           deviceId: deviceData.data.id,
           url: '',
-          modelNumber: deviceData.data.properties[0].makeNmodel,
+          // modelNumber: deviceData.data.properties[0].makeNmodel,
           location: deviceData.data.location[0].address,
-          description: deviceData.data.properties[0].description,
+          // description: deviceData.data.properties[0].description,
           status: deviceData.data.properties[0].deviceStatus
         }
         this.props.addToDeviceList(newDeviceData)
@@ -333,15 +364,26 @@ class DeviceForm extends Component<DeviceFormProps, DeviceFormState > {
     }));
 
     const deviceGroupData = {
-      configType: "devices",
-      key: "ML-Chiller",
+      configType: "deviceGroup",
+      key: this.state.deviceGroupForm.deviceGroupName.value,
       status: "Active",
       data: {
         id: this.state.deviceGroupForm.deviceGroupId.value,
         displayName: this.state.deviceGroupForm.deviceGroupName.value,
-        deviceGroups: this.state.deviceForm.deviceGroup.value
-      }
+        staticProperties : this.state.inputsStaticValues,
+        dynamicProperties : this.state.inputsDynamicvalues,
+        dateCreated : unixTimestampToDateTimeconverter(new Date()),
+        dateModified : unixTimestampToDateTimeconverter(new Date()),
+        enabled : false,
+      },
+      id : this.state.deviceGroupForm.deviceGroupId.value
     }
+    axios.post("http://localhost:3000/api/devices/addDeviceGroup",deviceGroupData)
+    .then(response => {
+      if(response.status === 200){
+        this.props.closeDrawer([200, "Device Group Added Successfully"]);
+      }
+    })
   }
 
   inputChangedDeviceGroupHandler = (event, inputIdentifier) => {
@@ -367,6 +409,80 @@ class DeviceForm extends Component<DeviceFormProps, DeviceFormState > {
       formDeviceGroupIsValid: formDeviceGroupIsValid
     });
   };  
+
+  inputChangedStaticPropertyValue = (event,i,property) => {   
+    let newStaticPropertiesValues = [...this.state.staticPropertiesValues];
+    if(newStaticPropertiesValues.length === 0){
+      let obj = {
+        property : property,
+        value : event.target.value
+      }
+      newStaticPropertiesValues.push(obj); 
+      this.setState({
+        staticPropertiesValues : newStaticPropertiesValues
+      });
+    }else{
+      const propertyObj = newStaticPropertiesValues.find(o => o.property === property);
+      if(propertyObj === undefined){
+        let obj = {
+          property : property,
+          value : event.target.value
+        }
+        newStaticPropertiesValues.push(obj); 
+        this.setState({
+          staticPropertiesValues : newStaticPropertiesValues
+        });
+      }else{
+        const objIndex = newStaticPropertiesValues.findIndex(obj => obj.property === property);
+        const updatedObj = { ...newStaticPropertiesValues[objIndex], value: event.target.value};
+        const updatedStaticPropertiesValuess = [
+          ...newStaticPropertiesValues.slice(0, objIndex),
+          updatedObj,
+          ...newStaticPropertiesValues.slice(objIndex + 1),
+        ];
+        this.setState({
+          staticPropertiesValues : updatedStaticPropertiesValuess
+        });
+      }
+    }
+  }
+
+  inputChangedDynamicPropertyValue = (event,i,property) => {   
+    let newDynamicPropertiesValues = [...this.state.dynamicPropertiesValues];
+    if(newDynamicPropertiesValues.length === 0){
+      let obj = {
+        property : property,
+        value : event.target.value
+      }
+      newDynamicPropertiesValues.push(obj); 
+      this.setState({
+        dynamicPropertiesValues : newDynamicPropertiesValues
+      });
+    }else{
+      const propertyObj = newDynamicPropertiesValues.find(o => o.property === property);
+      if(propertyObj === undefined){
+        let obj = {
+          property : property,
+          value : event.target.value
+        }
+        newDynamicPropertiesValues.push(obj); 
+        this.setState({
+          dynamicPropertiesValues : newDynamicPropertiesValues
+        });
+      }else{
+        const objIndex = newDynamicPropertiesValues.findIndex(obj => obj.property === property);
+        const updatedObj = { ...newDynamicPropertiesValues[objIndex], value: event.target.value};
+        const updatedDynamicPropertiesValuess = [
+          ...newDynamicPropertiesValues.slice(0, objIndex),
+          updatedObj,
+          ...newDynamicPropertiesValues.slice(objIndex + 1),
+        ];
+        this.setState({
+          dynamicPropertiesValues : updatedDynamicPropertiesValuess
+        });
+      }
+    }
+  }
 
   inputChangedStaticValues = (event,i) => {
     let updatedInputsStaticValues = [...this.state.inputsStaticValues];
@@ -405,11 +521,22 @@ class DeviceForm extends Component<DeviceFormProps, DeviceFormState > {
   };
 
   handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    console.log(newValue);
     this.setState({
       value :newValue
     });
   };
+
+  handleDeviceGroupChange = (event) => {
+    let allDeviceGroupDetails = this.props.allDeviceGroupDetails;
+    let object = allDeviceGroupDetails.find(o => o.displayName === event.target.value);
+    let updatedStaticProperties = [...object.staticProperties];
+    let updatedDynamicProperties = [...object.dynamicProperties];
+    this.setState({
+      deviceGroupValue : event.target.value,
+      staticProperties: updatedStaticProperties,
+      dynamicProperties: updatedDynamicProperties
+    })
+  }
 
   renderForm = () => {
     const formElementsArray: FormElement[] = [];
@@ -441,6 +568,54 @@ class DeviceForm extends Component<DeviceFormProps, DeviceFormState > {
             </div>
           );
         })}
+        <div className={classes.DeviceFormContent}>
+          <FormControl fullWidth>
+            <InputLabel id="deviceGroup-select-label">Device Group</InputLabel>
+            <Select
+              labelId="deviceGroup-select-label"
+              id="deviceGroup-select"
+              value={this.state.deviceGroupValue}
+              onChange={this.handleDeviceGroupChange}
+            >
+              {this.props.devicesGroup.map((name,index) => {
+                return(
+                  <MenuItem key={index} value={name.groupName}>{name.groupName}</MenuItem>
+                )
+              })}
+            </Select>
+          </FormControl>
+        </div>
+        <h4 style={{marginBottom: "0px"}}>Static Properties</h4>
+        {this.state.staticProperties.length > 0 && this.state.staticProperties.map((property,index) => {
+          return (
+            <div key={index} className={classes.DeviceFormContent}>
+              <FormControl fullWidth>
+                <TextField 
+                  id={`${index}`}
+                  label={property}
+                  required
+                  onChange={event => this.inputChangedStaticPropertyValue(event,index,property)}
+                />
+              </FormControl>
+            </div>
+          )
+        })}
+      
+        <h4 style={{marginBottom: "0px"}}>Dynamic Properties</h4>
+        {this.state.dynamicProperties.length > 0 && this.state.dynamicProperties.map((property,index) => {
+            return (
+              <div key={index} className={classes.DeviceFormContent}>
+                <FormControl fullWidth>
+                  <TextField 
+                    id={`${index}`}
+                    label={property}
+                    required
+                    onChange={event => this.inputChangedDynamicPropertyValue(event,index,property)}
+                  />
+                </FormControl>
+              </div>
+            )
+          })}
         <div className={classes.BtnGroup}>
           <Button clicked={this.props.cancleForm} btnType="default" disabled={false} icon={<CancelIcon />}>
             CANCEL
@@ -621,4 +796,18 @@ function a11yProps(index: any) {
   };
 }
 
-export default DeviceForm;
+const mapStateToProps = state => {
+  return {
+    devicesGroup : state.assetDevicesGroup.deviceGroupList,
+    allDeviceGroupDetails : state.assetDevicesGroup.allDeviceGroupDetails
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onInitDeviceGroup: () => dispatch(actions.initDeviceGroupList()),
+    onInitAllDeviceGroupDetails: () => dispatch(actions.initAllDeviceGroupDetails())
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(DeviceForm);

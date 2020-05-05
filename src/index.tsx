@@ -15,6 +15,7 @@ import assetsReducer from './store/reducers/assets/assets';
 import assetDetailReducer from './store/reducers/assets/assetDetails';
 import assetPropertiesReducer from './store/reducers/assets/assetProperties';
 import assetAnomaliesReducer from './store/reducers/assets/assetAnomalies';
+import assetDevicesGroupReducer from './store/reducers/assets/assetDevices';
 import rulesReducer from './store/reducers/rules/rules';
 import alertsReducer from './store/reducers/alerts/alerts';
 import deviceTelemetryReducer from './store/reducers/alerts/deviceTelemetry';
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
   assetDetail: assetDetailReducer,
   assetProperties: assetPropertiesReducer,
   assetAnomalies: assetAnomaliesReducer,
+  assetDevicesGroup: assetDevicesGroupReducer,
   rulesInfo: rulesReducer,
   alertsInfo: alertsReducer,
   deviceTelemetryInfo: deviceTelemetryReducer,
