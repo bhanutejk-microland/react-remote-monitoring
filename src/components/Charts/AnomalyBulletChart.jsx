@@ -48,8 +48,8 @@ class AnomalyBulletChart extends Component {
     dateAxis.renderer.minGridDistance = 100;
 
     var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-    valueAxis.min = 40;
-    valueAxis.max = 100;
+    valueAxis.min = 0;
+    valueAxis.max = 150;
 
     // Create series
     function createSeries(field, name) {
