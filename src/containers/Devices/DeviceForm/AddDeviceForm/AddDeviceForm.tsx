@@ -20,6 +20,8 @@ interface AddDeviceFormProps {
     allDeviceGroupDetails: any;
     deviceFormData?: any[];
     addDeviceFormDataDispatcher?: any;
+    addAssetToListDispatcher?: any; 
+    addToDeviceList(deviceData: any): any;
 }
 
 interface AddDeviceFormState {
@@ -292,6 +294,15 @@ class AddDeviceForm extends Component<AddDeviceFormProps,AddDeviceFormState>{
         },
         () => this.props.addDeviceFormDataDispatcher(this.state.deviceFormData))
         this.props.closeDrawer([200, "Device added successfully!"]);
+        const newDeviceData = {
+          deviceId: newDeviceFormData.data.id,
+          url: '',
+          modelNumber: `Hitachi ${newDeviceFormData.data.displayName}`,
+          location: newDeviceFormData.data.location[0].address,
+          description: 'Pump Demo',
+          status: 'Online'
+        }
+        this.props.addToDeviceList(newDeviceData);
       }
 
     renderForm = () => {
@@ -407,7 +418,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return{
-        addDeviceFormDataDispatcher: (formData) => dispatch(actions.addDeviceFormData(formData))
+        addDeviceFormDataDispatcher: (formData) => dispatch(actions.addDeviceFormData(formData)),
+        addAssetToListDispatcher: (asset) => dispatch(actions.addAssetToList(asset))
     }
 }
 

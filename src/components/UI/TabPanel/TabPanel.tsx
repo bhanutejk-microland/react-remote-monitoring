@@ -61,7 +61,6 @@ export default function FullWidthTabs(props: TabProps) {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
-  console.log(tabHeaderInfo);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);

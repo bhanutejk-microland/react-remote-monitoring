@@ -89,7 +89,9 @@ class DeviceForm extends Component<DeviceFormProps, DeviceFormState > {
             devicesGroup={this.props.devicesGroup} 
             allDeviceGroupDetails={this.props.allDeviceGroupDetails}
             closeDrawer={this.props.closeDrawer}
-            cancleForm={this.props.cancleForm} />
+            cancleForm={this.props.cancleForm}
+            addToDeviceList={(deviceData) => this.props.addToDeviceList(deviceData)}
+             />
         </TabPanel>
         <TabPanel value={this.state.value} index={1}>
           <AddDeviceGroupForm

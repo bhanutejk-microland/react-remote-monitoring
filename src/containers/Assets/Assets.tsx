@@ -99,7 +99,8 @@ class Assets extends Component<AssetProps, AssetState> {
           <DeviceFormComponent 
             closeDrawer={(status) => this.closeDrawer(status)}
             addToDeviceList={(deviceData) => this.props.addAssetToListDispatcher(deviceData)} 
-            cancleForm={this.toggleDeviceDrawer}/>
+            cancleForm={this.toggleDeviceDrawer} 
+            />
         </div>
       </Drawer>
     );
