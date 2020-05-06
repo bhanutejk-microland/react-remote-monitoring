@@ -79,13 +79,13 @@ const Input: FunctionComponent<InputProps> = ({
             onChange={changed}
             value={value}
           >
-            {options.map(option => {
+            {options && options.length > 0 ? options.map(option => {
               return (
                 <MenuItem value={option} key={option}>
                   {option}
                 </MenuItem>
               );
-            })}
+            }) : <MenuItem></MenuItem>}
           </Select>
         </FormControl>
       );

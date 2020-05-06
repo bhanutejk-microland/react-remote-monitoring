@@ -221,6 +221,7 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
                 invalid={!formElement.config.valid}
                 shouldValidate={formElement.config.validation}
                 touched={formElement.config.touched}
+                options={formElement.config.elementConfig.options}
                 changed={event =>
                   this.inputChangedHandler(event, formElement.id)
                 }
