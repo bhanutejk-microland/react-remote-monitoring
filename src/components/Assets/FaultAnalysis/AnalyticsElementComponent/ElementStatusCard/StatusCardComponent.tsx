@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 
-import HalfDoughnutChart from "../../../../components/Charts/HalfDoughnutChart";
+import HalfDoughnutChart from '../../../../Charts/HalfDoughnutChart';
 import classes from "./StatusCardComponent.css";
 
 interface StatusCardComponentProps {
@@ -16,11 +16,11 @@ const StatusCardComponent: FunctionComponent<StatusCardComponentProps> = ({
   max,
   value
 }) => (
-  <div>
-    <div className={classes.CardHeader}>
-      <span className={classes.CardHeaderTitle}>{name}</span>
-    </div>
-    {/* <SemiDoughnutChart
+    <div>
+      <div className={classes.CardHeader}>
+        <span className={classes.CardHeaderTitle}>{name}</span>
+      </div>
+      {/* <SemiDoughnutChart
       dataPoints={[
         {
           name: name,
@@ -34,17 +34,17 @@ const StatusCardComponent: FunctionComponent<StatusCardComponentProps> = ({
         { name: "Remained", y: max - value, color: "#badbe2" }
       ]}
     /> */}
-    <HalfDoughnutChart
-      indexing={name}
-      dataPoints={[
-        {
-          name: name,
-          value: value
-        },
-        { name: "Remained", value: max - value }
-      ]}
-    />
-  </div>
-);
+      <HalfDoughnutChart
+        indexing={name}
+        dataPoints={[
+          {
+            name: name,
+            value: value
+          },
+          { name: "Remained", value: max - value }
+        ]}
+      />
+    </div>
+  );
 
 export default StatusCardComponent;

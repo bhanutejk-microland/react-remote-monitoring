@@ -69,7 +69,9 @@ class MultiLineChart extends Component {
           createSeries("value", measure, measure, this.props);
         })
       } else {
-        this.chart.dispose();
+        if (this.chart) {
+          this.chart.dispose();
+        }
       }
     }
 
