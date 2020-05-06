@@ -21,8 +21,6 @@ interface AssetAnamolyProps {
 
 const AssetAnamoly: FunctionComponent<AssetAnamolyProps> = ({ anamoly, indexing }) => {
 
-  console.log("ASSETANOMALIES>>>>>>>>>>>>>>>>>", anamoly);
-
   const renderAssetPropertySkeleten = () => {
     return (
       <Grid container spacing={2}>
@@ -49,8 +47,15 @@ const AssetAnamoly: FunctionComponent<AssetAnamolyProps> = ({ anamoly, indexing 
   };
 
   const renderAssetAnamolyContent = () => {
-    console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQ~~~~~~~~~~", anamoly);
     return Object.keys(anamoly).map((anomalyKey, indexing) => {
+      let anomalyLabel = '';
+      if (anomalyKey === 'tempAnomaly') {
+        anomalyLabel = 'temperature'
+      } else if (anomalyKey === 'presAnomaly') {
+        anomalyLabel = 'pressure'
+      } else if (anomalyKey === 'humiAnomaly') {
+        anomalyLabel = 'humidity'
+      }
       return (
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -63,7 +68,7 @@ const AssetAnamoly: FunctionComponent<AssetAnamolyProps> = ({ anamoly, indexing 
               >
                 <div className="">
                   <Typography className="">
-                    <b style={{ textTransform: 'uppercase' }}>{anomalyKey}</b>
+                    <b style={{ textTransform: 'uppercase' }}>{anomalyLabel}</b>
                   </Typography>
                 </div>
 
@@ -80,55 +85,6 @@ const AssetAnamoly: FunctionComponent<AssetAnamolyProps> = ({ anamoly, indexing 
         </Grid>
       );
     });
-    // if (anamoly && anamoly.length > 0) {
-    // console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQ~~~~~~~~~~");
-    // return (
-    //   <Grid container spacing={2}>
-    //     {/* <Grid item xs={6} md={4} className={classes.AssetPropertyList}>
-    //       {Object.keys(property).map((propertyKey, index) => {
-    //         return propertyKey !== "telemetry" ? (
-    //           <ListItem key={"AssetProperty" + propertyKey + index}>
-    //             <ListItemText
-    //               className={classes.ListContent}
-    //               primary={propertyKey}
-    //             />
-    //             <ListItemText
-    //               className={classes.ListContent}
-    //               primary={property[propertyKey].toString()}
-    //             />
-    //           </ListItem>
-    //         ) : null;
-    //       })}
-    //     </Grid> */}
-    //     <Grid item xs={12}>
-    //       <ExpansionPanel defaultExpanded>
-    //         <ExpansionPanelSummary
-    //           expandIcon={<ExpandMoreIcon />}
-    //           aria-controls="panel1c-content"
-    //           id="panel1c-header"
-    //         // className={classes.AssetPanelHeader}
-    //         >
-    //           <div className="">
-    //             <Typography className="">
-    //               <b style={{ textTransform: 'uppercase' }}>qqqqqq</b>
-    //             </Typography>
-    //           </div>
-
-    //         </ExpansionPanelSummary>
-    //         <ExpansionPanelDetails className="">
-    //           <AnomalyBulletChart
-    //             indexing={indexing}
-    //             data={[...anamoly]}
-    //             chartHeight="300px"
-    //           />
-    //         </ExpansionPanelDetails>
-    //       </ExpansionPanel>
-    //     </Grid>
-    //   </Grid>
-    // );
-    // } else {
-    //   return renderAssetPropertySkeleten();
-    // }
   }
 
   return (
