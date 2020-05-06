@@ -64,9 +64,13 @@ class MultiLineChart extends Component {
 
     if (this.props.chartData !== undefined && this.props.chartData.deviceTrends.length > 0) {
       const tendObj = this.props.trendPropertyInfo.find((property) => property.deviceName === this.props.chartData.deviceName);
-      tendObj.deviceMeasures.map((measure) => {
-        createSeries("value", measure, measure, this.props);
-      })
+      if (tendObj !== undefined) {
+        tendObj.deviceMeasures.map((measure) => {
+          createSeries("value", measure, measure, this.props);
+        })
+      } else {
+        this.chart.dispose();
+      }
     }
 
     chart.legend = new am4charts.Legend();
