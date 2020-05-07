@@ -32,7 +32,7 @@ interface AssetDetailsState {
   assetDetails: AssetModel;
 }
 
-const tabHeaderInfo = ["PROPERTIES", "TRENDS", "ANOMALY","FAULTS CLASSIFICATION"];
+//const tabHeaderInfo = ["PROPERTIES", "TRENDS", "ANOMALY","FAULTS CLASSIFICATION"];
 
 class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
   constructor(props: AssetDetailsProps) {
@@ -50,7 +50,8 @@ class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
           // properties: [],
           trends: [],
           anomaly: [],
-          faultClassification: []
+          faultClassification: [],
+          faultIdentification: [],
         }
       }
     };
@@ -124,8 +125,11 @@ class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
 
   renderAssetDetailsTab = () => {
     const assetId = this.props.match.params.assetId;
+    let deviceId = assetId.toLowerCase();
     let assetTabInfo = {};
-    if(assetId === 'pump'){
+    let tabHeaderInfo = Array();
+    if(deviceId.includes('pump')){
+      tabHeaderInfo = ["PROPERTIES", "TRENDS", "ANOMALY", "FAULTS CLASSIFICATION", "FAULTS IDENTIFICATION"];
       assetTabInfo = {
         properties: [...this.props.assetProperties],
         trends: [...this.state.assetDetails.assetTabInfo.trends],
@@ -133,6 +137,7 @@ class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
         faultClassification: [...this.state.assetDetails.assetTabInfo.faultClassification]
       }
     }else{
+      tabHeaderInfo = ["PROPERTIES", "TRENDS", "ANOMALY"]
       assetTabInfo = {
         properties: [...this.props.assetProperties],
         trends: [...this.state.assetDetails.assetTabInfo.trends],

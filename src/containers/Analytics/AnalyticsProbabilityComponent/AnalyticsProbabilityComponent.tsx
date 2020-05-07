@@ -67,8 +67,11 @@ class AnalyticsProbabilityComponent extends Component<AnalyticsElementComponentP
                 onChange={this.handleChange}
                 indicatorColor="primary"
                 textColor="primary"
-                centered
+                variant="scrollable"
+                scrollButtons="auto"
+                aria-label="scrollable auto tabs example"
               >
+                <Tab label="Today" value="today" />
                 <Tab label="Last Day" value="lastDay" />
                 <Tab label="Last Week" value="lastWeek" />
                 <Tab label="Last Month" value="lastMonth" />

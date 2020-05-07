@@ -74,13 +74,15 @@ class AnalyticsProbabilityComponent extends Component<AnalyticsElementComponentP
           <Grid item xs={12} sm={6}>
             <Paper className={classes.root}>
               <Tabs
-                
                 value={this.state.value}
                 onChange={this.handleChange}
                 indicatorColor="primary"
                 textColor="primary"
-                centered
+                variant="scrollable"
+                scrollButtons="auto"
+                aria-label="scrollable auto tabs example"
               >
+                <Tab label="Today" value="today" />
                 <Tab label="Last Day" value="lastDay" />
                 <Tab label="Last Week" value="lastWeek" />
                 <Tab label="Last Month" value="lastMonth" />
