@@ -26,6 +26,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import {Link} from "react-router-dom";
 
 import Button from "../Button/Button";
 
@@ -354,13 +355,15 @@ export default function EnhancedTable(props: TableProps) {
                     );
                   })}
                   <TableCell>
-                    <Button
-                      disabled={true}
-                      btnType="primary"
-                      icon={<FontAwesomeIcon icon={faEye} />}
-                    >
-                      View
-                    </Button>
+                    <Link to={`/alerts`}>
+                      <Button
+                        disabled={false}
+                        btnType="primary"
+                        icon={<FontAwesomeIcon icon={faEye} />}
+                      >
+                        View
+                      </Button>
+                    </Link>                    
                   </TableCell>
                 </TableRow>
               );
