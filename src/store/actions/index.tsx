@@ -39,3 +39,9 @@ export {
 export {
   addDeviceGroupFormData
 } from './assets/assetAddDeviceGroupForm';
+
+export {
+  getGaugeValue,
+  getFaultStatusValue,
+  getLastTenPredictionValue
+} from './assets/faultClassification';

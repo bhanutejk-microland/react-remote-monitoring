@@ -17,16 +17,10 @@
     font-weight: bold;
     color: #fff;
   }
-  
+
   .chartHeading{
     margin: 5px 0px;
   }
 
-  Tab.MuiTab-root{
-    padding: 0px 12px;
-    min-height: 35px;
-  }
-
-  Tabs.MuiTabs-root{
-    min-height: 30px;
-  }
+  
+  

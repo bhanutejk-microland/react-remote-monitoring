@@ -11,7 +11,8 @@ import cssClasses from "./TabPanel.css";
 import AssetProperty from "../../Assets/AssetProperty/AssetProperty";
 import AssetAnamoly from '../../Assets/AssetAnamoly/AssetAnamoly';
 import TrendsComponent from '../../Assets/Trends/Trends';
-import FaultAnalysis from '../../Assets/FaultAnalysis/FaultAnalysis';
+import FaultClassification from '../../../containers/Assets/FaultClassification/FaultClassification';
+import FaultIdentificationAnalysis from '../../Assets/FaultIdentificationAnalysis/FaultIdentificationAnalysis';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -200,7 +201,7 @@ export default function FullWidthTabs(props: TabProps) {
             //     ITEM {index}
             //   </TabPanel>
             // );
-          }else{
+          }else if(tabData === "faultClassification"){
             return(
               <TabPanel
                 value={value}
@@ -208,9 +209,20 @@ export default function FullWidthTabs(props: TabProps) {
                 dir={theme.direction}
                 key={"tabPanel" + index}
               >
-                <FaultAnalysis />
+                <FaultClassification />
               </TabPanel>
               
+            )
+          }else if(tabData === "faultIdentification"){
+            return(
+              <TabPanel
+                value={value}
+                index={index}
+                dir={theme.direction}
+                key={"tabPanel" + index}
+              >
+                <FaultIdentificationAnalysis />
+              </TabPanel>
             )
           }
         })}

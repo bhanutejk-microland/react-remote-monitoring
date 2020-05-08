@@ -5,11 +5,11 @@ import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import XyChartColumnSeries from '../../../Charts/XyChartColumnSeries';
-import classes from "../FaultAnalysis.css";
+import classes from "../FaultIdentificationAnalysis.css";
 
 interface AnalyticsElementComponentProps {
   analyticalProbabilityInfo: analyticalProbabilityProperties,
-  analyticalCountInfo: analyticalCountProperties,
+  analyticalCountInfo: analyticalCountProperties
 }
 
 interface analyticalProbabilityElement{
@@ -61,8 +61,7 @@ class AnalyticsProbabilityComponent extends Component<AnalyticsElementComponentP
   }
 
   render() {
-    return (
-      
+    return (      
       <Fragment>
         <Grid container spacing={2} justify="space-between">
           <Grid item xs={12} sm={6}>            
@@ -78,12 +77,11 @@ class AnalyticsProbabilityComponent extends Component<AnalyticsElementComponentP
                 variant="scrollable"
                 scrollButtons="auto"
                 aria-label="scrollable auto tabs example"
-                className={classes.Tabs}
               >
-                <Tab className={classes.Tabs} label="Today" value="today" />
-                <Tab className={classes.Tabs} label="Last Day" value="lastDay" />
-                <Tab className={classes.Tabs} label="Last Week" value="lastWeek" />
-                <Tab className={classes.Tabs} label="Last Month" value="lastMonth" />
+                <Tab label="Today" value="today" />
+                <Tab label="Last Day" value="lastDay" />
+                <Tab label="Last Week" value="lastWeek" />
+                <Tab label="Last Month" value="lastMonth" />
               </Tabs>
             </Paper>
             

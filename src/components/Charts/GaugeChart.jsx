@@ -6,8 +6,7 @@ import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 am4core.useTheme(am4themes_animated);
 
 class GaugeChart extends Component{
-    componentDidMount(){
-        // Create chart
+    onChartInitialise(){
         let chart = am4core.create(`gaugeChartdiv${this.props.name}`, am4charts.GaugeChart);
 
         // Create axis
@@ -18,7 +17,7 @@ class GaugeChart extends Component{
 
         // Set inner radius
         chart.innerRadius = am4core.percent(80);
-
+        chart.logo.__disabled = true;
         // Add ranges
         let range = axis.axisRanges.create();
         range.value = 0;
@@ -55,21 +54,26 @@ class GaugeChart extends Component{
         // Add label
         let label = chart.radarContainer.createChild(am4core.Label);
         label.isMeasured = false;
-        label.fontSize = 30;
+        label.fontSize = 20;
         label.x = am4core.percent(50);
         label.y = am4core.percent(100);
         label.horizontalCenter = "middle";
         label.verticalCenter = "top";
-        label.text = "50";
-
-        //Animate
-        setInterval(function() {
-            var value = Math.round(Math.random() * 100);
-            label.text = value;
-            hand.showValue(value, 1000, am4core.ease.cubicOut);
-        }, 2000);
+        label.text = this.props.value;
+        
         this.chart = chart;
     }
+    componentDidMount(){
+        // Create chart
+        this.onChartInitialise();
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        // only update chart if the data has changed
+        if (prevProps.value !== this.props.value) {
+            this.onChartInitialise();
+        }
+      }
 
     componentWillUnmount(){
         if(this.chart){
@@ -80,7 +84,7 @@ class GaugeChart extends Component{
     render(){
         const chartIndexing = `gaugeChartdiv${this.props.name}`;
         return(
-            <div id={chartIndexing} style={{ width: "100%", height: "150px" }}></div>
+            <div id={chartIndexing} style={{ width: "100%", height: "100%" }}></div>
         )
     }
 }

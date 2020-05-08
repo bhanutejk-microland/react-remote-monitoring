@@ -24,7 +24,7 @@ class XyChartColumnSeries extends Component {
         data = this.props.analyticalInfo.countList;
     }
     chart.data = data;
-
+    chart.logo.__disabled = true;
     // Create axes
     let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
     categoryAxis.dataFields.category = "name";
@@ -74,7 +74,7 @@ class XyChartColumnSeries extends Component {
     return (
       <div
         id={chartIndexing}
-        style={{ width: "100%", height: this.props.chartHeight || '350px' }}
+        style={{ width: "100%", height: this.props.chartHeight || '300px' }}
       ></div>
     );
   }
