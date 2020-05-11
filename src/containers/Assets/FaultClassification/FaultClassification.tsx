@@ -12,9 +12,13 @@ interface FaultClassificationProps {
     onGetGaugeValue: () => void;
     onGetFaultStatus: () => void;
     onGetLastTenPrediction: () => void;
+    onGetProbabilityStatus: () => void;
+    onGetCountStatus: () => void;
     gaugeInfo: gaugeInfoModel[];
     faultStatus: {fault : string};
     predictionList: predictionListModel[];
+    analyticalProbabilityInfo: analyticalProbabilityProperties,
+    analyticalCountInfo: analyticalCountProperties,
 }
 
 interface analyticalProbabilityElement{
@@ -51,56 +55,56 @@ let toStartInterval:any;
 class FaultClassification extends Component<FaultClassificationProps, AnalyticsState> {
   constructor(props: FaultClassificationProps) {
     super(props);
-    this.state = {
-      analyticalElementInfo : [],  
-      analyticalProbabilityInfo :{
-        categoryAxes : "Probability of assets status",
-        valueAxes : "Probability",
-        probabilityList : [{
-          "name": "Broken Blade",
-          "value": 40,
-        }, {
-          "name": "Cavitation",
-          "value": 32,
-        },{
-          "name": "Clearance Wear",
-          "value": 10,
-        },{
-          "name": "Healthy",
-          "value": 5,
-        },{
-          "name": "Inlet Deposit",
-          "value": 10,
-        },{
-          "name": "Outlet Deposit",
-          "value": 3,
-        }]
-      },
-      analyticalCountInfo :{
-        categoryAxes : "Count Occurence",
-        valueAxes : "Count",
-        countList : [{
-          "name": "Broken Blade",
-          "value": 300,
-        }, {
-          "name": "Cavitation",
-          "value": 222,
-        },{
-          "name": "Clearance Wear",
-          "value": 176,
-        },{
-          "name": "Healthy",
-          "value": 200,
-        },{
-          "name": "Inlet Deposit",
-          "value": 123,
-        },{
-          "name": "Outlet Deposit",
-          "value": 145,
-        }]
-      },
-      analyticalPredictionList :[]
-    }
+    // this.state = {
+    //   analyticalElementInfo : [],  
+    //   analyticalProbabilityInfo :{
+    //     categoryAxes : "Probability of assets status",
+    //     valueAxes : "Probability",
+    //     probabilityList : [{
+    //       "name": "Broken Blade",
+    //       "value": 40,
+    //     }, {
+    //       "name": "Cavitation",
+    //       "value": 32,
+    //     },{
+    //       "name": "Clearance Wear",
+    //       "value": 10,
+    //     },{
+    //       "name": "Healthy",
+    //       "value": 5,
+    //     },{
+    //       "name": "Inlet Deposit",
+    //       "value": 10,
+    //     },{
+    //       "name": "Outlet Deposit",
+    //       "value": 3,
+    //     }]
+    //   },
+    //   analyticalCountInfo :{
+    //     categoryAxes : "Count Occurence",
+    //     valueAxes : "Count",
+    //     countList : [{
+    //       "name": "Broken Blade",
+    //       "value": 300,
+    //     }, {
+    //       "name": "Cavitation",
+    //       "value": 222,
+    //     },{
+    //       "name": "Clearance Wear",
+    //       "value": 176,
+    //     },{
+    //       "name": "Healthy",
+    //       "value": 200,
+    //     },{
+    //       "name": "Inlet Deposit",
+    //       "value": 123,
+    //     },{
+    //       "name": "Outlet Deposit",
+    //       "value": 145,
+    //     }]
+    //   },
+    //   analyticalPredictionList :[]
+    // }
   }
 
   componentDidMount() {
@@ -108,6 +112,8 @@ class FaultClassification extends Component<FaultClassificationProps, AnalyticsS
         this.props.onGetGaugeValue();
         this.props.onGetFaultStatus();
         this.props.onGetLastTenPrediction();
+        this.props.onGetProbabilityStatus();
+        this.props.onGetCountStatus();
     },10000);
   }
 
@@ -123,8 +129,8 @@ class FaultClassification extends Component<FaultClassificationProps, AnalyticsS
           faultStatus={this.props.faultStatus}
         />
         <AnalyticsProbabilityComponent 
-          analyticalProbabilityInfo={this.state.analyticalProbabilityInfo}
-          analyticalCountInfo={this.state.analyticalCountInfo}
+          analyticalProbabilityInfo={this.props.analyticalProbabilityInfo}
+          analyticalCountInfo={this.props.analyticalCountInfo}
         />
         <AnalyticsPredictionComponent analyticalPredictionList={this.props.predictionList} />
       </div>
@@ -136,7 +142,9 @@ const mapStateToProps = state => {
     return{
         gaugeInfo : state.faultClassification.gaugeInfo,
         faultStatus : state.faultClassification.faultStatus,
-        predictionList : state.faultClassification.predictionList
+        predictionList : state.faultClassification.predictionList,
+        analyticalProbabilityInfo : state.faultClassification.analyticalProbabilityInfo,
+        analyticalCountInfo : state.faultClassification.analyticalCountInfo,
     }
 }
 
@@ -144,7 +152,9 @@ const mapDispatchToProps = dispatch => {
     return{
         onGetGaugeValue: () => dispatch(actions.getGaugeValue()),
         onGetFaultStatus: () => dispatch(actions.getFaultStatusValue()),
-        onGetLastTenPrediction: () => dispatch(actions.getLastTenPredictionValue())
+        onGetLastTenPrediction: () => dispatch(actions.getLastTenPredictionValue()),
+        onGetProbabilityStatus: () => dispatch(actions.getProbabilityStatusValue()),
+        onGetCountStatus: () => dispatch(actions.getCountStatusValue())
     }
 }
 

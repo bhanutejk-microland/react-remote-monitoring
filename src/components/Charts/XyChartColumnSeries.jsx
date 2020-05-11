@@ -7,7 +7,7 @@ import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 am4core.useTheme(am4themes_animated);
 
 class XyChartColumnSeries extends Component {
-  componentDidMount() {
+  onChartInitialise(){
     let data = [];
     let chart = null;
     if(this.props.analyticalInfo.valueAxes == "Probability"){
@@ -56,6 +56,17 @@ class XyChartColumnSeries extends Component {
     chart.cursor = new am4charts.XYCursor();
 
     this.chart = chart;
+  }
+  componentDidMount() {
+    this.onChartInitialise();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // only update chart if the data has changed
+    
+    if (prevProps.analyticalInfo !== this.props.analyticalInfo) {
+        this.onChartInitialise();
+    }
   }
 
   componentWillUnmount() {

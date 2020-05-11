@@ -55,9 +55,9 @@ class AnalyticsProbabilityComponent extends Component<AnalyticsElementComponentP
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return  (
-      this.props.analyticalProbabilityInfo !== nextProps.analyticalProbabilityInfo || this.props.analyticalCountInfo !== nextProps.analyticalCountInfo || this.state.value !== nextState.value
-    );
+    return  (this.props.analyticalProbabilityInfo !== nextProps.analyticalProbabilityInfo) ||
+            (this.props.analyticalCountInfo !== nextProps.analyticalCountInfo) ||
+            (this.state.value !== nextState.value)
   }
 
   render() {

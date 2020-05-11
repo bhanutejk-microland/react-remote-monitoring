@@ -43,5 +43,7 @@ export {
 export {
   getGaugeValue,
   getFaultStatusValue,
-  getLastTenPredictionValue
+  getLastTenPredictionValue,
+  getProbabilityStatusValue,
+  getCountStatusValue
 } from './assets/faultClassification';
