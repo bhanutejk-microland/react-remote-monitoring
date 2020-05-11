@@ -5,11 +5,11 @@ import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import XyChartColumnSeries from '../../../Charts/XyChartColumnSeries';
+import classes from "../FaultAnalysis.css";
 
 interface AnalyticsElementComponentProps {
   analyticalProbabilityInfo: analyticalProbabilityProperties,
   analyticalCountInfo: analyticalCountProperties,
-  classes: any
 }
 
 interface analyticalProbabilityElement{
@@ -44,12 +44,11 @@ class AnalyticsProbabilityComponent extends Component<AnalyticsElementComponentP
   constructor(props: AnalyticsElementComponentProps){
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    this.state = {value : 'lastDay'}
+    this.state = {value : 'today'}
   }
 
  
   handleChange(event: React.ChangeEvent<{}>, newValue: string){
-    console.log(newValue);
     this.setState({
         value: newValue
     });
@@ -62,28 +61,29 @@ class AnalyticsProbabilityComponent extends Component<AnalyticsElementComponentP
   }
 
   render() {
-    const { classes } = this.props;
-    console.log(this.state.value);
     return (
       
       <Fragment>
         <Grid container spacing={2} justify="space-between">
           <Grid item xs={12} sm={6}>            
-            <h2>Probability of Status</h2>
+            <h2 className={classes.chartHeading}>Probability of Status</h2>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Paper className={classes.root}>
               <Tabs
-                
                 value={this.state.value}
                 onChange={this.handleChange}
                 indicatorColor="primary"
                 textColor="primary"
-                centered
+                variant="scrollable"
+                scrollButtons="auto"
+                aria-label="scrollable auto tabs example"
+                className={classes.Tabs}
               >
-                <Tab label="Last Day" value="lastDay" />
-                <Tab label="Last Week" value="lastWeek" />
-                <Tab label="Last Month" value="lastMonth" />
+                <Tab className={classes.Tabs} label="Today" value="today" />
+                <Tab className={classes.Tabs} label="Last Day" value="lastDay" />
+                <Tab className={classes.Tabs} label="Last Week" value="lastWeek" />
+                <Tab className={classes.Tabs} label="Last Month" value="lastMonth" />
               </Tabs>
             </Paper>
             
