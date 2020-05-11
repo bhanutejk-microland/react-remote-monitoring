@@ -136,20 +136,22 @@ const Asset: FunctionComponent<AssetProps> = ({ asset, location, match }) => {
             clickable
             color="primary"
           />
-          <Chip
-            variant="outlined"
-            size="small"
-            avatar={
-              <img
-                src={NotificationIcon}
-                width="100%"
-                style={{ backgroundColor: "#fff", marginLeft: "6px" }}
-              />
-            }
-            label="Alerts"
-            clickable
-            color="primary"
-          />
+          <Link to={`/alerts`}>
+            <Chip
+              variant="outlined"
+              size="small"
+              avatar={
+                <img
+                  src={NotificationIcon}
+                  width="100%"
+                  style={{ backgroundColor: "#fff", marginLeft: "6px" }}
+                />
+              }
+              label="Alerts"
+              clickable
+              color="primary"
+            />
+          </Link>          
           {match.path !== "/assetDetails/:assetId" ? (
             <Link to={`assetDetails/${match.params.assetId === undefined ? asset.assetId : match.params.assetId}`}>
               <Chip

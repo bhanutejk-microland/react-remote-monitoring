@@ -1,24 +1,33 @@
 import React, { Component } from 'react';
-import AddIcon from "@material-ui/icons/Add";
-import CancelIcon from "@material-ui/icons/Cancel";
-
-import { DeviceFormModel } from '../../../interfaceModels/DeviceFormModel';
 import classes from './DeviceForm.css';
+import * as actions from '../../../store/actions/index';
+import { connect } from 'react-redux';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
 import { FormInputModel } from '../../../interfaceModels/FormInputModel';
-import Input from '../../../components/UI/Input/Input';
-import Button from '../../../components/UI/Button/Button';
-import axios from '../../../axios';
-import { unixTimestampToDateTimeconverter } from '../../../utilities/timeStampConverter';
+import AddDeviceForm from '../DeviceForm/AddDeviceForm/AddDeviceForm';
+import AddDeviceGroupForm from '../DeviceForm/AddDeviceGroupForm/AddDeviceGroupForm';
 
 interface DeviceFormProps { 
   closeDrawer(status: any): any;
   cancleForm: (event: any) => void;
   addToDeviceList(deviceData: any): any;
+  onInitDeviceGroup: () => void;
+  onInitAllDeviceGroupDetails: () => void;
+  devicesGroup: any;
+  allDeviceGroupDetails: any;
 }
 
 interface DeviceFormState {
-  deviceForm: DeviceFormModel;
+  value : number;
   formIsValid: boolean;
+  deviceGroupValue: string;
+  staticProperties: any[],    
+  dynamicProperties: any[]
+  staticPropertiesValues: any[],    
+  dynamicPropertiesValues: any[],
 }
 
 interface FormElement {
@@ -26,146 +35,25 @@ interface FormElement {
   config: FormInputModel;
 }
 
-class DeviceForm extends Component<DeviceFormProps, DeviceFormState> {
+class DeviceForm extends Component<DeviceFormProps, DeviceFormState > {
   constructor(props: DeviceFormProps) {
     super(props);
     this.state = {
+      value: 0, 
       formIsValid: false,
-      deviceForm: {
-        deviceName: {
-          elementType: "input",
-          elementConfig: {
-            label: "Device Name"
-          },
-          value: "",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        deviceId: {
-          elementType: "input",
-          elementConfig: {
-            label: "Device ID"
-          },
-          value: "",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        deviceGroup: {
-          elementType: "input",
-          elementConfig: {
-            label: "Device Group"
-          },
-          value: "",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        addrerss: {
-          elementType: "input",
-          elementConfig: {
-            label: "Address"
-          },
-          value: "",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        latitude: {
-          elementType: "input",
-          elementConfig: {
-            label: "Latitude"
-          },
-          value: "",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        longitude: {
-          elementType: "input",
-          elementConfig: {
-            label: "Longitude"
-          },
-          value: "",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        makeNModel: {
-          elementType: "input",
-          elementConfig: {
-            label: "Device Make n Model"
-          },
-          value: "",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        propertyDescription: {
-          elementType: "input",
-          elementConfig: {
-            label: "Property Description"
-          },
-          value: "",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        type: {
-          elementType: "input",
-          elementConfig: {
-            label: "Property Type"
-          },
-          value: "",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        firmWare: {
-          elementType: "input",
-          elementConfig: {
-            label: "Firm Ware"
-          },
-          value: "",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        createdAt: {
-          elementType: "",
-          elementConfig: {
-            label: "Created At"
-          },
-          value: "",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        }
-      }
+      deviceGroupValue: "",
+      staticProperties: [],
+      dynamicProperties: [],
+      staticPropertiesValues: [],
+      dynamicPropertiesValues: [],      
     }
+
+    
+  }
+
+  componentDidMount(){
+    this.props.onInitDeviceGroup();
+    this.props.onInitAllDeviceGroupDetails();
   }
 
   checkValidity = (value, rules) => {
@@ -181,134 +69,84 @@ class DeviceForm extends Component<DeviceFormProps, DeviceFormState> {
     return isValid;
   };
 
-  inputChangedHandler = (event, inputIdentifier) => {
-    const updatedDeviceForm = {
-      ...this.state.deviceForm
-    };
-    const updatedFormElement = {
-      ...updatedDeviceForm[inputIdentifier]
-    };
-    updatedFormElement.value = event.target.value;
-    updatedFormElement.valid = this.checkValidity(
-      updatedFormElement.value,
-      updatedFormElement.validation
-    );
-    updatedFormElement.touched = true;
-    updatedDeviceForm[inputIdentifier] = updatedFormElement;
-    let formIsValid = true;
-    for (let inputIdentifier in updatedDeviceForm) {
-      formIsValid = updatedDeviceForm[inputIdentifier].valid && formIsValid;
-    }
+  handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     this.setState({
-      deviceForm: updatedDeviceForm,
-      formIsValid: formIsValid
+      value :newValue
     });
-  };
-
-  addDeviceHandler = () => {
-    this.setState(prevState => ({
-      formIsValid: !prevState.formIsValid
-    }));
-    const deviceData = {
-      configType: "devices",
-      key: "ML-Chiller",
-      status: "Active",
-      data: {
-        id: this.state.deviceForm.deviceId.value,
-        displayName: this.state.deviceForm.deviceName.value,
-        deviceGroups: this.state.deviceForm.deviceGroup.value,
-        location: [
-          {
-            address: this.state.deviceForm.addrerss.value,
-            lattitude: this.state.deviceForm.latitude.value,
-            longitude: this.state.deviceForm.longitude.value
-          }
-        ],
-        properties: [
-          {
-            makeNmodel: this.state.deviceForm.makeNModel.value,
-            description: this.state.deviceForm.propertyDescription.value,
-            typeOfRefrigerant: this.state.deviceForm.type.value,
-            firmwareVersion: this.state.deviceForm.firmWare.value,
-            firmwareUpdateStatus: "Updated",
-            deviceStatus: "Online"
-          }
-        ]
-      }
-    }
-    axios.post("http://localhost:3000/api/devices/add", deviceData)
-    .then(response => {
-      if(response.status === 200){
-        this.props.closeDrawer([200, "Device added successfully!"]);
-        const newDeviceData = {
-          deviceId: deviceData.data.id,
-          url: '',
-          modelNumber: deviceData.data.properties[0].makeNmodel,
-          location: deviceData.data.location[0].address,
-          description: deviceData.data.properties[0].description,
-          status: deviceData.data.properties[0].deviceStatus
-        }
-        this.props.addToDeviceList(newDeviceData)
-      }
-    });
-  }
-
-  renderForm = () => {
-    const formElementsArray: FormElement[] = [];
-    for (let key in this.state.deviceForm) {
-      const formElement: FormElement = {
-        id: key,
-        config: this.state.deviceForm[key]
-      };
-      formElementsArray.push(formElement);
-    }
-
-    let form = (
-      <form className={classes.DeviceFormContainer}>
-        {formElementsArray.map(formElement => {
-          return (
-            <div key={formElement.id} className={classes.DeviceFormContent}>
-              <Input
-                elementType={formElement.config.elementType}
-                elementConfig={formElement.config.elementConfig}
-                value={formElement.config.value}
-                invalid={!formElement.config.valid}
-                shouldValidate={formElement.config.validation}
-                touched={formElement.config.touched}
-                changed={event =>
-                  this.inputChangedHandler(event, formElement.id)
-                }
-              />
-            </div>
-          );
-        })}
-        <div className={classes.BtnGroup}>
-          <Button clicked={this.props.cancleForm} btnType="default" disabled={false} icon={<CancelIcon />}>
-            CANCEL
-          </Button>
-          <Button
-            btnType="primary"
-            disabled={!this.state.formIsValid}
-            icon={<AddIcon />}
-            clicked={this.addDeviceHandler}
-          >
-            Add Device
-          </Button>
-        </div>
-      </form>
-    );
-
-    return form;
   };
 
   render() {
     return (
-      <div>
-        <div className={classes.HeaderForRightDrawer}>Add Device</div>
-        <this.renderForm />
+      <div className={classes.root}>
+        <AppBar position="static">
+          <Tabs value={this.state.value} onChange={this.handleChange} aria-label="simple tabs example">
+            <Tab label="Add Device" {...a11yProps(0)} />
+            <Tab label="Add Device Group" {...a11yProps(1)} />
+          </Tabs>
+        </AppBar>
+        <TabPanel value={this.state.value} index={0}>
+          <AddDeviceForm
+            devicesGroup={this.props.devicesGroup} 
+            allDeviceGroupDetails={this.props.allDeviceGroupDetails}
+            closeDrawer={this.props.closeDrawer}
+            cancleForm={this.props.cancleForm}
+            addToDeviceList={(deviceData) => this.props.addToDeviceList(deviceData)}
+             />
+        </TabPanel>
+        <TabPanel value={this.state.value} index={1}>
+          <AddDeviceGroupForm
+            closeDrawer={this.props.closeDrawer}
+            cancleForm={this.props.cancleForm}
+          />
+        </TabPanel>
       </div>
     )
   }
 }
 
-export default DeviceForm;
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: any;
+  value: any;
+}
+
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+          <Typography component="div">{children}</Typography>
+      )}
+    </div>
+  );
+}
+
+function a11yProps(index: any) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
+
+const mapStateToProps = state => {
+  return {
+    devicesGroup : state.assetDevicesGroup.deviceGroupList,
+    allDeviceGroupDetails : state.assetDevicesGroup.allDeviceGroupDetails
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onInitDeviceGroup: () => dispatch(actions.initDeviceGroupList()),
+    onInitAllDeviceGroupDetails: () => dispatch(actions.initAllDeviceGroupDetails())
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(DeviceForm);

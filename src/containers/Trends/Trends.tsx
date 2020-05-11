@@ -279,7 +279,7 @@ class Trends extends Component<TrendsProps, TrendsState> {
           </div>
         </Grid>
         <Grid item xs={9}>
-          {this.props.devicesTeleDetailsProps.length > 0 ?
+          {this.state.trendPropertyList.length > 0 && this.props.devicesTeleDetailsProps.length > 0 ?
             this.props.devicesTeleDetailsProps.map((deviceTrend, index) => {
               return <MultiLineChart
                 key={deviceTrend.deviceName + index}

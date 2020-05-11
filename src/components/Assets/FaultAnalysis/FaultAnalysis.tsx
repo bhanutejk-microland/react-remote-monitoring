@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { unixTimestampToDateTimeconverter } from '../../utilities/timeStampConverter';
+import { unixTimestampToDateTimeconverter } from '../../../utilities/timeStampConverter';
 import AnalyticsElementComponent from "./AnalyticsElementComponent/AnalyticsElementComponent";
 import AnalyticsProbabilityComponent from './AnalyticsProbabilityComponent/AnalyticsProbabilityComponent';
-import AnalyticsPredictionComponent from "../Analytics/AnalyticsPredictionComponent/AnalyticsPredictionComponent";
+import AnalyticsPredictionComponent from "./AnalyticsPredictionComponent/AnalyticsPredictionComponent";
 
-interface AnalyticsProps { }
+interface AnalyticsProps {}
 
 interface analyticalElement {
   name: string;
@@ -22,26 +22,26 @@ interface predictionElementProperties {
   faultStatus: string;
 }
 
-interface analyticalProbabilityElement {
+interface analyticalProbabilityElement{
   name: string;
   value: number;
 }
 
-interface analyticalCountElement {
+interface analyticalCountElement{
   name: string;
   value: number;
 }
 
-interface analyticalProbabilityProperties {
-  valueAxes: string;
-  categoryAxes: string;
-  probabilityList: analyticalProbabilityElement[];
+interface analyticalProbabilityProperties{
+  valueAxes : string;
+  categoryAxes : string;
+  probabilityList : analyticalProbabilityElement[];
 }
 
-interface analyticalCountProperties {
-  valueAxes: string;
-  categoryAxes: string;
-  countList: analyticalCountElement[];
+interface analyticalCountProperties{
+  valueAxes : string;
+  categoryAxes : string;
+  countList : analyticalCountElement[];
 }
 
 interface AnalyticsState {
@@ -60,7 +60,7 @@ const predictionInfoHeaders = [
   { id: "faultStatus", numeric: false, disablePadding: false, label: "FAULT STATUS" }
 ];
 
-class Analytics extends Component<AnalyticsProps, AnalyticsState> {
+class FaultAnalysis extends Component<AnalyticsProps, AnalyticsState> {
   constructor(props: AnalyticsState) {
     super(props);
     this.state = {
@@ -90,116 +90,116 @@ class Analytics extends Component<AnalyticsProps, AnalyticsState> {
           value: 55
         }
       ],
-      analyticalProbabilityInfo: {
-        categoryAxes: "Probability of assets status",
-        valueAxes: "Probability",
-        probabilityList: [{
+      analyticalProbabilityInfo :{
+        categoryAxes : "Probability of assets status",
+        valueAxes : "Probability",
+        probabilityList : [{
           "name": "Broken Blade",
           "value": 40,
         }, {
           "name": "Cavitation",
           "value": 32,
-        }, {
+        },{
           "name": "Clearance Wear",
           "value": 10,
-        }, {
+        },{
           "name": "Healthy",
           "value": 5,
-        }, {
+        },{
           "name": "Inlet Deposit",
           "value": 10,
-        }, {
+        },{
           "name": "Outlet Deposit",
           "value": 3,
         }]
       },
-      analyticalCountInfo: {
-        categoryAxes: "Count Occurence",
-        valueAxes: "Count",
-        countList: [{
+      analyticalCountInfo :{
+        categoryAxes : "Count Occurence",
+        valueAxes : "Count",
+        countList : [{
           "name": "Broken Blade",
           "value": 300,
         }, {
           "name": "Cavitation",
           "value": 222,
-        }, {
+        },{
           "name": "Clearance Wear",
           "value": 176,
-        }, {
+        },{
           "name": "Healthy",
           "value": 200,
-        }, {
+        },{
           "name": "Inlet Deposit",
           "value": 123,
-        }, {
+        },{
           "name": "Outlet Deposit",
           "value": 145,
         }]
       },
-      analyticalPredictionList: [{
+      analyticalPredictionList :[{
         dateTime: unixTimestampToDateTimeconverter(new Date()),
         head: 10,
         speed: 10,
         flow: 10,
         torque: 10,
         faultStatus: "Healthy"
-      }, {
+      },{
         dateTime: unixTimestampToDateTimeconverter(new Date()),
         head: 10,
         speed: 10,
         flow: 10,
         torque: 10,
         faultStatus: "Healthy"
-      }, {
+      },{
         dateTime: unixTimestampToDateTimeconverter(new Date()),
         head: 10,
         speed: 10,
         flow: 10,
         torque: 10,
         faultStatus: "Healthy"
-      }, {
+      },{
         dateTime: unixTimestampToDateTimeconverter(new Date()),
         head: 10,
         speed: 10,
         flow: 10,
         torque: 10,
         faultStatus: "Healthy"
-      }, {
+      },{
         dateTime: unixTimestampToDateTimeconverter(new Date()),
         head: 10,
         speed: 10,
         flow: 10,
         torque: 10,
         faultStatus: "Healthy"
-      }, {
+      },{
         dateTime: unixTimestampToDateTimeconverter(new Date()),
         head: 10,
         speed: 10,
         flow: 10,
         torque: 10,
         faultStatus: "Healthy"
-      }, {
+      },{
         dateTime: unixTimestampToDateTimeconverter(new Date()),
         head: 10,
         speed: 10,
         flow: 10,
         torque: 10,
         faultStatus: "Healthy"
-      }, {
+      },{
         dateTime: unixTimestampToDateTimeconverter(new Date()),
         head: 10,
         speed: 10,
         flow: 10,
         torque: 10,
         faultStatus: "Healthy"
-      }, {
+      },{
         dateTime: unixTimestampToDateTimeconverter(new Date()),
         head: 10,
         speed: 10,
         flow: 10,
         torque: 10,
         faultStatus: "Healthy"
-      }, {
+      },{
         dateTime: unixTimestampToDateTimeconverter(new Date()),
         head: 10,
         speed: 10,
@@ -216,7 +216,7 @@ class Analytics extends Component<AnalyticsProps, AnalyticsState> {
         <AnalyticsElementComponent
           analyticalElementInfo={this.state.analyticalElementInfo}
         />
-        <AnalyticsProbabilityComponent
+        <AnalyticsProbabilityComponent 
           analyticalProbabilityInfo={this.state.analyticalProbabilityInfo}
           analyticalCountInfo={this.state.analyticalCountInfo}
         />
@@ -226,4 +226,4 @@ class Analytics extends Component<AnalyticsProps, AnalyticsState> {
   }
 }
 
-export default Analytics;
+export default FaultAnalysis;

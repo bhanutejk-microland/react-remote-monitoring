@@ -11,6 +11,7 @@ import cssClasses from "./TabPanel.css";
 import AssetProperty from "../../Assets/AssetProperty/AssetProperty";
 import AssetAnamoly from '../../Assets/AssetAnamoly/AssetAnamoly';
 import TrendsComponent from '../../Assets/Trends/Trends';
+import FaultAnalysis from '../../Assets/FaultAnalysis/FaultAnalysis';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -154,7 +155,8 @@ export default function FullWidthTabs(props: TabProps) {
           variant="fullWidth"
           aria-label="full width tabs example"
         >
-          {Object.keys(assetTabInfo).map((tabHeader, index) => {
+          {
+          tabHeaderInfo.map((tabHeader, index) => {
             return (
               <Tab
                 className={value === index ? cssClasses.SelectedTab : ""}
@@ -186,7 +188,7 @@ export default function FullWidthTabs(props: TabProps) {
                 <TrendsComponent />
               </TabPanel>
             );
-          } else {
+          } else if(tabData === "anomaly") {
             return renderAnamolyData(assetTabInfo[tabData], index);
             // return (
             //   <TabPanel
@@ -198,6 +200,18 @@ export default function FullWidthTabs(props: TabProps) {
             //     ITEM {index}
             //   </TabPanel>
             // );
+          }else{
+            return(
+              <TabPanel
+                value={value}
+                index={index}
+                dir={theme.direction}
+                key={"tabPanel" + index}
+              >
+                <FaultAnalysis />
+              </TabPanel>
+              
+            )
           }
         })}
       </SwipeableViews>
