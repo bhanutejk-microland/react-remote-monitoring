@@ -4,7 +4,9 @@ import { updateObject, updateArrayObject } from '../../../utilities/reduxStateUp
 const initialState = {
   gaugeInfo: [],
   faultStatus: '',
-  predictionList: []
+  predictionList: [],
+  analyticalProbabilityInfo: {},
+  analyticalCountInfo: {}
 };
 
 const setGaugeValue = (state, action) => {
@@ -31,11 +33,29 @@ const setLastTenPrediction = (state, action) => {
   return updateObject( state, updatedState );
 }
 
+const setProbabilityStatus = (state,action) => {
+  const updatedAnalyticalProbabilityInfo = updateObject(state.analyticalProbabilityInfo, action.value);
+  const updatedState = {
+    analyticalProbabilityInfo : updatedAnalyticalProbabilityInfo
+  }
+  return updateObject(state,updatedState);
+}
+
+const setCountStatus = (state,action) => {
+  const updatedAnalyticalCountInfo = updateObject(state.analyticalCountInfo, action.value);
+  const updatedState = {
+    analyticalCountInfo : updatedAnalyticalCountInfo
+  }
+  return updateObject(state,updatedState);
+}
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_GAUGE_VALUE: return setGaugeValue(state, action);
     case actionTypes.SET_FAULT_STATUS: return setFaultStatus(state, action);
-    case actionTypes.SET_LAST_TEN_PREDICTION: return setLastTenPrediction(state, action)
+    case actionTypes.SET_LAST_TEN_PREDICTION: return setLastTenPrediction(state, action);
+    case actionTypes.SET_PROBABILITY_STATUS: return setProbabilityStatus(state,action);
+    case actionTypes.SET_COUNT_STATUS: return setCountStatus(state,action);
     default: return state;
   }
 }

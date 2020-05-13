@@ -28,7 +28,6 @@ import { faEye } from "@fortawesome/free-solid-svg-icons";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import Button from "../Button/Button";
-import { Link } from "react-router-dom";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -355,23 +354,15 @@ export default function EnhancedTable(props: TableProps) {
                     );
                   })}
                   <TableCell>
-                    {defaultRowText === 'Loading alerts...!' ?
-                      <Link to={`/alerts`}>
-                        <Button
-                          disabled={true}
-                          btnType="primary"
-                          icon={<FontAwesomeIcon icon={faEye} />}
-                        >
-                          View
-                        </Button>
-                      </Link> : <Button
-                          disabled={true}
-                          btnType="primary"
-                          icon={<FontAwesomeIcon icon={faEye} />}
-                        >
-                          View
-                        </Button>
-                    }
+                    <Link to={`/alerts`}>
+                      <Button
+                        disabled={false}
+                        btnType="primary"
+                        icon={<FontAwesomeIcon icon={faEye} />}
+                      >
+                        View
+                      </Button>
+                    </Link>                    
                   </TableCell>
                 </TableRow>
               );

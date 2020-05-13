@@ -45,4 +45,34 @@ import axios from '../../../axios';
       });
     }
   }
+
+  export const setProbabilityStatusValue = (value) => {
+    return {
+      type: actionTypes.SET_PROBABILITY_STATUS,
+      value: value
+    };
+  };
+  
+  export const getProbabilityStatusValue = () => {
+    return dispatch => {
+      axios.get("api/faultClassification/getProbabilityStatus").then(response => {
+        dispatch(setProbabilityStatusValue(response.data))
+      });
+    }
+  }
+
+  export const setCountStatusValue = (value) => {
+    return {
+      type: actionTypes.SET_COUNT_STATUS,
+      value: value
+    };
+  };
+  
+  export const getCountStatusValue = () => {
+    return dispatch => {
+      axios.get("api/faultClassification/getCountStatus").then(response => {
+        dispatch(setCountStatusValue(response.data))
+      });
+    }
+  }
   
