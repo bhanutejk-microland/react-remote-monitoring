@@ -60,7 +60,7 @@ class FaultClassification extends Component<FaultClassificationProps> {
   }
 
   componentDidMount() {
-    deviceId = "ML-Pump003";
+    deviceId = this.props.assetId;
     configType = this.props.configType;
     toStartInterval = setInterval(() => {
         this.props.onGetGaugeValue();
@@ -71,7 +71,6 @@ class FaultClassification extends Component<FaultClassificationProps> {
   }
 
   onSelectTimePeriod = (timePeriod) => {
-    //let today = new Date();
     if(timePeriod === 'today'){
       fromTimeStamp = Date.parse(todayStartingTime);
       toTimeStamp = Date.parse(todayCurrentTime);

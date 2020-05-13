@@ -26,7 +26,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import CircularProgress from "@material-ui/core/CircularProgress";
-
+import { Link } from "react-router-dom";
 import Button from "../Button/Button";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
