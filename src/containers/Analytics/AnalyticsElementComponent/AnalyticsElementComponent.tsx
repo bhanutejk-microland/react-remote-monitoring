@@ -22,7 +22,6 @@ class AnalyticsElementComponent extends Component<
   }
 
   render() {
-    let bgcolor:string;
     return (
           <Grid container spacing={2} justify="space-between">
             {this.props.analyticalElementInfo.map((element, index) => {

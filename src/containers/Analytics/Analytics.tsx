@@ -59,7 +59,7 @@ class Analytics extends Component<AnalyticsProps, AnalyticsState> {
     this.state = {
       analyticalElementInfo: [
         {
-          name: "Head",
+          name: "head",
           property: {
             minimum: 0,
             maximum: 100,
@@ -67,7 +67,7 @@ class Analytics extends Component<AnalyticsProps, AnalyticsState> {
           }
         },
         {
-          name: "Flow",
+          name: "flow",
           property: {
             minimum: 0,
             maximum: 100,
@@ -75,7 +75,7 @@ class Analytics extends Component<AnalyticsProps, AnalyticsState> {
           }
         },
         {
-          name: "Speed",
+          name: "speed",
           property: {
             minimum: 0,
             maximum: 100,
@@ -83,11 +83,17 @@ class Analytics extends Component<AnalyticsProps, AnalyticsState> {
           }
         },
         {
-          name: "Torque",
+          name: "torque",
           property: {
             minimum: 0,
             maximum: 100,
             value: "65"
+          }
+        },
+        {
+          name: "status",
+          property: {
+            value: "Healthy"
           }
         }
       ],
