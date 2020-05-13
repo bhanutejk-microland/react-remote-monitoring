@@ -15,10 +15,16 @@ import assetsReducer from './store/reducers/assets/assets';
 import assetDetailReducer from './store/reducers/assets/assetDetails';
 import assetPropertiesReducer from './store/reducers/assets/assetProperties';
 import assetAnomaliesReducer from './store/reducers/assets/assetAnomalies';
+import assetDevicesGroupReducer from './store/reducers/assets/assetDevices';
 import rulesReducer from './store/reducers/rules/rules';
 import alertsReducer from './store/reducers/alerts/alerts';
 import deviceTelemetryReducer from './store/reducers/alerts/deviceTelemetry';
 import trendsReducer from './store/reducers/trends/trends';
+import assetAddDeviceFormDataReducer from './store/reducers/assets/assetAddDeviceForm';
+import assetAddDeviceGroupFormDataReducer from './store/reducers/assets/assetAddDeviceGroupForm';
+import devicesTelePropsReducer from './store/reducers/trends/deviceTeleProps';
+import deviceTelePropsDetailsReducer from './store/reducers/trends/deviceTelePropsDetails';
+import faultClassificationReducer from './store/reducers/assets/faultClassification';
 
 const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] as typeof compose || compose;
 
@@ -30,10 +36,16 @@ const rootReducer = combineReducers({
   assetDetail: assetDetailReducer,
   assetProperties: assetPropertiesReducer,
   assetAnomalies: assetAnomaliesReducer,
+  assetDevicesGroup: assetDevicesGroupReducer,
   rulesInfo: rulesReducer,
   alertsInfo: alertsReducer,
   deviceTelemetryInfo: deviceTelemetryReducer,
-  trendsInfo: trendsReducer
+  trendsInfo: trendsReducer,
+  assetAddDeviceFormData: assetAddDeviceFormDataReducer,
+  assetAddDeviceGroupFormData: assetAddDeviceGroupFormDataReducer,
+  devicesTeleProps: devicesTelePropsReducer,
+  deviceTelePropsDetailsInfo: deviceTelePropsDetailsReducer,
+  faultClassification: faultClassificationReducer
 });
 
 const store = createStore(rootReducer, composeEnhancers(

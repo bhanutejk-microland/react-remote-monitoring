@@ -13,7 +13,7 @@ class MultiLineChart extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.trendPropertyInfo !== this.props.trendPropertyInfo) {
+    if (prevProps.chartData !== this.props.chartData) {
       this.initChart();
     }
   }
@@ -64,10 +64,15 @@ class MultiLineChart extends Component {
 
     if (this.props.chartData !== undefined && this.props.chartData.deviceTrends.length > 0) {
       const tendObj = this.props.trendPropertyInfo.find((property) => property.deviceName === this.props.chartData.deviceName);
-      tendObj.deviceMeasures.map((measure) => {
-        console.log("NNNNNNNN>>>>>>>>>>>", measure);
-        createSeries("value", measure, measure, this.props);
-      })
+      if (tendObj !== undefined) {
+        tendObj.deviceMeasures.map((measure) => {
+          createSeries("value", measure, measure, this.props);
+        })
+      } else {
+        if (this.chart) {
+          this.chart.dispose();
+        }
+      }
     }
 
     chart.legend = new am4charts.Legend();

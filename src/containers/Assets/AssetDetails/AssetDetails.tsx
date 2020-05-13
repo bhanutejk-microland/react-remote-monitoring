@@ -23,6 +23,7 @@ interface AssetDetailsProps {
   onInitAssetDetails: (assetId: string) => void;
   onInitAssetProperties: (assetId: string) => void;
   onInitAssetAnomalies: (assetId: string) => void;
+  onInitAssetFaultAnalyisis: (assetId: string) => void;
   assetProperties: any;
 }
 
@@ -31,7 +32,6 @@ interface AssetDetailsState {
   assetDetails: AssetModel;
 }
 
-const tabHeaderInfo = ["PROPERTIES", "TRENDS", "ANOMALY"];
 
 class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
   constructor(props: AssetDetailsProps) {
@@ -48,7 +48,9 @@ class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
         assetTabInfo: {
           // properties: [],
           trends: [],
-          anomaly: []
+          anomaly: [],
+          faultClassification: [],
+          faultIdentification: [],
         }
       }
     };
@@ -69,6 +71,7 @@ class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
     //   this.setAssetAnamolies(response.data);
     // });
     this.props.onInitAssetAnomalies(assetId);
+    //this.props.onInitAssetFaultAnalyisis(assetId);
   }
 
   private setAssetAnamolies = anamolies => {
@@ -120,12 +123,28 @@ class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
   }
 
   renderAssetDetailsTab = () => {
-
-    const assetTabInfo = {
-      properties: [...this.props.assetProperties],
-      trends: [...this.state.assetDetails.assetTabInfo.trends],
-      anomaly: { ...this.props.assetAnomalies }
+    const assetId = this.props.match.params.assetId;
+    let deviceId = assetId.toLowerCase();
+    let assetTabInfo = {};
+    let tabHeaderInfo = Array();
+    if(deviceId.includes('pump')){
+      tabHeaderInfo = ["PROPERTIES", "TRENDS", "ANOMALY", "FAULTS CLASSIFICATION", "FAULTS IDENTIFICATION"];
+      assetTabInfo = {
+        properties: [...this.props.assetProperties],
+        trends: [...this.state.assetDetails.assetTabInfo.trends],
+        anomaly: { ...this.props.assetAnomalies },
+        faultClassification: [...this.state.assetDetails.assetTabInfo.faultClassification],
+        faultIdentification: [...this.state.assetDetails.assetTabInfo.faultIdentification]
+      }
+    }else{
+      tabHeaderInfo = ["PROPERTIES", "TRENDS", "ANOMALY"]
+      assetTabInfo = {
+        properties: [...this.props.assetProperties],
+        trends: [...this.state.assetDetails.assetTabInfo.trends],
+        anomaly: { ...this.props.assetAnomalies }
+      }
     }
+    
 
     return (
       <div style={{ marginTop: "15px", padding: "10px" }}>
@@ -133,6 +152,7 @@ class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
           <TabPanel
             tabHeaderInfo={tabHeaderInfo}
             assetTabInfo={assetTabInfo}
+            assetId={assetId}
           />
         </Grid>
       </div>
@@ -210,7 +230,7 @@ const mapDispatchToProps = dispatch => {
   return {
     onInitAssetDetails: (assetId) => dispatch(actions.initAssetDetails(assetId)),
     onInitAssetProperties: (assetId) => dispatch(actions.initAssetProperties(assetId)),
-    onInitAssetAnomalies: (assetId) => dispatch(actions.initAssetAnomalies(assetId))
+    onInitAssetAnomalies: (assetId) => dispatch(actions.initAssetAnomalies(assetId)),
   }
 }
 

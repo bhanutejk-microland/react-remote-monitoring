@@ -6,6 +6,8 @@ export { initAssetAnomalies } from './assets/assetAnomalies';
 export { initDeviceTelemetry } from './alerts/deviceTelemetry';
 export { initAlerts } from './alerts/alerts';
 export { initTrends } from './trends/trends';
+export { initDevicesWithTeleProps } from './trends/deviceTeleProps';
+export { initDevicesWithTelePropsDetails } from './trends/deviceTelePropsDetails';
 export {
   initKpiTotalAssetsInfo,
   initKpiTotalActiveInfo,
@@ -24,3 +26,23 @@ export {
   initRules,
   addToRulesList
 } from './rules/rules';
+
+export {
+  initDeviceGroupList,
+  initAllDeviceGroupDetails
+} from './assets/assetDevices';
+
+export {
+  addDeviceFormData
+} from './assets/assetAddDeviceForm';
+
+export {
+  addDeviceGroupFormData
+} from './assets/assetAddDeviceGroupForm';
+
+export {
+  getGaugeValue,
+  getLastTenPredictionValue,
+  getProbabilityStatusValue,
+  getCountStatusValue
+} from './assets/faultClassification';

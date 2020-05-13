@@ -62,7 +62,7 @@ const AssetProperty: FunctionComponent<AssetPropertyProps> = ({ property }) => {
                   />
                   <ListItemText
                     className={classes.ListContent}
-                    primary={property[propertyKey].toString()}
+                    primary={property[propertyKey] ? property[propertyKey].toString() : 'NA'}
                   />
                 </ListItem>
               ) : null;

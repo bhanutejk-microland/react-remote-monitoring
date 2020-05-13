@@ -11,6 +11,8 @@ import cssClasses from "./TabPanel.css";
 import AssetProperty from "../../Assets/AssetProperty/AssetProperty";
 import AssetAnamoly from '../../Assets/AssetAnamoly/AssetAnamoly';
 import TrendsComponent from '../../Assets/Trends/Trends';
+import FaultClassification from '../../../containers/Assets/FaultClassification/FaultClassification';
+import FaultIdentificationAnalysis from '../../Assets/FaultIdentificationAnalysis/FaultIdentificationAnalysis';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -22,6 +24,7 @@ interface TabPanelProps {
 interface TabProps {
   tabHeaderInfo: any;
   assetTabInfo: any;
+  assetId: any;
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -56,7 +59,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export default function FullWidthTabs(props: TabProps) {
-  const { tabHeaderInfo, assetTabInfo } = props;
+  const { tabHeaderInfo, assetTabInfo, assetId } = props;
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
@@ -154,7 +157,8 @@ export default function FullWidthTabs(props: TabProps) {
           variant="fullWidth"
           aria-label="full width tabs example"
         >
-          {Object.keys(assetTabInfo).map((tabHeader, index) => {
+          {
+          tabHeaderInfo.map((tabHeader, index) => {
             return (
               <Tab
                 className={value === index ? cssClasses.SelectedTab : ""}
@@ -186,7 +190,7 @@ export default function FullWidthTabs(props: TabProps) {
                 <TrendsComponent />
               </TabPanel>
             );
-          } else {
+          } else if(tabData === "anomaly") {
             return renderAnamolyData(assetTabInfo[tabData], index);
             // return (
             //   <TabPanel
@@ -198,6 +202,28 @@ export default function FullWidthTabs(props: TabProps) {
             //     ITEM {index}
             //   </TabPanel>
             // );
+          }else if(tabData === "faultClassification"){
+            return(
+              <TabPanel
+                value={value}
+                index={index}
+                dir={theme.direction}
+                key={"tabPanel" + index}
+              >
+                <FaultClassification assetId={assetId} configType={'FaultClassification'} />
+              </TabPanel> 
+            )
+          }else if(tabData === "faultIdentification"){
+            return(
+              <TabPanel
+                value={value}
+                index={index}
+                dir={theme.direction}
+                key={"tabPanel" + index}
+              >
+                <FaultIdentificationAnalysis />
+              </TabPanel>
+            )
           }
         })}
       </SwipeableViews>
