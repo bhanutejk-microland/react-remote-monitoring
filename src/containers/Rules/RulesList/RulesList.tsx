@@ -93,6 +93,7 @@ class RulesListComponent extends Component<
               this.handleRulesListDeletion(event, assetIds)
             }
             defaultRowText='Loading rules list ...!'
+            enableLinkButton={false}
           />
         </ExpansionPanelDetails>
       </ExpansionPanel>

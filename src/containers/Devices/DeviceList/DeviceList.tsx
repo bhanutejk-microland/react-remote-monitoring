@@ -86,6 +86,7 @@ class DeviceListComponent extends Component<
               this.handleDeviceListDeletion(event, assetIds)
             }
             defaultRowText='Loading device list ...!'
+            enableLinkButton={false}
           />
         </ExpansionPanelDetails>
       </ExpansionPanel>
