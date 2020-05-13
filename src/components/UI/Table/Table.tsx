@@ -233,10 +233,11 @@ interface TableProps {
   uniqueCol: string;
   handleAlertDeletion: (event: React.MouseEvent, selectedItems: any) => void;
   defaultRowText: string;
+  enableLinkButton: boolean;
 }
 
 export default function EnhancedTable(props: TableProps) {
-  const { headerCells, dataCells, uniqueCol, handleAlertDeletion, defaultRowText } = props;
+  const { headerCells, dataCells, uniqueCol, handleAlertDeletion, defaultRowText, enableLinkButton } = props;
 
   const classes = useStyles();
   const [order, setOrder] = React.useState<Order>("asc");
@@ -354,7 +355,8 @@ export default function EnhancedTable(props: TableProps) {
                     );
                   })}
                   <TableCell>
-                    <Link to={`/alerts`}>
+                    {
+                      enableLinkButton === false ?
                       <Button
                         disabled={false}
                         btnType="primary"
@@ -362,7 +364,18 @@ export default function EnhancedTable(props: TableProps) {
                       >
                         View
                       </Button>
-                    </Link>                    
+                      :
+                      <Link to={`/alerts`}>
+                        <Button
+                          disabled={false}
+                          btnType="primary"
+                          icon={<FontAwesomeIcon icon={faEye} />}
+                        >
+                          View
+                        </Button>
+                      </Link>
+                    }   
+                                        
                   </TableCell>
                 </TableRow>
               );

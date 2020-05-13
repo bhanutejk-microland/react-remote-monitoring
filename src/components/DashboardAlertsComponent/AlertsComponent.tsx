@@ -86,6 +86,7 @@ class AlertsComponent extends Component<
               this.handleAlertDeletion(event, assetIds)
             }
             defaultRowText='Loading alerts...!'
+            enableLinkButton={true}
           />
         </ExpansionPanelDetails>
       </ExpansionPanel>

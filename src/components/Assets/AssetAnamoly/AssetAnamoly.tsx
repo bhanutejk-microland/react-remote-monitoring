@@ -57,7 +57,7 @@ const AssetAnamoly: FunctionComponent<AssetAnamolyProps> = ({ anamoly, indexing 
         anomalyLabel = 'humidity'
       }
       return (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} key={indexing}>
           <Grid item xs={12}>
             <ExpansionPanel defaultExpanded>
               <ExpansionPanelSummary
