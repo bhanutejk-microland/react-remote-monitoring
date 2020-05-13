@@ -12,38 +12,39 @@ interface FilterBarProps {
   showFilterBar: boolean;
   showMaxContent: boolean;
   filterList: object;
+  changed(event: any, objKey: string): void;
+  selectedValues: any;
 }
 
 const FilterBar: FunctionComponent<FilterBarProps> = ({
   showFilterBar,
   showMaxContent,
-  filterList
+  filterList,
+  changed,
+  selectedValues
 }) => (
-  <aside
-    className={
-      showFilterBar
-        ? showMaxContent
-          ? [classes.MainFilterbar, classes.MaxContentWrapper].join(" ")
-          : [classes.MainFilterbar, classes.ContentWrapper].join(" ")
-        : showMaxContent
-        ? [classes.HideFilterbar, classes.MaxContentWrapper].join(" ")
-        : [classes.HideFilterbar, classes.ContentWrapper].join(" ")
-    }
-  >
-    <Grid
-      container
-      spacing={1}
-      style={{
-        minHeight: "100%",
-        alignItems: "center",
-        background: "#dddddd42"
-      }}
-      className={showMaxContent ? classes.MaxFilterGrid : classes.MinFilterGrid}
+    <aside
+      className={
+        showFilterBar
+          ? showMaxContent
+            ? [classes.MainFilterbar, classes.MaxContentWrapper].join(" ")
+            : [classes.MainFilterbar, classes.ContentWrapper].join(" ")
+          : showMaxContent
+            ? [classes.HideFilterbar, classes.MaxContentWrapper].join(" ")
+            : [classes.HideFilterbar, classes.ContentWrapper].join(" ")
+      }
     >
-      {Object.keys(filterList).map(objKey => {
-        const type = filterList[objKey].type;
-        const label = filterList[objKey].label;
-        if (type === "select") {
+      <Grid
+        container
+        spacing={1}
+        style={{
+          minHeight: "100%",
+          alignItems: "center",
+          background: "#dddddd42"
+        }}
+        className={showMaxContent ? classes.MaxFilterGrid : classes.MinFilterGrid}
+      >
+        {Object.keys(filterList).map(objKey => {
           return (
             <Grid
               item
@@ -54,12 +55,14 @@ const FilterBar: FunctionComponent<FilterBarProps> = ({
             >
               <div style={{ minHeight: "100%" }}>
                 <FormControl className={classes.formControl}>
-                  <InputLabel id="demo-simple-select-label">{label}</InputLabel>
+                  <InputLabel id="demo-simple-select-label">{objKey}</InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
+                    onChange={(event) => changed(event, objKey)}
+                    value={selectedValues[objKey]}
                   >
-                    {filterList[objKey].options.map(option => {
+                    {filterList[objKey].map(option => {
                       return (
                         <MenuItem value={option} key={option}>
                           {option}
@@ -71,26 +74,9 @@ const FilterBar: FunctionComponent<FilterBarProps> = ({
               </div>
             </Grid>
           );
-        } else if (type === "input") {
-          return (
-            <Grid
-              item
-              xs={12}
-              md={2}
-              key={objKey}
-              className={classes.FilterGridContent}
-            >
-              <TextField
-                className={classes.formControl}
-                id="standard-basic"
-                label={label}
-              />
-            </Grid>
-          );
-        }
-      })}
-    </Grid>
-  </aside>
-);
+        })}
+      </Grid>
+    </aside>
+  );
 
 export default FilterBar;

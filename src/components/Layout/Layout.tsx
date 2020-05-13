@@ -8,6 +8,7 @@ import {
   faBell,
   faCogs
 } from "@fortawesome/free-solid-svg-icons";
+import { connect } from 'react-redux';
 
 // import Aux from "../../hoc/Aux";
 import Header from "../Header/Header";
@@ -15,12 +16,24 @@ import LeftMenu from "../LeftMenu/LeftMenu";
 import FilterBar from "../FilterBar/FilterBar";
 import MainContent from "../MainContent/MainContent";
 import axios from '../../axios';
+import * as actions from '../../store/actions/index';
 
-interface LayoutProps { }
+interface LayoutProps {
+  initFilterInfo: () => void;
+  appFilters: any;
+  applyFilterChanges: (filtersInfo: any) => any;
+}
 
-type LayoutState = {
+interface LayoutState {
   showMiniLeftMenu: boolean;
   showFilterBar: boolean;
+  selectedFilters: {
+    orgCodes: string,
+    locCodes: string,
+    assetIds: string,
+    assetTypes: string,
+    statuses: string
+  };
   filterList: {
     location: {
       type: string,
@@ -67,6 +80,13 @@ class Layout extends Component<LayoutProps, LayoutState> {
     this.state = {
       showMiniLeftMenu: false,
       showFilterBar: false,
+      selectedFilters: {
+        orgCodes: '',
+        locCodes: '',
+        assetIds: '',
+        assetTypes: '',
+        statuses: ''
+      },
       filterList: {
         location: {
           type: "select",
@@ -100,18 +120,19 @@ class Layout extends Component<LayoutProps, LayoutState> {
     axios.get("api/lookups/locations").then(response => {
       this.setFilterLocation(response.data.results);
     });
-    
+
     axios.get("api/lookups/status").then(response => {
       this.setFilterStatuses(response.data.results);
     });
-    
+
     axios.get("api/lookups/assetType").then(response => {
       this.setFilterAssetTypes(response.data.results);
     });
-    
+
     axios.get("api/lookups/assetName").then(response => {
       this.setFilterAssetNames(response.data.results);
     });
+    this.props.initFilterInfo();
   }
 
   private setFilterLocation = locations => {
@@ -129,7 +150,7 @@ class Layout extends Component<LayoutProps, LayoutState> {
       }
     }))
   }
-  
+
   private setFilterStatuses = statuses => {
     const filterStatuses = statuses.map(status => {
       return status.Status
@@ -145,7 +166,7 @@ class Layout extends Component<LayoutProps, LayoutState> {
       }
     }))
   }
-  
+
   private setFilterAssetTypes = assetTypes => {
     const filterAssetTypes = assetTypes.map(assetType => {
       return assetType.assetType
@@ -161,7 +182,7 @@ class Layout extends Component<LayoutProps, LayoutState> {
       }
     }))
   }
-  
+
   private setFilterAssetNames = assetNames => {
     const filterAssetNames = assetNames.map(assetName => {
       return assetName.assetName
@@ -190,6 +211,18 @@ class Layout extends Component<LayoutProps, LayoutState> {
     });
   }
 
+  selectFilterHandler = (event, filterId) => {
+    this.setState(prevState => ({
+      ...prevState,
+      selectedFilters: {
+        ...prevState.selectedFilters,
+        [filterId]: event.target.value
+      }
+    }), () => {
+      this.props.applyFilterChanges(this.state.selectedFilters)
+    });
+  }
+
   render() {
     return (
       <Fragment>
@@ -204,7 +237,9 @@ class Layout extends Component<LayoutProps, LayoutState> {
         <FilterBar
           showFilterBar={this.state.showFilterBar}
           showMaxContent={this.state.showMiniLeftMenu}
-          filterList={this.state.filterList}
+          filterList={this.props.appFilters}
+          changed={(event, filterId) => this.selectFilterHandler(event, filterId)}
+          selectedValues={this.state.selectedFilters}
         />
         <MainContent showMaxContent={this.state.showMiniLeftMenu}>
           {this.props.children}
@@ -214,4 +249,17 @@ class Layout extends Component<LayoutProps, LayoutState> {
   }
 }
 
-export default Layout;
+const mapStateToProps = state => {
+  return {
+    appFilters: state.appFilter.filterInfo
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    initFilterInfo: () => dispatch(actions.initFilterInfo()),
+    applyFilterChanges: (filtersInfo) => dispatch(actions.applyFilterChanges(filtersInfo))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Layout);

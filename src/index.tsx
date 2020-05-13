@@ -25,6 +25,8 @@ import assetAddDeviceGroupFormDataReducer from './store/reducers/assets/assetAdd
 import devicesTelePropsReducer from './store/reducers/trends/deviceTeleProps';
 import deviceTelePropsDetailsReducer from './store/reducers/trends/deviceTelePropsDetails';
 import faultClassificationReducer from './store/reducers/assets/faultClassification';
+import appFilterReducer from './store/reducers/filters/filters';
+import appliedFilterReducer from './store/reducers/filters/appliedFilters';
 
 const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] as typeof compose || compose;
 
@@ -45,7 +47,9 @@ const rootReducer = combineReducers({
   assetAddDeviceGroupFormData: assetAddDeviceGroupFormDataReducer,
   devicesTeleProps: devicesTelePropsReducer,
   deviceTelePropsDetailsInfo: deviceTelePropsDetailsReducer,
-  faultClassification: faultClassificationReducer
+  faultClassification: faultClassificationReducer,
+  appFilter: appFilterReducer,
+  appliedFilterInfo: appliedFilterReducer
 });
 
 const store = createStore(rootReducer, composeEnhancers(

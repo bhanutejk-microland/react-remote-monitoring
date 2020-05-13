@@ -8,6 +8,8 @@ export { initAlerts } from './alerts/alerts';
 export { initTrends } from './trends/trends';
 export { initDevicesWithTeleProps } from './trends/deviceTeleProps';
 export { initDevicesWithTelePropsDetails } from './trends/deviceTelePropsDetails';
+export { initFilterInfo } from './filters/filters';
+export { applyFilterChanges } from './filters/appliedFilters';
 export {
   initKpiTotalAssetsInfo,
   initKpiTotalActiveInfo,
