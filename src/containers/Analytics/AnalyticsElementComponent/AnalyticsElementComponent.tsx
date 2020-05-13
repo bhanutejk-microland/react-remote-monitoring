@@ -2,16 +2,10 @@ import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid";
 import GaugeChart from "../../../components/Charts/GaugeChart";
 import classes from "../Analytics.css";
+import { gaugeInfoModel } from "../../../interfaceModels/gaugeInfoModel";
 
 interface AnalyticsElementComponentProps {
-  analyticalElementInfo: analyticalElement[];
-}
-
-interface analyticalElement {
-  name: string;
-  min: number;
-  max: number;
-  value: number;
+  analyticalElementInfo: gaugeInfoModel[];
 }
 
 class AnalyticsElementComponent extends Component<
@@ -29,33 +23,38 @@ class AnalyticsElementComponent extends Component<
 
   render() {
     return (
-      <Grid container spacing={2}>
-        <Grid item xs={10}>
-          <Grid container >
+          <Grid container spacing={2} justify="space-between">
             {this.props.analyticalElementInfo.map((element, index) => {
-              return (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={element.name}>
-                  <div className={classes.ElementCard}>
-                    <h3 style={{textAlign: "center", margin : "10px 0 0"}}>{element.name}</h3>
-                    <GaugeChart 
-                      name={element.name}
-                      min={element.min}
-                      max={element.max}
-                      value={element.value}
-                    />
-                  </div>
-                </Grid>
-              );
+              if(element.name === "status"){
+                return (
+                  <Grid item xs={12} sm={6} md={4} lg={2} key={index}>
+                    <div className={classes.ElementCard}>
+                      <h3 style={{textAlign: "center",  margin : "10px 0 0"}}>STATUS</h3>
+                      {
+                        element.property.value === 'Healthy' ?
+                        (<p className={classes.statusIndicator} style={{background:"green"}}>{element.property.value}</p>) :
+                        (<p className={classes.statusIndicator} style={{background:"red"}}>{element.property.value}</p>)
+                      }
+                      
+                    </div>          
+                  </Grid>
+                )
+              }else{
+                return (
+                  <Grid item xs={12} sm={6} md={4} lg={2} key={index}>
+                    <div className={classes.ElementCard}>
+                      <h3 style={{textAlign: "center", margin : "5px 0 0"}}>{element.name.toUpperCase()}</h3>
+                      <GaugeChart 
+                        name={element.name}
+                        property={element.property}
+                      />
+                    </div>
+                  </Grid>
+                );
+              }
             })}
           </Grid>
-        </Grid>
-        <Grid item xs={2}>
-          <div className={classes.ElementCard}>
-            <h3 style={{textAlign: "center",  margin : "10px 0 0"}}>Status</h3>
-            <p className={classes.statusIndicator} style={{background:"red"}}>HEALTHY</p>
-          </div>          
-        </Grid>
-      </Grid>
+        
     );
   }
 }

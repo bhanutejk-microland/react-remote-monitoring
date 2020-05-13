@@ -3,15 +3,8 @@ import { unixTimestampToDateTimeconverter } from '../../utilities/timeStampConve
 import AnalyticsElementComponent from "./AnalyticsElementComponent/AnalyticsElementComponent";
 import AnalyticsProbabilityComponent from './AnalyticsProbabilityComponent/AnalyticsProbabilityComponent';
 import AnalyticsPredictionComponent from "../Analytics/AnalyticsPredictionComponent/AnalyticsPredictionComponent";
-
+import { gaugeInfoModel } from "../../interfaceModels/gaugeInfoModel";
 interface AnalyticsProps { }
-
-interface analyticalElement {
-  name: string;
-  min: number;
-  max: number;
-  value: number;
-}
 
 interface predictionElementProperties {
   dateTime: string;
@@ -45,7 +38,7 @@ interface analyticalCountProperties {
 }
 
 interface AnalyticsState {
-  analyticalElementInfo: analyticalElement[],
+  analyticalElementInfo: gaugeInfoModel[],
   analyticalProbabilityInfo: analyticalProbabilityProperties,
   analyticalCountInfo: analyticalCountProperties,
   analyticalPredictionList: predictionElementProperties[]
@@ -66,28 +59,42 @@ class Analytics extends Component<AnalyticsProps, AnalyticsState> {
     this.state = {
       analyticalElementInfo: [
         {
-          name: "Head",
-          min: 0,
-          max: 100,
-          value: 65
+          name: "head",
+          property: {
+            minimum: 0,
+            maximum: 100,
+            value: "65"
+          }
         },
         {
-          name: "Flow",
-          min: 0,
-          max: 100,
-          value: 75
+          name: "flow",
+          property: {
+            minimum: 0,
+            maximum: 100,
+            value: "65"
+          }
         },
         {
-          name: "Speed",
-          min: 0,
-          max: 100,
-          value: 45
+          name: "speed",
+          property: {
+            minimum: 0,
+            maximum: 100,
+            value: "65"
+          }
         },
         {
-          name: "Torque",
-          min: 0,
-          max: 100,
-          value: 55
+          name: "torque",
+          property: {
+            minimum: 0,
+            maximum: 100,
+            value: "65"
+          }
+        },
+        {
+          name: "status",
+          property: {
+            value: "Healthy"
+          }
         }
       ],
       analyticalProbabilityInfo: {
