@@ -1,8 +1,8 @@
 export interface predictionListModel {
-  dateTime: string;
+  timestamp: number;
   head: number;
   speed: number;
   flow: number;
   torque: number;
-  faultStatus: string;
+  fault: string;
 }

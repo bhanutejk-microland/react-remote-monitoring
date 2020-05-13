@@ -24,6 +24,7 @@ interface TabPanelProps {
 interface TabProps {
   tabHeaderInfo: any;
   assetTabInfo: any;
+  assetId: any;
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -58,7 +59,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export default function FullWidthTabs(props: TabProps) {
-  const { tabHeaderInfo, assetTabInfo } = props;
+  const { tabHeaderInfo, assetTabInfo, assetId } = props;
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
@@ -209,9 +210,8 @@ export default function FullWidthTabs(props: TabProps) {
                 dir={theme.direction}
                 key={"tabPanel" + index}
               >
-                <FaultClassification />
-              </TabPanel>
-              
+                <FaultClassification assetId={assetId} configType={'FaultClassification'} />
+              </TabPanel> 
             )
           }else if(tabData === "faultIdentification"){
             return(

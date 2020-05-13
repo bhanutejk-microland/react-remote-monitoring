@@ -3,22 +3,21 @@ import { connect } from "react-redux";
 import { gaugeInfoModel } from "../../../interfaceModels/gaugeInfoModel";
 import { predictionListModel } from "../../../interfaceModels/predictionListModel";
 import * as actions from '../../../store/actions/index';
-import { unixTimestampToDateTimeconverter } from '../../../utilities/timeStampConverter';
 import AnalyticsElementComponent from "../../../components/Assets/FaultAnalysis/AnalyticsElementComponent/AnalyticsElementComponent";
 import AnalyticsProbabilityComponent from '../../../components/Assets/FaultAnalysis/AnalyticsProbabilityComponent/AnalyticsProbabilityComponent';
 import AnalyticsPredictionComponent from "../../../components/Assets/FaultAnalysis/AnalyticsPredictionComponent/AnalyticsPredictionComponent";
 
 interface FaultClassificationProps {
     onGetGaugeValue: () => void;
-    onGetFaultStatus: () => void;
     onGetLastTenPrediction: () => void;
     onGetProbabilityStatus: () => void;
     onGetCountStatus: () => void;
     gaugeInfo: gaugeInfoModel[];
-    faultStatus: {fault : string};
     predictionList: predictionListModel[];
-    analyticalProbabilityInfo: analyticalProbabilityProperties,
-    analyticalCountInfo: analyticalCountProperties,
+    analyticalProbabilityInfo: analyticalProbabilityProperties;
+    analyticalCountInfo: analyticalCountProperties;
+    assetId: string;
+    configType: string;
 }
 
 interface analyticalProbabilityElement{
@@ -43,78 +42,48 @@ interface analyticalCountProperties{
   countList : analyticalCountElement[];
 }
 
-interface AnalyticsState {
-  analyticalElementInfo: gaugeInfoModel[],
-  analyticalProbabilityInfo: analyticalProbabilityProperties,
-  analyticalCountInfo: analyticalCountProperties,
-  analyticalPredictionList: predictionListModel[]
-}
-
+let configType:string;
+let deviceId:string;
+//  = "ML-Pump003";
 let toStartInterval:any;
+let fromTimeStamp:any;
+let toTimeStamp:any;
+let today = new Date();
+let todayStartingTime = today.toDateString();
+let todayCurrentTime = today.toString();
+fromTimeStamp = Date.parse(todayStartingTime);
+toTimeStamp = Date.parse(todayCurrentTime);
 
-class FaultClassification extends Component<FaultClassificationProps, AnalyticsState> {
+class FaultClassification extends Component<FaultClassificationProps> {
   constructor(props: FaultClassificationProps) {
     super(props);
-    // this.state = {
-    //   analyticalElementInfo : [],  
-    //   analyticalProbabilityInfo :{
-    //     categoryAxes : "Probability of assets status",
-    //     valueAxes : "Probability",
-    //     probabilityList : [{
-    //       "name": "Broken Blade",
-    //       "value": 40,
-    //     }, {
-    //       "name": "Cavitation",
-    //       "value": 32,
-    //     },{
-    //       "name": "Clearance Wear",
-    //       "value": 10,
-    //     },{
-    //       "name": "Healthy",
-    //       "value": 5,
-    //     },{
-    //       "name": "Inlet Deposit",
-    //       "value": 10,
-    //     },{
-    //       "name": "Outlet Deposit",
-    //       "value": 3,
-    //     }]
-    //   },
-    //   analyticalCountInfo :{
-    //     categoryAxes : "Count Occurence",
-    //     valueAxes : "Count",
-    //     countList : [{
-    //       "name": "Broken Blade",
-    //       "value": 300,
-    //     }, {
-    //       "name": "Cavitation",
-    //       "value": 222,
-    //     },{
-    //       "name": "Clearance Wear",
-    //       "value": 176,
-    //     },{
-    //       "name": "Healthy",
-    //       "value": 200,
-    //     },{
-    //       "name": "Inlet Deposit",
-    //       "value": 123,
-    //     },{
-    //       "name": "Outlet Deposit",
-    //       "value": 145,
-    //     }]
-    //   },
-    //   analyticalPredictionList :[]
-    // }
   }
 
   componentDidMount() {
+    deviceId = this.props.assetId;
+    configType = this.props.configType;
     toStartInterval = setInterval(() => {
         this.props.onGetGaugeValue();
-        this.props.onGetFaultStatus();
         this.props.onGetLastTenPrediction();
         this.props.onGetProbabilityStatus();
         this.props.onGetCountStatus();
     },10000);
+  }
+
+  onSelectTimePeriod = (timePeriod) => {
+    if(timePeriod === 'today'){
+      fromTimeStamp = Date.parse(todayStartingTime);
+      toTimeStamp = Date.parse(todayCurrentTime);
+    }else if(timePeriod === 'lastday'){
+      const yesterday = new Date(today);
+      let lastday = yesterday.setDate(yesterday.getDate() - 1);
+      let start = new Date(lastday);
+      fromTimeStamp = start.setHours(0,0,0,0);
+      let end = new Date(lastday);
+      toTimeStamp = end.setHours(23,59,59,999);
+    }else if(timePeriod === 'lastweek'){
+    }else if(timePeriod === 'lastmonth'){
+    }
   }
 
   componentWillUnmount(){
@@ -126,11 +95,11 @@ class FaultClassification extends Component<FaultClassificationProps, AnalyticsS
       <div style={{ margin: "0 15px" }}>
         <AnalyticsElementComponent
           analyticalElementInfo={this.props.gaugeInfo}
-          faultStatus={this.props.faultStatus}
         />
         <AnalyticsProbabilityComponent 
           analyticalProbabilityInfo={this.props.analyticalProbabilityInfo}
           analyticalCountInfo={this.props.analyticalCountInfo}
+          onSelectTimePeriod={this.onSelectTimePeriod}
         />
         <AnalyticsPredictionComponent analyticalPredictionList={this.props.predictionList} />
       </div>
@@ -138,10 +107,11 @@ class FaultClassification extends Component<FaultClassificationProps, AnalyticsS
   }
 }
 
+
+
 const mapStateToProps = state => {
     return{
         gaugeInfo : state.faultClassification.gaugeInfo,
-        faultStatus : state.faultClassification.faultStatus,
         predictionList : state.faultClassification.predictionList,
         analyticalProbabilityInfo : state.faultClassification.analyticalProbabilityInfo,
         analyticalCountInfo : state.faultClassification.analyticalCountInfo,
@@ -150,12 +120,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return{
-        onGetGaugeValue: () => dispatch(actions.getGaugeValue()),
-        onGetFaultStatus: () => dispatch(actions.getFaultStatusValue()),
-        onGetLastTenPrediction: () => dispatch(actions.getLastTenPredictionValue()),
-        onGetProbabilityStatus: () => dispatch(actions.getProbabilityStatusValue()),
-        onGetCountStatus: () => dispatch(actions.getCountStatusValue())
+        onGetGaugeValue: () => dispatch(actions.getGaugeValue(configType,deviceId)),
+        onGetLastTenPrediction: () => dispatch(actions.getLastTenPredictionValue(configType,deviceId)),
+        onGetProbabilityStatus: () => dispatch(actions.getProbabilityStatusValue(configType,deviceId,fromTimeStamp,toTimeStamp)),
+        onGetCountStatus: () => dispatch(actions.getCountStatusValue(configType,deviceId,fromTimeStamp,toTimeStamp))
     }
 }
+
 
 export default connect(mapStateToProps,mapDispatchToProps)(FaultClassification);
