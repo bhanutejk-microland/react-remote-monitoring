@@ -11,53 +11,53 @@ interface AnalyticsElementComponentProps {
   // classes: any
 }
 
-interface analyticalProbabilityElement{
+interface analyticalProbabilityElement {
   name: string;
   value: number;
 }
 
-interface analyticalCountElement{
+interface analyticalCountElement {
   name: string;
   value: number;
 }
 
-interface analyticalProbabilityProperties{
-  valueAxes : string;
-  categoryAxes : string;
-  probabilityList : analyticalProbabilityElement[];
+interface analyticalProbabilityProperties {
+  valueAxes: string;
+  categoryAxes: string;
+  probabilityList: analyticalProbabilityElement[];
 }
 
-interface analyticalCountProperties{
-  valueAxes : string;
-  categoryAxes : string;
-  countList : analyticalCountElement[];
+interface analyticalCountProperties {
+  valueAxes: string;
+  categoryAxes: string;
+  countList: analyticalCountElement[];
 }
 
-class AnalyticsProbabilityComponent extends Component<AnalyticsElementComponentProps,any> {
-  constructor(props: AnalyticsElementComponentProps){
+class AnalyticsProbabilityComponent extends Component<AnalyticsElementComponentProps, any> {
+  constructor(props: AnalyticsElementComponentProps) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    this.state = {value : 'lastDay'}
+    this.state = { value: 'lastDay' }
   }
 
- 
-  handleChange(event: React.ChangeEvent<{}>, newValue: string){
+
+  handleChange(event: React.ChangeEvent<{}>, newValue: string) {
     this.setState({
-        value: newValue
+      value: newValue
     });
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return  (
+    return (
       this.props.analyticalProbabilityInfo !== nextProps.analyticalProbabilityInfo || this.props.analyticalCountInfo !== nextProps.analyticalCountInfo || this.state.value !== nextState.value
     );
   }
 
   render() {
-    return (      
+    return (
       <Fragment>
         <Grid container spacing={2} justify="space-between">
-          <Grid item xs={12} sm={6}>            
+          <Grid item xs={12} sm={6}>
             <h2>Probability of Status</h2>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -67,8 +67,11 @@ class AnalyticsProbabilityComponent extends Component<AnalyticsElementComponentP
                 onChange={this.handleChange}
                 indicatorColor="primary"
                 textColor="primary"
-                centered
+                variant="scrollable"
+                scrollButtons="auto"
+                aria-label="scrollable auto tabs example"
               >
+                <Tab label="Today" value="today" />
                 <Tab label="Last Day" value="lastDay" />
                 <Tab label="Last Week" value="lastWeek" />
                 <Tab label="Last Month" value="lastMonth" />

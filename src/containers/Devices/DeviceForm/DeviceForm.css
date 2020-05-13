@@ -1,0 +1,29 @@
+.HeaderForRightDrawer {
+  margin-top: 15px;
+  padding: 15px;
+  font-size: 1.5rem;
+  border-bottom: 1px solid #1fa1c7;
+}
+
+.DeviceFormContainer {
+  display: flex;
+  flex-direction: column;
+  margin: 15px;
+  min-width: 350px;
+}
+
+.DeviceFormContent {
+  padding-top: 15px;
+}
+
+.BtnGroup {
+  padding-top: 15px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.deviceGroupFormControl{
+  width: 100%;
+  padding-top: 15px;
+}
