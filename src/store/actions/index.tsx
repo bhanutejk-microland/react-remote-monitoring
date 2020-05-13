@@ -42,7 +42,6 @@ export {
 
 export {
   getGaugeValue,
-  getFaultStatusValue,
   getLastTenPredictionValue,
   getProbabilityStatusValue,
   getCountStatusValue

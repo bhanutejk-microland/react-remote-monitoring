@@ -11,8 +11,8 @@ class GaugeChart extends Component{
 
         // Create axis
         let axis = chart.xAxes.push(new am4charts.ValueAxis()); 
-        axis.min = this.props.min;
-        axis.max = this.props.max;
+        axis.min = this.props.property.minimum;
+        axis.max = this.props.property.maximum;
         axis.strictMinMax = true;
 
         // Set inner radius
@@ -21,28 +21,28 @@ class GaugeChart extends Component{
         // Add ranges
         let range = axis.axisRanges.create();
         range.value = 0;
-        range.endValue = 70;
+        range.endValue = this.props.property.maximum;
         range.axisFill.fillOpacity = 1;
         range.axisFill.fill = am4core.color("#88AB75");
         range.axisFill.zIndex = - 1;
 
-        let range2 = axis.axisRanges.create();
-        range2.value = 70;
-        range2.endValue = 90;
-        range2.axisFill.fillOpacity = 1;
-        range2.axisFill.fill = am4core.color("#DBD56E");
-        range2.axisFill.zIndex = - 1;
+        // let range2 = axis.axisRanges.create();
+        // range2.value = 70;
+        // range2.endValue = 90;
+        // range2.axisFill.fillOpacity = 1;
+        // range2.axisFill.fill = am4core.color("#DBD56E");
+        // range2.axisFill.zIndex = - 1;
 
-        let range3 = axis.axisRanges.create();
-        range3.value = 90;
-        range3.endValue = 100;
-        range3.axisFill.fillOpacity = 1;
-        range3.axisFill.fill = am4core.color("#DE8F6E");
-        range3.axisFill.zIndex = - 1;
+        // let range3 = axis.axisRanges.create();
+        // range3.value = 90;
+        // range3.endValue = 100;
+        // range3.axisFill.fillOpacity = 1;
+        // range3.axisFill.fill = am4core.color("#DE8F6E");
+        // range3.axisFill.zIndex = - 1;
 
         // Add hand
         let hand = chart.hands.push(new am4charts.ClockHand());
-        hand.value = this.props.value;
+        hand.value = Math.ceil(this.props.property.value);
         hand.pin.disabled = true;
         hand.fill = am4core.color("#2D93AD");
         hand.stroke = am4core.color("#2D93AD");
@@ -59,7 +59,7 @@ class GaugeChart extends Component{
         label.y = am4core.percent(100);
         label.horizontalCenter = "middle";
         label.verticalCenter = "top";
-        label.text = this.props.value;
+        label.text = Math.ceil(this.props.property.value);
         
         this.chart = chart;
     }
@@ -70,7 +70,7 @@ class GaugeChart extends Component{
 
     componentDidUpdate(prevProps, prevState) {
         // only update chart if the data has changed
-        if (prevProps.value !== this.props.value) {
+        if (prevProps.property !== this.props.property) {
             this.onChartInitialise();
         }
       }

@@ -10,6 +10,7 @@ import classes from "../FaultAnalysis.css";
 interface AnalyticsElementComponentProps {
   analyticalProbabilityInfo: analyticalProbabilityProperties,
   analyticalCountInfo: analyticalCountProperties,
+  onSelectTimePeriod: any
 }
 
 interface analyticalProbabilityElement{
@@ -43,15 +44,16 @@ const useStyles = theme => ({
 class AnalyticsProbabilityComponent extends Component<AnalyticsElementComponentProps,any> {
   constructor(props: AnalyticsElementComponentProps){
     super(props);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChangeSelectTimePeriod = this.handleChangeSelectTimePeriod.bind(this);
     this.state = {value : 'today'}
   }
 
  
-  handleChange(event: React.ChangeEvent<{}>, newValue: string){
+  handleChangeSelectTimePeriod(event: React.ChangeEvent<{}>, timePeriod: string){
     this.setState({
-        value: newValue
+        value: timePeriod
     });
+    this.props.onSelectTimePeriod(timePeriod);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -72,7 +74,7 @@ class AnalyticsProbabilityComponent extends Component<AnalyticsElementComponentP
             <Paper className={classes.root}>
               <Tabs
                 value={this.state.value}
-                onChange={this.handleChange}
+                onChange={this.handleChangeSelectTimePeriod}
                 indicatorColor="primary"
                 textColor="primary"
                 variant="scrollable"
@@ -81,9 +83,9 @@ class AnalyticsProbabilityComponent extends Component<AnalyticsElementComponentP
                 className={classes.Tabs}
               >
                 <Tab className={classes.Tabs} label="Today" value="today" />
-                <Tab className={classes.Tabs} label="Last Day" value="lastDay" />
-                <Tab className={classes.Tabs} label="Last Week" value="lastWeek" />
-                <Tab className={classes.Tabs} label="Last Month" value="lastMonth" />
+                <Tab className={classes.Tabs} label="Last Day" value="lastday" />
+                <Tab className={classes.Tabs} label="Last Week" value="lastweek" />
+                <Tab className={classes.Tabs} label="Last Month" value="lastmonth" />
               </Tabs>
             </Paper>
             

@@ -1,6 +1,8 @@
 export interface gaugeInfoModel {
   name: string;
-  min: number;
-  max: number;
-  value: number;
+  property: {
+    minimum? : number;
+    maximum? : number;
+    value : string;
+  };
 }

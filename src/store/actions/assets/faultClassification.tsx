@@ -8,9 +8,9 @@ import axios from '../../../axios';
     };
   };
   
-  export const getGaugeValue = () => {
+  export const getGaugeValue = (configType,deviceId) => {
     return dispatch => {
-      axios.get("api/faultClassification/gaugeValue").then(response => {
+      axios.get("/api/faultClassification/getFault?configType="+configType+"&deviceId="+deviceId).then(response => {
         dispatch(setGaugeValue(response.data))
       });
     }
@@ -23,29 +23,15 @@ import axios from '../../../axios';
     };
   };
   
-  export const getLastTenPredictionValue = () => {
+  export const getLastTenPredictionValue = (configType,deviceId) => {
     return dispatch => {
-      axios.get("api/faultClassification/getLastTenPrediction").then(response => {
+      axios.get("api/faultClassification/getLastTenPrediction?configType="+configType+"&deviceId="+deviceId).then(response => {
         dispatch(setLastTenPredictionValue(response.data))
       });
     }
   }
 
-  export const setFaultStatusValue = (value) => {
-    return {
-      type: actionTypes.SET_FAULT_STATUS,
-      value: value
-    };
-  };
   
-  export const getFaultStatusValue = () => {
-    return dispatch => {
-      axios.get("api/faultClassification/getFault").then(response => {
-        dispatch(setFaultStatusValue(response.data))
-      });
-    }
-  }
-
   export const setProbabilityStatusValue = (value) => {
     return {
       type: actionTypes.SET_PROBABILITY_STATUS,
@@ -53,9 +39,9 @@ import axios from '../../../axios';
     };
   };
   
-  export const getProbabilityStatusValue = () => {
+  export const getProbabilityStatusValue = (configType,deviceId,fromTimeStamp,toTimeStamp) => {
     return dispatch => {
-      axios.get("api/faultClassification/getProbabilityStatus").then(response => {
+      axios.get("api/faultClassification/getProbabilityStatus?configType="+configType+"&deviceId="+deviceId+"&fromTimeStamp="+fromTimeStamp+"&toTimeStamp="+toTimeStamp).then(response => {
         dispatch(setProbabilityStatusValue(response.data))
       });
     }
@@ -68,9 +54,9 @@ import axios from '../../../axios';
     };
   };
   
-  export const getCountStatusValue = () => {
+  export const getCountStatusValue = (configType,deviceId,fromTimeStamp,toTimeStamp) => {
     return dispatch => {
-      axios.get("api/faultClassification/getCountStatus").then(response => {
+      axios.get("api/faultClassification/getCountStatus?configType="+configType+"&deviceId="+deviceId+"&fromTimeStamp="+fromTimeStamp+"&toTimeStamp="+toTimeStamp).then(response => {
         dispatch(setCountStatusValue(response.data))
       });
     }

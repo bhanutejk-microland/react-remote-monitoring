@@ -152,6 +152,7 @@ class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
           <TabPanel
             tabHeaderInfo={tabHeaderInfo}
             assetTabInfo={assetTabInfo}
+            assetId={assetId}
           />
         </Grid>
       </div>
@@ -230,7 +231,6 @@ const mapDispatchToProps = dispatch => {
     onInitAssetDetails: (assetId) => dispatch(actions.initAssetDetails(assetId)),
     onInitAssetProperties: (assetId) => dispatch(actions.initAssetProperties(assetId)),
     onInitAssetAnomalies: (assetId) => dispatch(actions.initAssetAnomalies(assetId)),
-    //onInitAssetFaultAnalyisis: (assetId) => 
   }
 }
 

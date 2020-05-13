@@ -9,18 +9,11 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Customclasses from "../FaultAnalysis.css";
-
-interface predictionElementProperties {
-    dateTime: string;
-    head: number;
-    speed: number;
-    flow: number;
-    torque: number;
-    faultStatus: string;
-}
+import { predictionListModel } from "../../../../interfaceModels/predictionListModel";
+import { unixTimestampToDateTimeconverter } from '../../../../utilities/timeStampConverter';
 
 interface AnalyticsPredictionComponentProps {
-    analyticalPredictionList: predictionElementProperties[],
+    analyticalPredictionList: predictionListModel[],
 }
 
 const StyledTableCell = withStyles((theme) => ({
@@ -71,12 +64,12 @@ export default function CustomizedTables(props: AnalyticsPredictionComponentProp
             <TableBody>
               {props.analyticalPredictionList.map((row,index) => (
                 <StyledTableRow key={index}>
-                  <StyledTableCell align="left">{row.dateTime}</StyledTableCell>
+                  <StyledTableCell align="left">{unixTimestampToDateTimeconverter(row.timestamp)}</StyledTableCell>
                   <StyledTableCell align="left">{row.head}</StyledTableCell>
                   <StyledTableCell align="left">{row.flow}</StyledTableCell>
                   <StyledTableCell align="left">{row.speed}</StyledTableCell>
                   <StyledTableCell align="left">{row.torque}</StyledTableCell>              
-                  <StyledTableCell align="left">{row.faultStatus}</StyledTableCell>
+                  <StyledTableCell align="left">{row.fault}</StyledTableCell>
                 </StyledTableRow>
               ))}
             </TableBody>
