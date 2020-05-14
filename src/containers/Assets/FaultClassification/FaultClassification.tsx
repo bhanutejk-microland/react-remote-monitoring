@@ -12,6 +12,8 @@ interface FaultClassificationProps {
     onGetLastTenPrediction: () => void;
     onGetProbabilityStatus: () => void;
     onGetCountStatus: () => void;
+    onGetIdentificationProbabilityStatus: () => void;
+    onGetIdentificationCountStatus: () => void;
     gaugeInfo: gaugeInfoModel[];
     predictionList: predictionListModel[];
     analyticalProbabilityInfo: analyticalProbabilityProperties;
@@ -44,7 +46,6 @@ interface analyticalCountProperties{
 
 let configType:string;
 let deviceId:string;
-//  = "ML-Pump003";
 let toStartInterval:any;
 let fromTimeStamp:any;
 let toTimeStamp:any;
@@ -62,12 +63,30 @@ class FaultClassification extends Component<FaultClassificationProps> {
   componentDidMount() {
     deviceId = this.props.assetId;
     configType = this.props.configType;
-    toStartInterval = setInterval(() => {
-        this.props.onGetGaugeValue();
-        this.props.onGetLastTenPrediction();
-        this.props.onGetProbabilityStatus();
-        this.props.onGetCountStatus();
-    },10000);
+    if(configType === 'FaultClassification'){
+      toStartInterval = setInterval(() => {
+          this.invokeClassificationTabGraph();
+      },10000);
+    }else{
+      toStartInterval = setInterval(() => {
+          this.invokeIdentificationTabGraph();
+      },10000);
+    }
+    
+  }
+
+  invokeClassificationTabGraph = () =>{
+    this.props.onGetGaugeValue();
+    this.props.onGetLastTenPrediction();
+    this.props.onGetProbabilityStatus();
+    this.props.onGetCountStatus();
+  }
+
+  invokeIdentificationTabGraph = () =>{
+    this.props.onGetGaugeValue();
+    this.props.onGetLastTenPrediction();
+    this.props.onGetIdentificationProbabilityStatus();
+    this.props.onGetIdentificationCountStatus();
   }
 
   onSelectTimePeriod = (timePeriod) => {
@@ -109,22 +128,43 @@ class FaultClassification extends Component<FaultClassificationProps> {
 
 
 
-const mapStateToProps = state => {
-    return{
+const mapStateToProps = (state,configType) => {
+  switch (configType.configType) {
+    case "FaultClassification":
+      return {
         gaugeInfo : state.faultClassification.gaugeInfo,
         predictionList : state.faultClassification.predictionList,
         analyticalProbabilityInfo : state.faultClassification.analyticalProbabilityInfo,
         analyticalCountInfo : state.faultClassification.analyticalCountInfo,
     }
+    case "FaultIdentification":
+      return {
+        gaugeInfo : state.faultClassification.gaugeInfo,
+        predictionList : state.faultClassification.predictionList,
+        analyticalProbabilityInfo : state.faultIdentification.analyticalProbabilityInfo,
+        analyticalCountInfo : state.faultIdentification.analyticalCountInfo,
+    }
+  } 
 }
 
-const mapDispatchToProps = dispatch => {
-    return{
-        onGetGaugeValue: () => dispatch(actions.getGaugeValue(configType,deviceId)),
-        onGetLastTenPrediction: () => dispatch(actions.getLastTenPredictionValue(configType,deviceId)),
-        onGetProbabilityStatus: () => dispatch(actions.getProbabilityStatusValue(configType,deviceId,fromTimeStamp,toTimeStamp)),
-        onGetCountStatus: () => dispatch(actions.getCountStatusValue(configType,deviceId,fromTimeStamp,toTimeStamp))
+const mapDispatchToProps = (dispatch,configType) => {
+  switch (configType.configType) {
+    case "FaultClassification":
+      return {
+        onGetGaugeValue: () => dispatch(actions.getGaugeValue(configType.configType,deviceId)),
+        onGetLastTenPrediction: () => dispatch(actions.getLastTenPredictionValue(configType.configType,deviceId)),
+        onGetProbabilityStatus: () => dispatch(actions.getProbabilityStatusValue(configType.configType,deviceId,fromTimeStamp,toTimeStamp)),
+        onGetCountStatus: () => dispatch(actions.getCountStatusValue(configType.configType,deviceId,fromTimeStamp,toTimeStamp))
+      }
+    case "FaultIdentification":
+      return {
+        onGetGaugeValue: () => dispatch(actions.getGaugeValue(configType.configType,deviceId)),
+        onGetLastTenPrediction: () => dispatch(actions.getLastTenPredictionValue(configType.configType,deviceId)),
+        onGetIdentificationProbabilityStatus: () => dispatch(actions.getIdentificationProbabilityStatusValue(configType.configType,deviceId,fromTimeStamp,toTimeStamp)),
+        onGetIdentificationCountStatus: () => dispatch(actions.getIdentificationCountStatusValue(configType.configType,deviceId,fromTimeStamp,toTimeStamp))
     }
+  }
+    
 }
 
 

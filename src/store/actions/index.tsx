@@ -48,3 +48,8 @@ export {
   getProbabilityStatusValue,
   getCountStatusValue
 } from './assets/faultClassification';
+
+export {
+  getIdentificationProbabilityStatusValue,
+  getIdentificationCountStatusValue
+} from './assets/faultIdentification';
