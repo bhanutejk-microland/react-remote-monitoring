@@ -8,9 +8,9 @@ export const setDashboardAlertsInfo = (alerts) => {
   }
 }
 
-export const initDashboardAlerts = () => {
+export const initDashboardAlerts = (appFilters) => {
   return dispatch => {
-    axios.get("api/alarms/listAll?status=open").then(response => {
+    axios.post("api/alarms/listAll", appFilters).then(response => {
       dispatch(setDashboardAlertsInfo(response.data));
     });
   }

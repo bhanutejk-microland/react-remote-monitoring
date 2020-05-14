@@ -20,7 +20,7 @@ interface DashboardProps {
   onInitKpiTotalInactiveInfo: (appFilters: any) => void;
   onInitKpiTotalCriticalAlertsInfo: (appFilters: any) => void;
   onInitKpiTotalFletupTimeInfo: (appFilters: any) => void;
-  onInitDashboardAlerts: () => void;
+  onInitDashboardAlerts: (appFilters: any) => void;
   onInitDashboardMapInfo: (appFilters: any) => void;
   kpiInfo: kpiInfoModel;
   alertsInfo: Array<AlertModel>;
@@ -100,7 +100,7 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
     this.props.onInitKpiTotalInactiveInfo(appFilters);
     this.props.onInitKpiTotalCriticalAlertsInfo(appFilters);
     this.props.onInitKpiTotalFletupTimeInfo(appFilters);
-    this.props.onInitDashboardAlerts();
+    this.props.onInitDashboardAlerts(appFilters);
     this.props.onInitDashboardMapInfo(appFilters);
   }
 
@@ -113,6 +113,8 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
       this.props.onInitKpiTotalInactiveInfo(appFilters);
       this.props.onInitKpiTotalCriticalAlertsInfo(appFilters);
       this.props.onInitKpiTotalFletupTimeInfo(appFilters);
+      this.props.onInitDashboardAlerts(appFilters);
+      this.props.onInitDashboardMapInfo(appFilters);
     }
   }
 
@@ -177,15 +179,15 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
   renderAlertTicketContainer = () => {
     return (
       <Grid container spacing={2} className={classes.SectionContainer}>
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12}>
           <DashboardAlertsComponent
             alertInfoHeaders={alertInfoHeaders}
             alertsInfo={this.props.alertsInfo}
           />
         </Grid>
-        <Grid item xs={12} md={4}>
+        {/* <Grid item xs={12} md={4}>
           <TicketContainerComponent dataPoints={ticketsDataPoints} />
-        </Grid>
+        </Grid> */}
       </Grid>
     );
   };
@@ -218,7 +220,7 @@ const mapDispatchToProps = dispatch => {
     onInitKpiTotalInactiveInfo: (appFilters) => dispatch(actions.initKpiTotalInactiveInfo(appFilters)),
     onInitKpiTotalCriticalAlertsInfo: (appFilters) => dispatch(actions.initKpiTotalCriticalAlertsInfo(appFilters)),
     onInitKpiTotalFletupTimeInfo: (appFilters) => dispatch(actions.initKpiTotalFletupTimeInfo(appFilters)),
-    onInitDashboardAlerts: () => dispatch(actions.initDashboardAlerts()),
+    onInitDashboardAlerts: (appFilters) => dispatch(actions.initDashboardAlerts(appFilters)),
     onInitDashboardMapInfo: (appFilters) => dispatch(actions.initDashboardMapInfo(appFilters))
   }
 }
