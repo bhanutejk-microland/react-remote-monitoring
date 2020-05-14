@@ -4,7 +4,8 @@
 }
 
 .AssetPropertyCard {
-  background: linear-gradient(to left, #00dcff14, #7deadb7a);
+  /* background: linear-gradient(to left, #00dcff14, #7deadb7a); */
+  background: rgba(211, 211, 211, 0.18);
   margin: 15px;
   border-radius: 4px;
 }
