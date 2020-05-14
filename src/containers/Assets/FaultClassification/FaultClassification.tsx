@@ -12,6 +12,8 @@ interface FaultClassificationProps {
     onGetLastTenPrediction: () => void;
     onGetProbabilityStatus: () => void;
     onGetCountStatus: () => void;
+    onGetIdentificationGaugeValue: () => void;
+    onGetIdentificationLastTenPrediction: () => void;
     onGetIdentificationProbabilityStatus: () => void;
     onGetIdentificationCountStatus: () => void;
     gaugeInfo: gaugeInfoModel[];
@@ -64,13 +66,15 @@ class FaultClassification extends Component<FaultClassificationProps> {
     deviceId = this.props.assetId;
     configType = this.props.configType;
     if(configType === 'FaultClassification'){
+      this.invokeClassificationTabGraph();
       toStartInterval = setInterval(() => {
           this.invokeClassificationTabGraph();
       },10000);
     }else{
+      this.invokeIdentificationTabGraph();
       toStartInterval = setInterval(() => {
           this.invokeIdentificationTabGraph();
-      },10000);
+      },30000);
     }
     
   }
@@ -83,8 +87,8 @@ class FaultClassification extends Component<FaultClassificationProps> {
   }
 
   invokeIdentificationTabGraph = () =>{
-    this.props.onGetGaugeValue();
-    this.props.onGetLastTenPrediction();
+    this.props.onGetIdentificationGaugeValue();
+    this.props.onGetIdentificationLastTenPrediction();
     this.props.onGetIdentificationProbabilityStatus();
     this.props.onGetIdentificationCountStatus();
   }
@@ -139,8 +143,8 @@ const mapStateToProps = (state,configType) => {
     }
     case "FaultIdentification":
       return {
-        gaugeInfo : state.faultClassification.gaugeInfo,
-        predictionList : state.faultClassification.predictionList,
+        gaugeInfo : state.faultIdentification.gaugeInfo,
+        predictionList : state.faultIdentification.predictionList,
         analyticalProbabilityInfo : state.faultIdentification.analyticalProbabilityInfo,
         analyticalCountInfo : state.faultIdentification.analyticalCountInfo,
     }
@@ -158,8 +162,8 @@ const mapDispatchToProps = (dispatch,configType) => {
       }
     case "FaultIdentification":
       return {
-        onGetGaugeValue: () => dispatch(actions.getGaugeValue(configType.configType,deviceId)),
-        onGetLastTenPrediction: () => dispatch(actions.getLastTenPredictionValue(configType.configType,deviceId)),
+        onGetIdentificationGaugeValue: () => dispatch(actions.getIdentificationGaugeValue(configType.configType,deviceId)),
+        onGetIdentificationLastTenPrediction: () => dispatch(actions.getIdentificationLastTenPredictionValue(configType.configType,deviceId)),
         onGetIdentificationProbabilityStatus: () => dispatch(actions.getIdentificationProbabilityStatusValue(configType.configType,deviceId,fromTimeStamp,toTimeStamp)),
         onGetIdentificationCountStatus: () => dispatch(actions.getIdentificationCountStatusValue(configType.configType,deviceId,fromTimeStamp,toTimeStamp))
     }
