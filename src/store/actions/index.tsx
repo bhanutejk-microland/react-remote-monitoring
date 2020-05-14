@@ -52,3 +52,10 @@ export {
 export {
   initAssetDetailsAppliedDateFilter
 } from './assets/assetDetailsDateFilter';
+
+export {
+  getIdentificationGaugeValue,
+  getIdentificationLastTenPredictionValue,
+  getIdentificationProbabilityStatusValue,
+  getIdentificationCountStatusValue
+} from './assets/faultIdentification';

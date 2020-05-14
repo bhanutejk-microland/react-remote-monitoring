@@ -12,6 +12,7 @@ import AssetProperty from "../../Assets/AssetProperty/AssetProperty";
 import AssetAnamoly from '../../Assets/AssetAnamoly/AssetAnamoly';
 import TrendsComponent from '../../Assets/Trends/Trends';
 import FaultClassification from '../../../containers/Assets/FaultClassification/FaultClassification';
+
 interface TabPanelProps {
   children?: React.ReactNode;
   dir?: string;

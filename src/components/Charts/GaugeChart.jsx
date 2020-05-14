@@ -59,7 +59,7 @@ class GaugeChart extends Component{
         label.y = am4core.percent(100);
         label.horizontalCenter = "middle";
         label.verticalCenter = "top";
-        label.text = Math.ceil(this.props.property.value);
+        label.text = Math.ceil(this.props.property.value)+' '+this.props.property.unit;
         
         this.chart = chart;
     }

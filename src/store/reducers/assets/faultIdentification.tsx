@@ -42,7 +42,7 @@ const initialState = {
   }],
   predictionList: [],
   analyticalProbabilityInfo: {
-    categoryAxes : "Probability of assets status",
+    categoryAxes : "Probability of Assets Status",
     valueAxes : "Probability",
     probabilityList : []
   },
@@ -53,7 +53,7 @@ const initialState = {
   }
 };
 
-const setGaugeValue = (state, action) => {
+const setIdentificationGaugeValue = (state, action) => {
   let updatedGaugeInfoKey = Object.keys(action.value);
   let updatedGaugeInfoValue = Object.values(action.value);
   let updatedGaugeInfo:any[] = [];
@@ -71,7 +71,7 @@ const setGaugeValue = (state, action) => {
   return updateObject( state, updatedState );
 }
 
-const setLastTenPrediction = (state, action) => {
+const setIdentificationLastTenPrediction = (state, action) => {
   const updatedLastTenPrediction = updateArrayObject([],  action.value);
   const updatedState = {
     predictionList: updatedLastTenPrediction
@@ -79,7 +79,8 @@ const setLastTenPrediction = (state, action) => {
   return updateObject( state, updatedState );
 }
 
-const setProbabilityStatus = (state,action) => {
+
+const setIdentificationProbabilityStatus = (state,action) => {
   let updatedProbabilityStatusKey = Object.keys(action.value);
   let updatedProbabilityStatusValue:any = Object.values(action.value);
   let newProbabilityList:any[] = [];
@@ -99,7 +100,7 @@ const setProbabilityStatus = (state,action) => {
   return updateObject(state,updatedState);
 }
 
-const setCountStatus = (state,action) => {
+const setIdentificationCountStatus = (state,action) => {
   let updatedCountStatusKey = Object.keys(action.value);
   let updatedCountStatusValue:any = Object.values(action.value);
   let newCountList:any[] = [];
@@ -120,10 +121,10 @@ const setCountStatus = (state,action) => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.SET_GAUGE_VALUE: return setGaugeValue(state, action);
-    case actionTypes.SET_LAST_TEN_PREDICTION: return setLastTenPrediction(state, action);
-    case actionTypes.SET_PROBABILITY_STATUS: return setProbabilityStatus(state,action);
-    case actionTypes.SET_COUNT_STATUS: return setCountStatus(state,action);
+    case actionTypes.SET_IDENTIFICATION_GAUGE_VALUE: return setIdentificationGaugeValue(state, action);
+    case actionTypes.SET_IDENTIFICATION_LAST_TEN_PREDICTION: return setIdentificationLastTenPrediction(state, action);
+    case actionTypes.SET_IDENTIFICATION_PROBABILITY_STATUS: return setIdentificationProbabilityStatus(state,action);
+    case actionTypes.SET_IDENTIFICATION_COUNT_STATUS: return setIdentificationCountStatus(state,action);
     default: return state;
   }
 }
