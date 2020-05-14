@@ -48,3 +48,7 @@ export {
   getProbabilityStatusValue,
   getCountStatusValue
 } from './assets/faultClassification';
+
+export {
+  initAssetDetailsAppliedDateFilter
+} from './assets/assetDetailsDateFilter';
