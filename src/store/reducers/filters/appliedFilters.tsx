@@ -5,7 +5,8 @@ const initialState = {
     orgCodes: '',
     locCodes: '',
     assetIds: '',
-    assetTypes: ''
+    assetTypes: '',
+    statuses: ''
   }
 }
 

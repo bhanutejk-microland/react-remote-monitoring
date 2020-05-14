@@ -8,9 +8,9 @@ export const setKpiTotalAssetValue = (kpiValue) => {
   };
 };
 
-export const initKpiTotalAssetsInfo = () => {
+export const initKpiTotalAssetsInfo = (appFilters) => {
   return dispatch => {
-    axios.get("api/kpi/totalDevices?configType=devices").then(response => {
+    axios.post("api/kpi/totalDevices", appFilters).then(response => {
       dispatch(setKpiTotalAssetValue(response.data[0]))
     });
   }
@@ -23,9 +23,9 @@ export const setKpiTotalActiveInfo = (kpiValue) => {
   };
 };
 
-export const initKpiTotalActiveInfo = () => {
+export const initKpiTotalActiveInfo = (appFilters) => {
   return dispatch => {
-    axios.get("api/kpi/totalActive?configType=devices").then(response => {
+    axios.post("api/kpi/totalActive", appFilters).then(response => {
       dispatch(setKpiTotalActiveInfo(response.data[0]))
     });
   }
@@ -38,9 +38,9 @@ export const setKpiTotalTrippedInfo = (kpiValue) => {
   };
 };
 
-export const initKpiTotalTrippedInfo = () => {
+export const initKpiTotalTrippedInfo = (appFilters) => {
   return dispatch => {
-    axios.get("api/kpi/totalTripped?configType=devices").then(response => {
+    axios.post("api/kpi/totalTripped", appFilters).then(response => {
       dispatch(setKpiTotalTrippedInfo(response.data[0]))
     });
   }
@@ -53,9 +53,9 @@ export const setKpiTotalInactiveInfo = (kpiValue) => {
   };
 };
 
-export const initKpiTotalInactiveInfo = () => {
+export const initKpiTotalInactiveInfo = (appFilters) => {
   return dispatch => {
-    axios.get("api/kpi/totalInactive?configType=devices").then(response => {
+    axios.post("api/kpi/totalInactive", appFilters).then(response => {
       dispatch(setKpiTotalInactiveInfo(response.data[0]))
     });
   }
@@ -68,10 +68,10 @@ export const setKpiTotalCriticalAlertsInfo = (kpiValue) => {
   };
 };
 
-export const initKpiTotalCriticalAlertsInfo = () => {
+export const initKpiTotalCriticalAlertsInfo = (appFilters) => {
   return dispatch => {
-    axios.get("api/kpi/criticalAlerts?severity=Critical").then(response => {
-      dispatch(setKpiTotalCriticalAlertsInfo(response.data.results[0]))
+    axios.post("api/kpi/criticalAlerts", appFilters).then(response => {
+      dispatch(setKpiTotalCriticalAlertsInfo(response.data[0]))
     });
   }
 }
@@ -83,9 +83,9 @@ export const setKpiTotalFletupTimeInfo = (kpiValue) => {
   };
 };
 
-export const initKpiTotalFletupTimeInfo = () => {
+export const initKpiTotalFletupTimeInfo = (appFilters) => {
   return dispatch => {
-    axios.get("api/kpi/uptime?configType=Devices").then(response => {
+    axios.post("api/kpi/uptime", appFilters).then(response => {
       dispatch(setKpiTotalFletupTimeInfo(response.data.results[0]))
     });
   }

@@ -34,32 +34,6 @@ interface LayoutState {
     assetTypes: string,
     statuses: string
   };
-  filterList: {
-    location: {
-      type: string,
-      label: string,
-      options: any[]
-    },
-    status: {
-      type: string,
-      label: string,
-      options: any[]
-    },
-    assetType: {
-      type: string,
-      label: string,
-      options: any[]
-    },
-    assetName: {
-      type: string,
-      label: string,
-      options: any[]
-    },
-    assetId: {
-      type: string,
-      label: string
-    },
-  }
 };
 
 const menuList = [
@@ -87,116 +61,11 @@ class Layout extends Component<LayoutProps, LayoutState> {
         assetTypes: '',
         statuses: ''
       },
-      filterList: {
-        location: {
-          type: "select",
-          label: "Location",
-          options: []
-        },
-        status: {
-          type: "select",
-          label: "Status",
-          options: []
-        },
-        assetType: {
-          type: "select",
-          label: "Asset Type",
-          options: []
-        },
-        assetName: {
-          type: "select",
-          label: "Asset Name",
-          options: []
-        },
-        assetId: {
-          type: "input",
-          label: "Asset ID"
-        }
-      }
     };
   }
 
   componentDidMount() {
-    axios.get("api/lookups/locations").then(response => {
-      this.setFilterLocation(response.data.results);
-    });
-
-    axios.get("api/lookups/status").then(response => {
-      this.setFilterStatuses(response.data.results);
-    });
-
-    axios.get("api/lookups/assetType").then(response => {
-      this.setFilterAssetTypes(response.data.results);
-    });
-
-    axios.get("api/lookups/assetName").then(response => {
-      this.setFilterAssetNames(response.data.results);
-    });
     this.props.initFilterInfo();
-  }
-
-  private setFilterLocation = locations => {
-    const filterLocations = locations.map(loc => {
-      return loc.LocName
-    });
-    this.setState(prevState => ({
-      ...prevState,
-      filterList: {
-        ...prevState.filterList,
-        location: {
-          ...prevState.filterList.location,
-          options: [...filterLocations]
-        }
-      }
-    }))
-  }
-
-  private setFilterStatuses = statuses => {
-    const filterStatuses = statuses.map(status => {
-      return status.Status
-    });
-    this.setState(prevState => ({
-      ...prevState,
-      filterList: {
-        ...prevState.filterList,
-        status: {
-          ...prevState.filterList.status,
-          options: [...filterStatuses]
-        }
-      }
-    }))
-  }
-
-  private setFilterAssetTypes = assetTypes => {
-    const filterAssetTypes = assetTypes.map(assetType => {
-      return assetType.assetType
-    });
-    this.setState(prevState => ({
-      ...prevState,
-      filterList: {
-        ...prevState.filterList,
-        assetType: {
-          ...prevState.filterList.assetType,
-          options: [...filterAssetTypes]
-        }
-      }
-    }))
-  }
-
-  private setFilterAssetNames = assetNames => {
-    const filterAssetNames = assetNames.map(assetName => {
-      return assetName.assetName
-    });
-    this.setState(prevState => ({
-      ...prevState,
-      filterList: {
-        ...prevState.filterList,
-        assetName: {
-          ...prevState.filterList.assetName,
-          options: [...filterAssetNames]
-        }
-      }
-    }))
   }
 
   toggleMiniLeftMenu(event: MouseEvent) {

@@ -14,17 +14,18 @@ import { TicketsInfoModel } from "../../interfaceModels/TicketsInfoModel";
 import * as actions from '../../store/actions/index';
 
 interface DashboardProps {
-  onInitKpiTotalAssetsInfo: () => void;
-  onInitKpiTotalActiveInfo: () => void;
-  onInitKpiTotalTrippedInfo: () => void;
-  onInitKpiTotalInactiveInfo: () => void;
-  onInitKpiTotalCriticalAlertsInfo: () => void;
-  onInitKpiTotalFletupTimeInfo: () => void;
+  onInitKpiTotalAssetsInfo: (appFilters: any) => void;
+  onInitKpiTotalActiveInfo: (appFilters: any) => void;
+  onInitKpiTotalTrippedInfo: (appFilters: any) => void;
+  onInitKpiTotalInactiveInfo: (appFilters: any) => void;
+  onInitKpiTotalCriticalAlertsInfo: (appFilters: any) => void;
+  onInitKpiTotalFletupTimeInfo: (appFilters: any) => void;
   onInitDashboardAlerts: () => void;
   onInitDashboardMapInfo: () => void;
   kpiInfo: kpiInfoModel;
   alertsInfo: Array<AlertModel>;
   mapInfo: any[];
+  appFilterInfo: any;
 }
 
 interface DashboardState {
@@ -92,14 +93,27 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
   }
 
   componentDidMount() {
-    this.props.onInitKpiTotalAssetsInfo();
-    this.props.onInitKpiTotalActiveInfo();
-    this.props.onInitKpiTotalTrippedInfo();
-    this.props.onInitKpiTotalInactiveInfo();
-    this.props.onInitKpiTotalCriticalAlertsInfo();
-    this.props.onInitKpiTotalFletupTimeInfo();
+    const appFilters = this.props.appFilterInfo;
+    this.props.onInitKpiTotalAssetsInfo(appFilters);
+    this.props.onInitKpiTotalActiveInfo(appFilters);
+    this.props.onInitKpiTotalTrippedInfo(appFilters);
+    this.props.onInitKpiTotalInactiveInfo(appFilters);
+    this.props.onInitKpiTotalCriticalAlertsInfo(appFilters);
+    this.props.onInitKpiTotalFletupTimeInfo(appFilters);
     this.props.onInitDashboardAlerts();
     this.props.onInitDashboardMapInfo();
+  }
+
+  componentDidUpdate(prevProps) {
+    const appFilters = this.props.appFilterInfo;
+    if (prevProps.appFilterInfo !== appFilters) {
+      this.props.onInitKpiTotalAssetsInfo(appFilters);
+      this.props.onInitKpiTotalActiveInfo(appFilters);
+      this.props.onInitKpiTotalTrippedInfo(appFilters);
+      this.props.onInitKpiTotalInactiveInfo(appFilters);
+      this.props.onInitKpiTotalCriticalAlertsInfo(appFilters);
+      this.props.onInitKpiTotalFletupTimeInfo(appFilters);
+    }
   }
 
   handleAlertDeletion = (event: React.MouseEvent, alerts: any) => {
@@ -167,7 +181,7 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
           <DashboardAlertsComponent
             alertInfoHeaders={alertInfoHeaders}
             alertsInfo={this.props.alertsInfo}
-            />
+          />
         </Grid>
         <Grid item xs={12} md={4}>
           <TicketContainerComponent dataPoints={ticketsDataPoints} />
@@ -175,7 +189,7 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
       </Grid>
     );
   };
-  
+
   render() {
     return (
       <div style={{ margin: "0 15px" }}>
@@ -191,18 +205,19 @@ const mapStateToProps = state => {
   return {
     kpiInfo: state.dashboard.kpiInfo,
     alertsInfo: state.dashboardAlerts.alertsInfo,
-    mapInfo: state.dashboardMapInfo.mapInfo
+    mapInfo: state.dashboardMapInfo.mapInfo,
+    appFilterInfo: state.appliedFilterInfo.appliedFiltersInfo
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onInitKpiTotalAssetsInfo: () => dispatch(actions.initKpiTotalAssetsInfo()),
-    onInitKpiTotalActiveInfo: () => dispatch(actions.initKpiTotalActiveInfo()),
-    onInitKpiTotalTrippedInfo: () => dispatch(actions.initKpiTotalTrippedInfo()),
-    onInitKpiTotalInactiveInfo: () => dispatch(actions.initKpiTotalInactiveInfo()),
-    onInitKpiTotalCriticalAlertsInfo: () => dispatch(actions.initKpiTotalCriticalAlertsInfo()),
-    onInitKpiTotalFletupTimeInfo: () => dispatch(actions.initKpiTotalFletupTimeInfo()),
+    onInitKpiTotalAssetsInfo: (appFilters) => dispatch(actions.initKpiTotalAssetsInfo(appFilters)),
+    onInitKpiTotalActiveInfo: (appFilters) => dispatch(actions.initKpiTotalActiveInfo(appFilters)),
+    onInitKpiTotalTrippedInfo: (appFilters) => dispatch(actions.initKpiTotalTrippedInfo(appFilters)),
+    onInitKpiTotalInactiveInfo: (appFilters) => dispatch(actions.initKpiTotalInactiveInfo(appFilters)),
+    onInitKpiTotalCriticalAlertsInfo: (appFilters) => dispatch(actions.initKpiTotalCriticalAlertsInfo(appFilters)),
+    onInitKpiTotalFletupTimeInfo: (appFilters) => dispatch(actions.initKpiTotalFletupTimeInfo(appFilters)),
     onInitDashboardAlerts: () => dispatch(actions.initDashboardAlerts()),
     onInitDashboardMapInfo: () => dispatch(actions.initDashboardMapInfo())
   }
