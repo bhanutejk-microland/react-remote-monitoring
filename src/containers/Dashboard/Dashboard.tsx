@@ -21,7 +21,7 @@ interface DashboardProps {
   onInitKpiTotalCriticalAlertsInfo: (appFilters: any) => void;
   onInitKpiTotalFletupTimeInfo: (appFilters: any) => void;
   onInitDashboardAlerts: () => void;
-  onInitDashboardMapInfo: () => void;
+  onInitDashboardMapInfo: (appFilters: any) => void;
   kpiInfo: kpiInfoModel;
   alertsInfo: Array<AlertModel>;
   mapInfo: any[];
@@ -101,7 +101,7 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
     this.props.onInitKpiTotalCriticalAlertsInfo(appFilters);
     this.props.onInitKpiTotalFletupTimeInfo(appFilters);
     this.props.onInitDashboardAlerts();
-    this.props.onInitDashboardMapInfo();
+    this.props.onInitDashboardMapInfo(appFilters);
   }
 
   componentDidUpdate(prevProps) {
@@ -219,7 +219,7 @@ const mapDispatchToProps = dispatch => {
     onInitKpiTotalCriticalAlertsInfo: (appFilters) => dispatch(actions.initKpiTotalCriticalAlertsInfo(appFilters)),
     onInitKpiTotalFletupTimeInfo: (appFilters) => dispatch(actions.initKpiTotalFletupTimeInfo(appFilters)),
     onInitDashboardAlerts: () => dispatch(actions.initDashboardAlerts()),
-    onInitDashboardMapInfo: () => dispatch(actions.initDashboardMapInfo())
+    onInitDashboardMapInfo: (appFilters) => dispatch(actions.initDashboardMapInfo(appFilters))
   }
 }
 

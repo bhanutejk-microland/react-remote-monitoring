@@ -8,9 +8,9 @@ export const setDashboardMapInfo = (mapInfo) => {
   }
 }
 
-export const initDashboardMapInfo = () => {
+export const initDashboardMapInfo = (appFilters) => {
   return dispatch => {
-    axios.get("api/devices/listDevices?configType=devices").then(response => {
+    axios.post("api/map/location", appFilters).then(response => {
       dispatch(setDashboardMapInfo(response.data));
     });
   }
