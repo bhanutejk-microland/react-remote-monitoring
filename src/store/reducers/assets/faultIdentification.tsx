@@ -2,6 +2,41 @@ import * as actionTypes from '../../actions/actionTypes';
 import { updateObject, updateArrayObject } from '../../../utilities/reduxStateUpdate';
 
 const initialState = {
+  gaugeInfo: [{
+    name : 'head',
+    property : {
+      maximum : 0,
+      minimum : 100,
+      value : "50"
+    }
+  },{
+    name : 'flow',
+    property : {
+      maximum : 0,
+      minimum : 100,
+      value : "50"
+    }
+  },{
+    name : 'speed',
+    property : {
+      maximum : 0,
+      minimum : 5000,
+      value : "3000"
+    }
+  },{
+    name : 'torque',
+    property : {
+      maximum : 0,
+      minimum : 100,
+      value : "50"
+    }
+  },{
+    name : 'status',
+    property : {
+      value : 'Healthy'
+    }
+  }],
+  predictionList: [],
   analyticalProbabilityInfo: {
     categoryAxes : "Probability of Assets Status",
     valueAxes : "Probability",
@@ -13,6 +48,33 @@ const initialState = {
     countList : []
   }
 };
+
+const setIdentificationGaugeValue = (state, action) => {
+  let updatedGaugeInfoKey = Object.keys(action.value);
+  let updatedGaugeInfoValue = Object.values(action.value);
+  let updatedGaugeInfo:any[] = [];
+  updatedGaugeInfoKey.map( (item, index) => {
+    let obj = {
+      name : updatedGaugeInfoKey[index],
+      property : updatedGaugeInfoValue[index]
+    }
+    updatedGaugeInfo.push(obj);
+  });
+  const updatedGaugeValue = updateArrayObject([], updatedGaugeInfo);
+  const updatedState = {
+    gaugeInfo: updatedGaugeValue
+  }
+  return updateObject( state, updatedState );
+}
+
+const setIdentificationLastTenPrediction = (state, action) => {
+  const updatedLastTenPrediction = updateArrayObject([],  action.value);
+  const updatedState = {
+    predictionList: updatedLastTenPrediction
+  }
+  return updateObject( state, updatedState );
+}
+
 
 const setIdentificationProbabilityStatus = (state,action) => {
   let updatedProbabilityStatusKey = Object.keys(action.value);
@@ -55,6 +117,8 @@ const setIdentificationCountStatus = (state,action) => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.SET_IDENTIFICATION_GAUGE_VALUE: return setIdentificationGaugeValue(state, action);
+    case actionTypes.SET_IDENTIFICATION_LAST_TEN_PREDICTION: return setIdentificationLastTenPrediction(state, action);
     case actionTypes.SET_IDENTIFICATION_PROBABILITY_STATUS: return setIdentificationProbabilityStatus(state,action);
     case actionTypes.SET_IDENTIFICATION_COUNT_STATUS: return setIdentificationCountStatus(state,action);
     default: return state;
