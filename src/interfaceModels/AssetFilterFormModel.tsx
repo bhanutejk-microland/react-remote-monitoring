@@ -4,5 +4,5 @@ import { FormDropdownModel } from "./FormDropdownModel";
 export interface AssetFilterFormModel {
   startDate: FormInputModel;
   endDate: FormInputModel;
-  properties: FormDropdownModel;
+  //properties: FormDropdownModel;
 }

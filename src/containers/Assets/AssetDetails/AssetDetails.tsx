@@ -21,10 +21,11 @@ interface AssetDetailsProps {
   assets: any;
   assetAnomalies: any;
   onInitAssetDetails: (assetId: string) => void;
-  onInitAssetProperties: (assetId: string) => void;
+  onInitAssetProperties: (assetId: string, fromTimeStamp:any, toTimeStamp:any) => void;
   onInitAssetAnomalies: (assetId: string) => void;
   onInitAssetFaultAnalyisis: (assetId: string) => void;
   assetProperties: any;
+  appliedFilterDate: any;
 }
 
 interface AssetDetailsState {
@@ -58,14 +59,18 @@ class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
 
   componentDidMount() {
     const assetId = this.props.match.params.assetId;
-
     if (this.props.assets.length > 0) {
       this.setAssetDetails(assetId);
     } else {
       this.fetchAssetDetails(assetId);
     }
-
-    this.props.onInitAssetProperties(assetId);
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    let fromTimeStamp = Date.parse(yesterday.toString());
+    let toTimeStamp = Date.parse(today.toString());
+    this.props.onInitAssetProperties(assetId,fromTimeStamp,toTimeStamp);
+   
 
     // axios.get("api/anomaly?deviceId=" + assetId).then(response => {
     //   this.setAssetAnamolies(response.data);
@@ -73,6 +78,18 @@ class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
     this.props.onInitAssetAnomalies(assetId);
     //this.props.onInitAssetFaultAnalyisis(assetId);
   }
+
+  componentDidUpdate(prevProps){
+    if(prevProps.appliedFilterDate !== this.props.appliedFilterDate){
+      const assetId = this.props.match.params.assetId;
+      let fromTime  = this.props.appliedFilterDate.fromTimestamp;
+      let toTime  = this.props.appliedFilterDate.toTimestamp;
+      let fromTimeStamp = Date.parse(fromTime.toString());
+      let toTimeStamp = Date.parse(toTime.toString());
+      this.props.onInitAssetProperties(assetId,fromTimeStamp,toTimeStamp);
+    }
+  }
+
 
   private setAssetAnamolies = anamolies => {
     const newAnamolies = new Array();
@@ -222,14 +239,15 @@ const mapStateToProps = state => {
     assets: state.assetsInfo.assets,
     assetDetails: state.assetDetail.asset,
     assetProperties: state.assetProperties.properties,
-    assetAnomalies: state.assetAnomalies.anomalies
+    assetAnomalies: state.assetAnomalies.anomalies,
+    appliedFilterDate : state.assetDetailsDateFilter.appliedFilterDate
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     onInitAssetDetails: (assetId) => dispatch(actions.initAssetDetails(assetId)),
-    onInitAssetProperties: (assetId) => dispatch(actions.initAssetProperties(assetId)),
+    onInitAssetProperties: (assetId,fromTimeStamp,toTimeStamp) => dispatch(actions.initAssetProperties(assetId,fromTimeStamp,toTimeStamp)),
     onInitAssetAnomalies: (assetId) => dispatch(actions.initAssetAnomalies(assetId)),
   }
 }

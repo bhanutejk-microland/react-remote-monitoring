@@ -27,6 +27,7 @@ import deviceTelePropsDetailsReducer from './store/reducers/trends/deviceTelePro
 import faultClassificationReducer from './store/reducers/assets/faultClassification';
 import appFilterReducer from './store/reducers/filters/filters';
 import appliedFilterReducer from './store/reducers/filters/appliedFilters';
+import assetDetailsDateFilterReducer from './store/reducers/assets/assetDetailsDateFilter';
 import faultIdentificationReducer from './store/reducers/assets/faultIdentification';
 
 const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] as typeof compose || compose;
@@ -51,6 +52,7 @@ const rootReducer = combineReducers({
   faultClassification: faultClassificationReducer,
   appFilter: appFilterReducer,
   appliedFilterInfo: appliedFilterReducer,
+  assetDetailsDateFilter : assetDetailsDateFilterReducer,
   faultIdentification: faultIdentificationReducer
 });
 

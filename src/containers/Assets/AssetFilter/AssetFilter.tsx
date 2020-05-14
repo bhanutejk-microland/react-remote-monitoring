@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import CancelIcon from "@material-ui/icons/Cancel";
 import FilterListIcon from "@material-ui/icons/FilterList";
 
@@ -7,9 +8,11 @@ import Button from "../../../components/UI/Button/Button";
 import classes from "./AssetFilter.css";
 import { AssetFilterFormModel } from '../../../interfaceModels/AssetFilterFormModel';
 import { FormInputModel } from "../../../interfaceModels/FormInputModel";
+import * as actions from '../../../store/actions/index';
 
 interface AssetFilterProps { 
   cancleForm: (event: any) => void;
+  onAppliedFilterDate: (appliedFilterDate:any) => void;
 }
 
 interface AssetFilterState {
@@ -52,19 +55,19 @@ class AssetFilter extends Component<AssetFilterProps, AssetFilterState> {
           valid: false,
           touched: false
         },
-        properties: {
-          elementType: "dropdown",
-          elementConfig: {
-            label: "Properties",
-            options: ["Temperature", "Pressure", "Options1"]
-          },
-          value: "",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        }
+        // properties: {
+        //   elementType: "dropdown",
+        //   elementConfig: {
+        //     label: "Properties",
+        //     options: ["Temperature", "Pressure", "Options1"]
+        //   },
+        //   value: "",
+        //   validation: {
+        //     required: true
+        //   },
+        //   valid: false,
+        //   touched: false
+        // }
       }
     };
   }
@@ -106,6 +109,17 @@ class AssetFilter extends Component<AssetFilterProps, AssetFilterState> {
     });
   };
 
+  addFilterHandler = () => {
+    this.setState(prevState => ({
+      formIsValid: !prevState.formIsValid
+    }));
+    const newAppliedFilterDate = {      
+        fromTimestamp: this.state.filterForm.startDate.value,
+        toTimestamp: this.state.filterForm.endDate.value
+    }
+    this.props.onAppliedFilterDate(newAppliedFilterDate);
+  }
+
   renderForm = () => {
     const formElementsArray: FormElement[] = [];
     for (let key in this.state.filterForm) {
@@ -143,6 +157,7 @@ class AssetFilter extends Component<AssetFilterProps, AssetFilterState> {
             btnType="primary"
             disabled={!this.state.formIsValid}
             icon={<FilterListIcon />}
+            clicked={this.addFilterHandler}
           >
             Apply
           </Button>
@@ -163,4 +178,16 @@ class AssetFilter extends Component<AssetFilterProps, AssetFilterState> {
   }
 }
 
-export default AssetFilter;
+const mapStateToProps = state => {
+  return{
+    appliedFilterDate : state.assetDetailsDateFilter.appliedFilterDate
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onAppliedFilterDate : (appliedFilterDate) => dispatch(actions.initAssetDetailsAppliedDateFilter(appliedFilterDate))
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(AssetFilter);

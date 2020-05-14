@@ -50,6 +50,10 @@ export {
 } from './assets/faultClassification';
 
 export {
+  initAssetDetailsAppliedDateFilter
+} from './assets/assetDetailsDateFilter';
+
+export {
   getIdentificationGaugeValue,
   getIdentificationLastTenPredictionValue,
   getIdentificationProbabilityStatusValue,
