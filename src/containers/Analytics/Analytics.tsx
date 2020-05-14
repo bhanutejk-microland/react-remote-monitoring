@@ -63,7 +63,8 @@ class Analytics extends Component<AnalyticsProps, AnalyticsState> {
           property: {
             minimum: 0,
             maximum: 100,
-            value: "65"
+            value: "65",
+            unit: "%"
           }
         },
         {
@@ -71,7 +72,8 @@ class Analytics extends Component<AnalyticsProps, AnalyticsState> {
           property: {
             minimum: 0,
             maximum: 100,
-            value: "65"
+            value: "65",
+            unit: "%"
           }
         },
         {
@@ -79,7 +81,8 @@ class Analytics extends Component<AnalyticsProps, AnalyticsState> {
           property: {
             minimum: 0,
             maximum: 100,
-            value: "65"
+            value: "65",
+            unit: "%"
           }
         },
         {
@@ -87,7 +90,8 @@ class Analytics extends Component<AnalyticsProps, AnalyticsState> {
           property: {
             minimum: 0,
             maximum: 100,
-            value: "65"
+            value: "65",
+            unit: "%"
           }
         },
         {
