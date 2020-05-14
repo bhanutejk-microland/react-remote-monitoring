@@ -4,5 +4,6 @@ export interface gaugeInfoModel {
     minimum? : number;
     maximum? : number;
     value : string;
+    unit? : string;
   };
 }

@@ -7,28 +7,32 @@ const initialState = {
     property : {
       maximum : 0,
       minimum : 100,
-      value : "50"
+      value : "50",
+      unit : "%"
     }
   },{
     name : 'flow',
     property : {
       maximum : 0,
       minimum : 100,
-      value : "50"
+      value : "50",
+      unit : "%"
     }
   },{
     name : 'speed',
     property : {
       maximum : 0,
       minimum : 5000,
-      value : "3000"
+      value : "3000",
+      unit : "%"
     }
   },{
     name : 'torque',
     property : {
       maximum : 0,
       minimum : 100,
-      value : "50"
+      value : "50",
+      unit : "%"
     }
   },{
     name : 'status',

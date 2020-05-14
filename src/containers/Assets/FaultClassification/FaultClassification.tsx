@@ -66,10 +66,12 @@ class FaultClassification extends Component<FaultClassificationProps> {
     deviceId = this.props.assetId;
     configType = this.props.configType;
     if(configType === 'FaultClassification'){
+      this.invokeClassificationTabGraph();
       toStartInterval = setInterval(() => {
           this.invokeClassificationTabGraph();
       },10000);
     }else{
+      this.invokeIdentificationTabGraph();
       toStartInterval = setInterval(() => {
           this.invokeIdentificationTabGraph();
       },30000);
