@@ -221,7 +221,7 @@ export default function FullWidthTabs(props: TabProps) {
                 dir={theme.direction}
                 key={"tabPanel" + index}
               >
-                {/* <FaultIdentificationAnalysis /> */}
+                <FaultClassification assetId={assetId} configType={'FaultIdentification'} />
               </TabPanel>
             )
           }
