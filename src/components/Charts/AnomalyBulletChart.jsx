@@ -10,13 +10,11 @@ am4core.useTheme(am4themes_animated);
 class AnomalyBulletChart extends Component {
 
   componentDidMount() {
-    console.log("ZZZZZZZZZZZZZZZZZ~~~~~~~~~~");
     this.initChart();
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.data !== this.props.data) {
-      console.log("XXXXXXXXXXXXXXXXXXX~~~~~~~~~~~~~~~~");
       this.initChart();
     }
   }
@@ -39,7 +37,6 @@ class AnomalyBulletChart extends Component {
       })
     }
     // Add data
-    console.log("CHART DATA>>>>>>>>>>>>>>>>>>>>", chartData);
     chart.data = chartData;
 
     // Create axes
