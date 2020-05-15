@@ -15,13 +15,13 @@ import Header from "../Header/Header";
 import LeftMenu from "../LeftMenu/LeftMenu";
 import FilterBar from "../FilterBar/FilterBar";
 import MainContent from "../MainContent/MainContent";
-import axios from '../../axios';
 import * as actions from '../../store/actions/index';
 
 interface LayoutProps {
   initFilterInfo: () => void;
   appFilters: any;
   applyFilterChanges: (filtersInfo: any) => any;
+  alertsInfo: any;
 }
 
 interface LayoutState {
@@ -98,6 +98,7 @@ class Layout extends Component<LayoutProps, LayoutState> {
         <Header
           clickForMiniMenu={this.toggleMiniLeftMenu}
           clickForFilterBar={this.toggleFilterBar}
+          alertsCount={this.props.alertsInfo.length}
         />
         <LeftMenu
           showMiniLeftMenu={this.state.showMiniLeftMenu}
@@ -120,7 +121,8 @@ class Layout extends Component<LayoutProps, LayoutState> {
 
 const mapStateToProps = state => {
   return {
-    appFilters: state.appFilter.filterInfo
+    appFilters: state.appFilter.filterInfo,
+    alertsInfo: state.dashboardAlerts.alertsInfo
   }
 }
 

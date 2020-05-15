@@ -4,8 +4,9 @@ const initialState = {
   filterInfo: {
     orgCodes: [],
     locCodes: [],
+    assetTypes: [],
     assetIds: [],
-    assetTypes: []
+    statuses: []
   }
 }
 
