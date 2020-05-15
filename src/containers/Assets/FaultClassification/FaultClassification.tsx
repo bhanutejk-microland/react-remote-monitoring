@@ -10,18 +10,19 @@ import AnalyticsPredictionComponent from "../../../components/Assets/FaultAnalys
 interface FaultClassificationProps {
     onGetGaugeValue: () => void;
     onGetLastTenPrediction: () => void;
-    onGetProbabilityStatus: () => void;
-    onGetCountStatus: () => void;
+    onGetProbabilityStatus: (configType: string, fromTimeStamp:any, toTimeStamp: any) => void;
+    onGetCountStatus: (configType: string, fromTimeStamp:any, toTimeStamp: any) => void;
     onGetIdentificationGaugeValue: () => void;
     onGetIdentificationLastTenPrediction: () => void;
-    onGetIdentificationProbabilityStatus: () => void;
-    onGetIdentificationCountStatus: () => void;
+    onGetIdentificationProbabilityStatus: (configType: string, fromTimeStamp:any, toTimeStamp: any) => void;
+    onGetIdentificationCountStatus: (configType: string, fromTimeStamp:any, toTimeStamp: any) => void;
     gaugeInfo: gaugeInfoModel[];
     predictionList: predictionListModel[];
     analyticalProbabilityInfo: analyticalProbabilityProperties;
     analyticalCountInfo: analyticalCountProperties;
     assetId: string;
     configType: string;
+    appliedFilterDate: any;
 }
 
 interface analyticalProbabilityElement{
@@ -51,11 +52,11 @@ let deviceId:string;
 let toStartInterval:any;
 let fromTimeStamp:any;
 let toTimeStamp:any;
-let today = new Date();
-let todayStartingTime = today.toDateString();
-let todayCurrentTime = today.toString();
-fromTimeStamp = Date.parse(todayStartingTime);
-toTimeStamp = Date.parse(todayCurrentTime);
+// let today = new Date();
+// let todayStartingTime = today.toDateString();
+// let todayCurrentTime = today.toString();
+// fromTimeStamp = Date.parse(todayStartingTime);
+// toTimeStamp = Date.parse(todayCurrentTime);
 
 class FaultClassification extends Component<FaultClassificationProps> {
   constructor(props: FaultClassificationProps) {
@@ -65,36 +66,45 @@ class FaultClassification extends Component<FaultClassificationProps> {
   componentDidMount() {
     deviceId = this.props.assetId;
     configType = this.props.configType;
+    let today = new Date();
+    let todayStartingTime = today.toDateString();
+    let todayCurrentTime = today.toString();
+    fromTimeStamp = Date.parse(todayStartingTime);
+    toTimeStamp = Date.parse(todayCurrentTime);
+
     if(configType === 'FaultClassification'){
-      this.invokeClassificationTabGraph();
+      this.invokeClassificationTabGraph(configType,fromTimeStamp,toTimeStamp);
       toStartInterval = setInterval(() => {
-          this.invokeClassificationTabGraph();
-      },10000);
+          this.invokeClassificationTabGraph(configType,fromTimeStamp,toTimeStamp);
+      },30000);
     }else{
-      this.invokeIdentificationTabGraph();
+      this.invokeIdentificationTabGraph(configType,fromTimeStamp,toTimeStamp);
       toStartInterval = setInterval(() => {
-          this.invokeIdentificationTabGraph();
+          this.invokeIdentificationTabGraph(configType,fromTimeStamp,toTimeStamp);
       },30000);
     }
     
   }
 
-  invokeClassificationTabGraph = () =>{
+  invokeClassificationTabGraph = (configType,fromTimeStamp,toTimeStamp) =>{
     this.props.onGetGaugeValue();
     this.props.onGetLastTenPrediction();
-    this.props.onGetProbabilityStatus();
-    this.props.onGetCountStatus();
+    this.props.onGetProbabilityStatus(configType,fromTimeStamp,toTimeStamp);
+    this.props.onGetCountStatus(configType,fromTimeStamp,toTimeStamp);
   }
 
-  invokeIdentificationTabGraph = () =>{
+  invokeIdentificationTabGraph = (configType,fromTimeStamp,toTimeStamp) =>{
     this.props.onGetIdentificationGaugeValue();
     this.props.onGetIdentificationLastTenPrediction();
-    this.props.onGetIdentificationProbabilityStatus();
-    this.props.onGetIdentificationCountStatus();
+    this.props.onGetIdentificationProbabilityStatus(configType,fromTimeStamp,toTimeStamp);
+    this.props.onGetIdentificationCountStatus(configType,fromTimeStamp,toTimeStamp);
   }
 
   onSelectTimePeriod = (timePeriod) => {
+    let today = new Date();
     if(timePeriod === 'today'){
+      let todayStartingTime = today.toDateString();
+      let todayCurrentTime = today.toString();
       fromTimeStamp = Date.parse(todayStartingTime);
       toTimeStamp = Date.parse(todayCurrentTime);
     }else if(timePeriod === 'lastday'){
@@ -106,6 +116,22 @@ class FaultClassification extends Component<FaultClassificationProps> {
       toTimeStamp = end.setHours(23,59,59,999);
     }else if(timePeriod === 'lastweek'){
     }else if(timePeriod === 'lastmonth'){
+    }
+  }
+
+  componentDidUpdate(prevProps){
+    if(prevProps.appliedFilterDate !== this.props.appliedFilterDate){
+      let fromTime  = this.props.appliedFilterDate.fromTimestamp;
+      let toTime  = this.props.appliedFilterDate.toTimestamp;
+      fromTimeStamp = Date.parse(fromTime.toString());
+      toTimeStamp = Date.parse(toTime.toString());
+      if(configType === 'FaultClassification'){
+        this.props.onGetProbabilityStatus(configType,fromTimeStamp,toTimeStamp)
+        this.props.onGetCountStatus(configType,fromTimeStamp,toTimeStamp) 
+      }else{
+        this.props.onGetIdentificationProbabilityStatus(configType,fromTimeStamp,toTimeStamp)
+        this.props.onGetIdentificationCountStatus(configType,fromTimeStamp,toTimeStamp)
+      }      
     }
   }
 
@@ -140,6 +166,7 @@ const mapStateToProps = (state,configType) => {
         predictionList : state.faultClassification.predictionList,
         analyticalProbabilityInfo : state.faultClassification.analyticalProbabilityInfo,
         analyticalCountInfo : state.faultClassification.analyticalCountInfo,
+        appliedFilterDate : state.assetDetailsDateFilter.appliedFilterDate
     }
     case "FaultIdentification":
       return {
@@ -147,6 +174,7 @@ const mapStateToProps = (state,configType) => {
         predictionList : state.faultIdentification.predictionList,
         analyticalProbabilityInfo : state.faultIdentification.analyticalProbabilityInfo,
         analyticalCountInfo : state.faultIdentification.analyticalCountInfo,
+        appliedFilterDate : state.assetDetailsDateFilter.appliedFilterDate
     }
   } 
 }
@@ -157,15 +185,15 @@ const mapDispatchToProps = (dispatch,configType) => {
       return {
         onGetGaugeValue: () => dispatch(actions.getGaugeValue(configType.configType,deviceId)),
         onGetLastTenPrediction: () => dispatch(actions.getLastTenPredictionValue(configType.configType,deviceId)),
-        onGetProbabilityStatus: () => dispatch(actions.getProbabilityStatusValue(configType.configType,deviceId,fromTimeStamp,toTimeStamp)),
-        onGetCountStatus: () => dispatch(actions.getCountStatusValue(configType.configType,deviceId,fromTimeStamp,toTimeStamp))
+        onGetProbabilityStatus: (configType,fromTimeStamp,toTimeStamp) => dispatch(actions.getProbabilityStatusValue(configType,deviceId,fromTimeStamp,toTimeStamp)),
+        onGetCountStatus: (configType,fromTimeStamp,toTimeStamp) => dispatch(actions.getCountStatusValue(configType,deviceId,fromTimeStamp,toTimeStamp))
       }
     case "FaultIdentification":
       return {
         onGetIdentificationGaugeValue: () => dispatch(actions.getIdentificationGaugeValue(configType.configType,deviceId)),
         onGetIdentificationLastTenPrediction: () => dispatch(actions.getIdentificationLastTenPredictionValue(configType.configType,deviceId)),
-        onGetIdentificationProbabilityStatus: () => dispatch(actions.getIdentificationProbabilityStatusValue(configType.configType,deviceId,fromTimeStamp,toTimeStamp)),
-        onGetIdentificationCountStatus: () => dispatch(actions.getIdentificationCountStatusValue(configType.configType,deviceId,fromTimeStamp,toTimeStamp))
+        onGetIdentificationProbabilityStatus: (configType,fromTimeStamp,toTimeStamp) => dispatch(actions.getIdentificationProbabilityStatusValue(configType,deviceId,fromTimeStamp,toTimeStamp)),
+        onGetIdentificationCountStatus: (configType,fromTimeStamp,toTimeStamp) => dispatch(actions.getIdentificationCountStatusValue(configType,deviceId,fromTimeStamp,toTimeStamp))
     }
   }
     

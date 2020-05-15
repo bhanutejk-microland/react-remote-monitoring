@@ -14,9 +14,10 @@ class GaugeChart extends Component{
         axis.min = this.props.property.minimum;
         axis.max = this.props.property.maximum;
         axis.strictMinMax = true;
-
+        axis.renderer.labels.template.dy = -20;
         // Set inner radius
-        chart.innerRadius = am4core.percent(80);
+        chart.innerRadius = 90;
+        chart.radius = 40;
         chart.logo.__disabled = true;
         // Add ranges
         let range = axis.axisRanges.create();
