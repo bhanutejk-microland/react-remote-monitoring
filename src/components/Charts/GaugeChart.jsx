@@ -22,17 +22,17 @@ class GaugeChart extends Component{
         // Add ranges
         let range = axis.axisRanges.create();
         range.value = 0;
-        range.endValue = this.props.property.maximum;
+        range.endValue = this.props.property.maximum/2;
         range.axisFill.fillOpacity = 1;
         range.axisFill.fill = am4core.color("#88AB75");
         range.axisFill.zIndex = - 1;
 
-        // let range2 = axis.axisRanges.create();
-        // range2.value = 70;
-        // range2.endValue = 90;
-        // range2.axisFill.fillOpacity = 1;
-        // range2.axisFill.fill = am4core.color("#DBD56E");
-        // range2.axisFill.zIndex = - 1;
+        let range2 = axis.axisRanges.create();
+        range2.value = this.props.property.maximum/2;
+        range2.endValue = this.props.property.maximum;
+        range2.axisFill.fillOpacity = 1;
+        range2.axisFill.fill = am4core.color("#DBD56E");
+        range2.axisFill.zIndex = - 1;
 
         // let range3 = axis.axisRanges.create();
         // range3.value = 90;
@@ -50,7 +50,11 @@ class GaugeChart extends Component{
         hand.innerRadius = am4core.percent(20);
         hand.radius = am4core.percent(80);
         hand.startWidth = 5;
-        //hand.showValue(this.props.value);
+        hand.events.on("propertychanged", function(ev) {
+            range.endValue = ev.target.value;
+            range2.value = ev.target.value;
+            axis.invalidate();
+        });
 
         // Add label
         let label = chart.radarContainer.createChild(am4core.Label);
@@ -61,6 +65,7 @@ class GaugeChart extends Component{
         label.horizontalCenter = "middle";
         label.verticalCenter = "top";
         label.text = Math.ceil(this.props.property.value)+' '+this.props.property.unit;
+
         
         this.chart = chart;
     }
