@@ -8,9 +8,9 @@ export const setAssetsInfo = (assets) => {
   }
 }
 
-export const initAssets = () => {
+export const initAssets = (appFilterInfo) => {
   return dispatch => {
-    axios.get("api/devices/listDevices?configType=devices").then(response => {
+    axios.post("api/devices/listDevices", appFilterInfo).then(response => {
       dispatch(setAssetsInfo(response.data));
     });
   }

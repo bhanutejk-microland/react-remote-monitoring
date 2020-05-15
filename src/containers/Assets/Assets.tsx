@@ -12,10 +12,11 @@ import { IndividualAssetModel } from "../../interfaceModels/IndividualAssetModel
 import DeviceFormComponent from '../Devices/DeviceForm/DeviceForm';
 
 interface AssetProps {
-  onInitAssets: () => void;
+  appFilterInfo: any;
+  onInitAssets: (appFilterInfo: any) => void;
   addAssetToListDispatcher: (asset: any) => void;
   assets: Array<IndividualAssetModel>;
- }
+}
 
 interface AssetState {
   assets: Array<IndividualAssetModel>;
@@ -42,7 +43,13 @@ class Assets extends Component<AssetProps, AssetState> {
   }
 
   componentDidMount() {
-    this.props.onInitAssets();
+    this.props.onInitAssets(this.props.appFilterInfo);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.appFilterInfo !== prevProps.appFilterInfo) {
+      this.props.onInitAssets(this.props.appFilterInfo);
+    }
   }
 
   private renameStatus = status => {
@@ -96,11 +103,11 @@ class Assets extends Component<AssetProps, AssetState> {
         onClose={this.toggleDeviceDrawer}
       >
         <div className={classes.DrawerContainer}>
-          <DeviceFormComponent 
+          <DeviceFormComponent
             closeDrawer={(status) => this.closeDrawer(status)}
-            addToDeviceList={(deviceData) => this.props.addAssetToListDispatcher(deviceData)} 
-            cancleForm={this.toggleDeviceDrawer} 
-            />
+            addToDeviceList={(deviceData) => this.props.addAssetToListDispatcher(deviceData)}
+            cancleForm={this.toggleDeviceDrawer}
+          />
         </div>
       </Drawer>
     );
@@ -147,13 +154,14 @@ class Assets extends Component<AssetProps, AssetState> {
 
 const mapStateToProps = state => {
   return {
-    assets: state.assetsInfo.assets
+    assets: state.assetsInfo.assets,
+    appFilterInfo: state.appliedFilterInfo.appliedFiltersInfo
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onInitAssets: () => dispatch(actions.initAssets()),
+    onInitAssets: (appFilterInfo) => dispatch(actions.initAssets(appFilterInfo)),
     addAssetToListDispatcher: (asset) => dispatch(actions.addAssetToList(asset))
   }
 }
