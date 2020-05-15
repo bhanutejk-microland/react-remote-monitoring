@@ -107,6 +107,13 @@ class FaultClassification extends Component<FaultClassificationProps> {
       let todayCurrentTime = today.toString();
       fromTimeStamp = Date.parse(todayStartingTime);
       toTimeStamp = Date.parse(todayCurrentTime);
+      if(configType === 'FaultClassification'){
+        this.props.onGetProbabilityStatus(configType,fromTimeStamp,toTimeStamp);
+        this.props.onGetCountStatus(configType,fromTimeStamp,toTimeStamp);
+      }else{
+        this.props.onGetIdentificationProbabilityStatus(configType,fromTimeStamp,toTimeStamp);
+        this.props.onGetIdentificationCountStatus(configType,fromTimeStamp,toTimeStamp);
+      }      
     }else if(timePeriod === 'lastday'){
       const yesterday = new Date(today);
       let lastday = yesterday.setDate(yesterday.getDate() - 1);
@@ -114,6 +121,13 @@ class FaultClassification extends Component<FaultClassificationProps> {
       fromTimeStamp = start.setHours(0,0,0,0);
       let end = new Date(lastday);
       toTimeStamp = end.setHours(23,59,59,999);
+      if(configType === 'FaultClassification'){
+        this.props.onGetProbabilityStatus(configType,fromTimeStamp,toTimeStamp);
+        this.props.onGetCountStatus(configType,fromTimeStamp,toTimeStamp);
+      }else{
+        this.props.onGetIdentificationProbabilityStatus(configType,fromTimeStamp,toTimeStamp);
+        this.props.onGetIdentificationCountStatus(configType,fromTimeStamp,toTimeStamp);
+      }
     }else if(timePeriod === 'lastweek'){
     }else if(timePeriod === 'lastmonth'){
     }
