@@ -37,7 +37,8 @@ const alertInfoHeaders = [
   { id: "assetId", numeric: false, disablePadding: false, label: "ASSETID" },
   { id: "dateTime", numeric: false, disablePadding: false, label: "DATETIME" },
   { id: "status", numeric: false, disablePadding: false, label: "STATUS" },
-  { id: "type", numeric: false, disablePadding: false, label: "TYPE" },
+  { id: "severity", numeric: false, disablePadding: false, label: "SEVERITY" },
+  { id: "ruleId", numeric: false, disablePadding: false, label: "RULE" },
   { id: "summary", numeric: false, disablePadding: false, label: "DESCRIPTION" }
 ];
 

@@ -1,4 +1,4 @@
-import * as actionTypes from '../../actions/actionTypes'; 
+import * as actionTypes from '../../actions/actionTypes';
 import { unixTimestampToDateTimeconverter } from '../../../utilities/timeStampConverter';
 
 const initialState = {
@@ -13,12 +13,13 @@ const setDashboardAlerts = (state, action) => {
         assetId: alert.deviceId,
         dateTime: unixTimestampToDateTimeconverter(alert.modified),
         status: alert.status,
-        type: alert.schemaType,
+        severity: alert.severity,
+        ruleId: alert.ruleId,
         summary: alert.description
       });
     });
   }
-  return { alertsInfo: [ ...newAlerts ] };
+  return { alertsInfo: [...newAlerts] };
 }
 
 const reducer = (state = initialState, action) => {
