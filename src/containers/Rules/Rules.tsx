@@ -96,7 +96,7 @@ class Rules extends Component<RulesProps, RulesState> {
         <div className={classes.DrawerContainer}>
           <RulesFormComponent 
             closeDrawer={(status) => this.closeDrawer(status)}
-            addToRulesList={(deviceData) => this.props.onAddToRulesList(deviceData)}
+            addToRulesList={(rulesData) => this.props.onAddToRulesList(rulesData)}
             cancleForm={this.toggleRulesDrawer} />
         </div>
       </Drawer>
