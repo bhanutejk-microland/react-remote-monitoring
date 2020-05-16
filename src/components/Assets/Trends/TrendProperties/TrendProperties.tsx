@@ -39,24 +39,6 @@ interface FormElement {
   config: any;
 }
 
-let temperatureTrend = new Array;
-let pressureTrend = new Array;
-let humidityTrend = new Array;
-
-let temperatureValue = 1;
-let pressureValue = 10;
-let humidityValue = 54;
-
-for (let i = 1; i <= 100; i++) {
-  temperatureValue += Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 100);
-  pressureValue += Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 100);
-  humidityValue += Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 100);
-  let newDate = new Date(2019, 1, i);
-  temperatureTrend.push({ date: newDate, temperature: temperatureValue });
-  pressureTrend.push({ date: newDate, pressure: pressureValue });
-  humidityTrend.push({ date: newDate, humidity: humidityValue });
-}
-
 class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesState> {
 
   constructor(props: TrendPropertiesProps) {
@@ -183,28 +165,6 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
     this.setState({
       trendPropertyList: [...list]
     }, () => {
-      let newTrendInfo = new Array;
-      for (let i = 0; i < temperatureTrend.length; i++) {
-        newTrendInfo.push({ date: temperatureTrend[i].date, temperature: null, humidity: null, pressure: null })
-      }
-      if (this.state.trendPropertyList.includes('temperature')) {
-        for (let i = 0; i < newTrendInfo.length; i++) {
-          newTrendInfo[i].temperature = temperatureTrend[i].temperature
-        }
-      }
-      if (this.state.trendPropertyList.includes('humidity')) {
-        for (let i = 0; i < newTrendInfo.length; i++) {
-          newTrendInfo[i].humidity = humidityTrend[i].humidity
-        }
-      }
-      if (this.state.trendPropertyList.includes('pressure')) {
-        for (let i = 0; i < newTrendInfo.length; i++) {
-          newTrendInfo[i].pressure = pressureTrend[i].pressure
-        }
-      }
-      this.setState({
-        trendInfo: [...newTrendInfo]
-      })
       const assetTrendDetails = {
         assetId: this.props.match.params.assetId,
         teleProps: [...this.state.trendPropertyList]
