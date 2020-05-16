@@ -16,7 +16,11 @@ import * as actions from '../../../../store/actions/index';
 interface TrendPropertiesProps {
   match: any;
   onInitTrends: (payload: any) => void;
+  onInitAssetIndividualTeleProps: (assetId: any) => void;
+  onInitAssetIndividualTeleDetails: (assetTrendDetails: any) => void;
   trendInfo: any;
+  teleProps: any;
+  trendTeleValues: any;
 }
 
 interface TrendPropertiesState {
@@ -104,6 +108,11 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
     }
   }
 
+  componentDidMount() {
+    const currentAssetId = this.props.match.params.assetId;
+    this.props.onInitAssetIndividualTeleProps(currentAssetId);
+  }
+
   checkValidity = (value, rules) => {
     let isValid = true;
     if (!rules) {
@@ -153,7 +162,7 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
       deviceId: this.props.match.params.assetId || '',
       messures: updatedPropertyList
     }
-    this.props.onInitTrends(payload);
+    // this.props.onInitTrends(payload);
   }
 
   deletePropertySelector = (property) => {
@@ -166,7 +175,7 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
       deviceId: this.props.match.params.assetId || '',
       messures: updatedPropertyList
     }
-    this.props.onInitTrends(payload);
+    // this.props.onInitTrends(payload);
     this.updateTrendPropertyListState(updatedPropertyList);
   }
 
@@ -196,6 +205,11 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
       this.setState({
         trendInfo: [...newTrendInfo]
       })
+      const assetTrendDetails = {
+        assetId: this.props.match.params.assetId,
+        teleProps: [...this.state.trendPropertyList]
+      }
+      this.props.onInitAssetIndividualTeleDetails(assetTrendDetails);
     });
   }
 
@@ -221,7 +235,7 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
                 invalid={!formElement.config.valid}
                 shouldValidate={formElement.config.validation}
                 touched={formElement.config.touched}
-                options={formElement.config.elementConfig.options}
+                options={Object.keys(this.props.teleProps)}
                 changed={event =>
                   this.inputChangedHandler(event, formElement.id)
                 }
@@ -240,10 +254,6 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
     return form;
   };
 
-  renderTrendComparisons = () => {
-
-  }
-
   render() {
     return <div>
       <Grid container spacing={2}>
@@ -256,7 +266,7 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
           </div>
         </Grid>
         <Grid item xs={10}>
-          <TrendComparisons trendInfo={this.props.trendInfo} />
+          <TrendComparisons trendInfo={this.props.trendTeleValues} />
         </Grid>
       </Grid>
     </div>
@@ -265,13 +275,17 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
 
 const mapStateToProps = state => {
   return {
-    trendInfo: state.trendsInfo.trends
+    trendInfo: state.trendsInfo.trends,
+    teleProps: state.assetTrenTelemetrics.teleProps,
+    trendTeleValues: state.assetTrenTeleDetails.trendTeleValues
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onInitTrends: (payload) => dispatch(actions.initTrends(payload))
+    onInitTrends: (payload) => dispatch(actions.initTrends(payload)),
+    onInitAssetIndividualTeleProps: (assetId) => dispatch(actions.initAssetIndividualTeleProps(assetId)),
+    onInitAssetIndividualTeleDetails: (assetTrendDetails) => dispatch(actions.initAssetIndividualTeleDetails(assetTrendDetails))
   };
 }
 

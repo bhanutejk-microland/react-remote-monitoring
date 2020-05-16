@@ -10,6 +10,8 @@ export { initDevicesWithTeleProps } from './trends/deviceTeleProps';
 export { initDevicesWithTelePropsDetails } from './trends/deviceTelePropsDetails';
 export { initFilterInfo } from './filters/filters';
 export { applyFilterChanges } from './filters/appliedFilters';
+export { initAssetIndividualTeleProps } from './assets/assetTrends';
+export { initAssetIndividualTeleDetails } from './assets/assetTrendDetails';
 export {
   initKpiTotalAssetsInfo,
   initKpiTotalActiveInfo,

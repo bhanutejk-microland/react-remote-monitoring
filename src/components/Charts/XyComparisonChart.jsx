@@ -53,7 +53,7 @@ class XyComparisonChart extends Component {
     if (propData.length > 0) {
 
       Object.keys(propData[0]).map((propDataKey) => {
-        if (propDataKey !== 'timestamp') {
+        if (propDataKey !== 'date') {
           if (propData[0][propDataKey]) {
             let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
             valueAxis.tooltip.disabled = true;
@@ -86,7 +86,7 @@ class XyComparisonChart extends Component {
 
     // series.stacked = true;
 
-    series.dataFields.dateX = "timestamp";
+    series.dataFields.dateX = "date";
     series.dataFields.valueY = valueY;
     series.yAxis = valueAxis;
     series.tooltipText = "{valueY.value}";
