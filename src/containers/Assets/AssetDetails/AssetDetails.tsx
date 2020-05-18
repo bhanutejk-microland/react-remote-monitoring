@@ -142,26 +142,17 @@ class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
   renderAssetDetailsTab = () => {
     const assetId = this.props.match.params.assetId;
     let deviceId = assetId.toLowerCase();
-    let assetTabInfo = {};
-    let tabHeaderInfo = Array();
-    if (deviceId.includes('pump')) {
-      tabHeaderInfo = ["PROPERTIES", "TRENDS", "ANOMALY", "FAULTS CLASSIFICATION", "FAULTS IDENTIFICATION"];
-      assetTabInfo = {
-        properties: [...this.props.assetProperties],
-        trends: [...this.state.assetDetails.assetTabInfo.trends],
-        anomaly: { ...this.props.assetAnomalies },
-        faultClassification: [...this.state.assetDetails.assetTabInfo.faultClassification],
-        faultIdentification: [...this.state.assetDetails.assetTabInfo.faultIdentification]
-      }
-    } else {
-      tabHeaderInfo = ["PROPERTIES", "TRENDS", "ANOMALY"]
-      assetTabInfo = {
-        properties: [...this.props.assetProperties],
-        trends: [...this.state.assetDetails.assetTabInfo.trends],
-        anomaly: { ...this.props.assetAnomalies }
-      }
+    let tabHeaderInfo = ["PROPERTIES", "TRENDS", "ANOMALY"]
+    let assetTabInfo = {
+      properties: [...this.props.assetProperties],
+      trends: [...this.state.assetDetails.assetTabInfo.trends],
+      anomaly: { ...this.props.assetAnomalies }
     }
-
+    if (deviceId.includes('pump')) {
+      tabHeaderInfo = [...tabHeaderInfo, "FAULTS IDENTIFICATION", "FAULTS CLASSIFICATION"];
+      assetTabInfo['faultIdentification'] = [...this.state.assetDetails.assetTabInfo.faultIdentification];
+      assetTabInfo['faultClassification'] = [...this.state.assetDetails.assetTabInfo.faultClassification]; 
+    } 
 
     return (
       <div style={{ marginTop: "15px", padding: "10px" }}>

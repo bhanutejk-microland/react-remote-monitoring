@@ -14,24 +14,27 @@ class GaugeChart extends Component{
         axis.min = this.props.property.minimum;
         axis.max = this.props.property.maximum;
         axis.strictMinMax = true;
-        axis.renderer.labels.template.dy = -20;
+        axis.renderer.labels.template.dx = -80;
+        axis.renderer.labels.template.dy = -80;
+        //axis.renderer.inside = true;
+        axis.renderer.maxLabelPosition = 0.99;
         // Set inner radius
-        chart.innerRadius = 90;
+        chart.innerRadius = 70;
         chart.radius = 40;
         chart.logo.__disabled = true;
         // Add ranges
         let range = axis.axisRanges.create();
         range.value = 0;
         range.endValue = this.props.property.maximum/2;
-        range.axisFill.fillOpacity = 1;
-        range.axisFill.fill = am4core.color("#88AB75");
+        range.axisFill.fillOpacity = 0.7;
+        range.axisFill.fill = am4core.color("#4ed504");
         range.axisFill.zIndex = - 1;
 
         let range2 = axis.axisRanges.create();
         range2.value = this.props.property.maximum/2;
         range2.endValue = this.props.property.maximum;
-        range2.axisFill.fillOpacity = 1;
-        range2.axisFill.fill = am4core.color("#DBD56E");
+        range2.axisFill.fillOpacity = 0.7;
+        range2.axisFill.fill = am4core.color("#fff20b");
         range2.axisFill.zIndex = - 1;
 
         // let range3 = axis.axisRanges.create();
@@ -60,8 +63,8 @@ class GaugeChart extends Component{
         let label = chart.radarContainer.createChild(am4core.Label);
         label.isMeasured = false;
         label.fontSize = 20;
-        label.x = am4core.percent(50);
-        label.y = am4core.percent(100);
+        label.x = 0;
+        label.y = 20;
         label.horizontalCenter = "middle";
         label.verticalCenter = "top";
         label.text = Math.ceil(this.props.property.value)+' '+this.props.property.unit;
