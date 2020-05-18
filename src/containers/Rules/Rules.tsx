@@ -33,10 +33,10 @@ function Alert(props: AlertProps) {
 }
 
 const rulesListInfoHeaders = [
-  { id: "ruleName", numeric: false, disablePadding: false, label: "RULE NAME" },
-  { id: "ruleDescription", numeric: false, disablePadding: false, label: "RULE DESCRIPTION" },
+  { id: "Name", numeric: false, disablePadding: false, label: "RULE NAME" },
+  { id: "Description", numeric: false, disablePadding: false, label: "RULE DESCRIPTION" },
   { id: "deviceGroup", numeric: false, disablePadding: false, label: "DEVICE GROUP" },
-  { id: "severityLevel", numeric: false, disablePadding: false, label: "DEVERITY LEVEL" }
+  { id: "Severity", numeric: false, disablePadding: false, label: "SEVERITY LEVEL" }
 ];
 
 class Rules extends Component<RulesProps, RulesState> {
@@ -96,7 +96,7 @@ class Rules extends Component<RulesProps, RulesState> {
         <div className={classes.DrawerContainer}>
           <RulesFormComponent 
             closeDrawer={(status) => this.closeDrawer(status)}
-            addToRulesList={(deviceData) => this.props.onAddToRulesList(deviceData)}
+            addToRulesList={(rulesData) => this.props.onAddToRulesList(rulesData)}
             cancleForm={this.toggleRulesDrawer} />
         </div>
       </Drawer>

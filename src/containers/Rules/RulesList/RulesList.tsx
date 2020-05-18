@@ -33,7 +33,7 @@ class RulesListComponent extends Component<
   handleRulesListDeletion = (event: React.MouseEvent, rulesList: any) => {
     const dupRulesListInfo = [...this.props.rulesListInfo];
     const updatedRulesListInfo = dupRulesListInfo.filter(
-      rulesListData => !rulesList.includes(rulesListData.ruleName)
+      rulesListData => !rulesList.includes(rulesListData.Name)
     );
     this.setState({
       rulesListInfo: [...updatedRulesListInfo]

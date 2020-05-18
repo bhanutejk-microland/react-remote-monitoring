@@ -1,6 +1,6 @@
 export interface RulesListModel {
-  ruleName: string;
-  ruleDescription: string;
+  Name: string;
+  Description: string;
   deviceGroup: string;
-  severityLevel: string;
+  Severity: string;
 }

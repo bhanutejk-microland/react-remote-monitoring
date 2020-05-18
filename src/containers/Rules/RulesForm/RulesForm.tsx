@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../../store/actions/index';
 import AddIcon from "@material-ui/icons/Add";
 import CancelIcon from "@material-ui/icons/Cancel";
 
@@ -14,11 +16,17 @@ interface RulesFormProps {
   closeDrawer(status: any): any;
   addToRulesList(rulesData: any): any;
   cancleForm: (event: any) => void;
+  onInitDeviceGroup: () => void;
+  onInitAllDeviceGroupDetails: () => void;
+  onAddRulesToList: (ruleListData: any) => void;
+  devicesGroup:any;
+  allDeviceGroupDetails: any;
 }
 
 interface RulesFormState {
   rulesForm: RulesFormModel;
   formIsValid: boolean;
+  dynamicPropertiesProps: Array<any>;
 }
 
 interface FormElement {
@@ -26,10 +34,13 @@ interface FormElement {
   config: FormInputModel;
 }
 
+let displayPeriodField: boolean = false;
 class RulesForm extends Component<RulesFormProps, RulesFormState> {
   constructor(props: RulesFormProps) {
     super(props);
     this.state = {
+      dynamicPropertiesProps: [],
+      // displayPeriodField: false,
       formIsValid: false,
       rulesForm: {
         ruleName: {
@@ -57,11 +68,12 @@ class RulesForm extends Component<RulesFormProps, RulesFormState> {
           touched: false
         },
         deviceGroup: {
-          elementType: "input",
+          elementType: "dropdown",
           elementConfig: {
-            label: "Device Group"
+            label: "Device Group",
+            options: []
           },
-          value: "",
+          value: '',
           validation: {
             required: true
           },
@@ -69,9 +81,10 @@ class RulesForm extends Component<RulesFormProps, RulesFormState> {
           touched: false
         },
         calculation: {
-          elementType: "input",
+          elementType: "dropdown",
           elementConfig: {
-            label: "Calculation"
+            label: "Calculation",
+            options: ['Instant','Periodic']
           },
           value: "",
           validation: {
@@ -80,10 +93,11 @@ class RulesForm extends Component<RulesFormProps, RulesFormState> {
           valid: false,
           touched: false
         },
-        conditionField: {
-          elementType: "input",
+        field: {
+          elementType: "dropdown",
           elementConfig: {
-            label: "Condition Field"
+            label: "Field",
+            options: []
           },
           value: "",
           validation: {
@@ -92,10 +106,11 @@ class RulesForm extends Component<RulesFormProps, RulesFormState> {
           valid: false,
           touched: false
         },
-        conditionOperator: {
-          elementType: "input",
+        operator: {
+          elementType: "dropdown",
           elementConfig: {
-            label: "Condition Operator"
+            label: "Operator",
+            options: ['<','<=','>=','>']
           },
           value: "",
           validation: {
@@ -104,10 +119,10 @@ class RulesForm extends Component<RulesFormProps, RulesFormState> {
           valid: false,
           touched: false
         },
-        conditionValue: {
+        rulesValue: {
           elementType: "input",
           elementConfig: {
-            label: "Condition Value"
+            label: "Value"
           },
           value: "",
           validation: {
@@ -116,20 +131,51 @@ class RulesForm extends Component<RulesFormProps, RulesFormState> {
           valid: false,
           touched: false
         },
-        severityLevel: {
-          elementType: "input",
+        severity: {
+          elementType: "dropdown",
           elementConfig: {
-            label: "Severity Level"
+            label: "Severity Level",
+            options: ['Information','Warning','Critical']
           },
           value: "",
           validation: {
             required: true
           },
           valid: false,
+          touched: false
+        },
+        aggregator: {
+          elementType: "dropdown",
+          elementConfig: {
+            label: "Aggregator",
+            options: ['Minimum', 'Maximum', 'Average']
+          },
+          value: "",
+          validation: {
+            required: true
+          },
+          valid: true,
+          touched: false
+        },
+        period: {
+          elementType: "input",
+          elementConfig: {
+            label: "Period"
+          },
+          value: "",
+          validation: {
+            required: false
+          },
+          valid: true,
           touched: false
         }
       }
     }
+  }
+
+  componentDidMount(){
+    this.props.onInitDeviceGroup();
+    this.props.onInitAllDeviceGroupDetails();
   }
 
   checkValidity = (value, rules) => {
@@ -163,6 +209,21 @@ class RulesForm extends Component<RulesFormProps, RulesFormState> {
     for (let inputIdentifier in updatedRulesForm) {
       formIsValid = updatedRulesForm[inputIdentifier].valid && formIsValid;
     }
+    
+    if(inputIdentifier === 'deviceGroup'){
+      let updatedDynamicPropertiesProps = new Array();
+      this.props.allDeviceGroupDetails.map((devicedDetail) => {
+        if (devicedDetail.id === event.target.value) {
+          updatedDynamicPropertiesProps = [...devicedDetail.dynamicProperties];
+        }
+      })
+      this.setState({
+        rulesForm: updatedRulesForm,
+        formIsValid: formIsValid,
+        dynamicPropertiesProps: [...updatedDynamicPropertiesProps]
+      });
+    }
+    
     this.setState({
       rulesForm: updatedRulesForm,
       formIsValid: formIsValid
@@ -173,29 +234,36 @@ class RulesForm extends Component<RulesFormProps, RulesFormState> {
     this.setState(prevState => ({
       formIsValid: !prevState.formIsValid
     }));
+    let periodValue:any;
+    let aggregatorValue:any;
+    let name:string = this.state.rulesForm.ruleName.value;
+    let newKey = name.replace(/ /g, "_");
+
+    if(this.state.rulesForm.calculation.value === 'Instant'){
+      periodValue = '';
+      aggregatorValue = '';
+    }else{
+      periodValue = this.state.rulesForm.period.value;
+      aggregatorValue = this.state.rulesForm.aggregator.value;
+    }
     const rulesData = {
       configType: "rules",
-      key: "default_Chiller_Temperature_High",
+      key: newKey,
       Name: this.state.rulesForm.ruleName.value,
       Description: this.state.rulesForm.ruleDesciption.value,
+      deviceGroup: this.state.rulesForm.deviceGroup.value,
       GroupId: this.state.rulesForm.deviceGroup.value,
-      Severity: this.state.rulesForm.severityLevel.value,
       AggregationWindow: this.state.rulesForm.calculation.value,
-      Fields: [this.state.rulesForm.conditionField.value]
+      Fields: [this.state.rulesForm.field.value],
+      Operator: this.state.rulesForm.operator.value,
+      Value: this.state.rulesForm.rulesValue.value,
+      Severity: this.state.rulesForm.severity.value,
+      Period: periodValue,
+      Aggregator: aggregatorValue
     }
-    axios.post("http://localhost:3000/api/rules/add", rulesData)
-    .then(response => {
-      if(response.status === 200){
-        this.props.closeDrawer([200, "Rule added successfully!"]);
-        const newRulesData = {
-          ruleName: rulesData.Name,
-          ruleDescription: rulesData.Description,
-          deviceGroup: rulesData.GroupId,
-          severityLevel: rulesData.Severity
-        }
-        this.props.addToRulesList(newRulesData)
-      }
-    });
+
+    this.props.addToRulesList(rulesData);
+    this.props.closeDrawer([200, "Rule added successfully!"]);
   }
 
   renderForm = () => {
@@ -207,11 +275,33 @@ class RulesForm extends Component<RulesFormProps, RulesFormState> {
       };
       formElementsArray.push(formElement);
     }
+    const deviceGroupArray = new Array;
+    this.props.devicesGroup.map(device => {
+      deviceGroupArray.push(device.groupName);
+    });
+
+    if(this.state.rulesForm.calculation.value === 'Instant' || this.state.rulesForm.calculation.value === '' ){
+      formElementsArray.splice(-2,2);
+    }else{ 
+      formElementsArray;
+    }
 
     let form = (
       <form className={classes.DeviceFormContainer}>
         {formElementsArray.map(formElement => {
-          return (
+          let options = new Array;
+          if(formElement.config.elementType === 'dropdown'){
+            if(formElement.config.elementConfig.label === 'Device Group'){
+              options = [...deviceGroupArray];
+            }else if(formElement.config.elementConfig.label === 'Field'){
+              options = [...this.state.dynamicPropertiesProps];
+            }else{
+              options = [...this.state.rulesForm[formElement.id].elementConfig.options]
+            }
+          }         
+
+          return(
+            formElement.config.elementType === 'input' ? 
             <div key={formElement.id} className={classes.DeviceFormContent}>
               <Input
                 elementType={formElement.config.elementType}
@@ -224,9 +314,23 @@ class RulesForm extends Component<RulesFormProps, RulesFormState> {
                   this.inputChangedHandler(event, formElement.id)
                 }
               />
+            </div> :
+            <div key={formElement.id} className={classes.DeviceFormContent}>
+              <Input
+                elementType={formElement.config.elementType}
+                elementConfig={formElement.config.elementConfig}
+                value={formElement.config.value}
+                invalid={!formElement.config.valid}
+                shouldValidate={formElement.config.validation}
+                touched={formElement.config.touched}
+                options={options}
+                changed={event =>
+                  this.inputChangedHandler(event, formElement.id)
+                }
+              />
             </div>
-          );
-        })}
+            );
+          })}
         <div className={classes.BtnGroup}>
           <Button clicked={this.props.cancleForm} btnType="default" disabled={false} icon={<CancelIcon />}>
             CANCEL
@@ -256,4 +360,18 @@ class RulesForm extends Component<RulesFormProps, RulesFormState> {
   }
 }
 
-export default RulesForm;
+const mapStateToProps = state => {
+  return{
+    devicesGroup : state.assetDevicesGroup.deviceGroupList,
+    allDeviceGroupDetails : state.assetDevicesGroup.allDeviceGroupDetails
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onInitDeviceGroup: () => dispatch(actions.initDeviceGroupList()),
+    onInitAllDeviceGroupDetails: () => dispatch(actions.initAllDeviceGroupDetails())
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(RulesForm);
