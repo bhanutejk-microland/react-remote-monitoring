@@ -14,7 +14,10 @@ class GaugeChart extends Component{
         axis.min = this.props.property.minimum;
         axis.max = this.props.property.maximum;
         axis.strictMinMax = true;
-        axis.renderer.labels.template.dy = -20;
+        axis.renderer.labels.template.dx = -80;
+        axis.renderer.labels.template.dy = -80;
+        //axis.renderer.inside = true;
+        axis.renderer.maxLabelPosition = 0.99;
         // Set inner radius
         chart.innerRadius = 70;
         chart.radius = 30;
@@ -24,14 +27,14 @@ class GaugeChart extends Component{
         range.value = 0;
         range.endValue = 50;
         range.axisFill.fillOpacity = 0.6;
-        range.axisFill.fill = am4core.color("#009900");
+        range.axisFill.fill = am4core.color("#4ed504");
         range.axisFill.zIndex = - 1;
 
         let range2 = axis.axisRanges.create();
         range2.value = 50;
         range2.endValue = 70;
         range2.axisFill.fillOpacity = 0.6;
-        range2.axisFill.fill = am4core.color("#ffa000");
+        range2.axisFill.fill = am4core.color("#fff20b");
         range2.axisFill.zIndex = - 1;
 
         let range3 = axis.axisRanges.create();

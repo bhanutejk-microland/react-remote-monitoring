@@ -52,11 +52,6 @@ let deviceId:string;
 let toStartInterval:any;
 let fromTimeStamp:any;
 let toTimeStamp:any;
-// let today = new Date();
-// let todayStartingTime = today.toDateString();
-// let todayCurrentTime = today.toString();
-// fromTimeStamp = Date.parse(todayStartingTime);
-// toTimeStamp = Date.parse(todayCurrentTime);
 
 class FaultClassification extends Component<FaultClassificationProps> {
   constructor(props: FaultClassificationProps) {
