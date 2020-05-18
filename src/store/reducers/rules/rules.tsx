@@ -8,10 +8,10 @@ const setRules = (state, action) => {
   const newRulesList = new Array();
   action.rules.map(rule => {
     newRulesList.push({
-      ruleName: "" + rule.Name,
-      ruleDescription: "" + rule.Description,
+      Name: "" + rule.Name,
+      Description: "" + rule.Description,
       deviceGroup: "" + rule.GroupId,
-      severityLevel: "" + rule.Severity
+      Severity: "" + rule.Severity
     });
   });
   return { rules: [...newRulesList] };

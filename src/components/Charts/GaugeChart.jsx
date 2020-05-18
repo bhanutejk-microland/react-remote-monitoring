@@ -20,29 +20,29 @@ class GaugeChart extends Component{
         axis.renderer.maxLabelPosition = 0.99;
         // Set inner radius
         chart.innerRadius = 70;
-        chart.radius = 40;
+        chart.radius = 30;
         chart.logo.__disabled = true;
         // Add ranges
         let range = axis.axisRanges.create();
         range.value = 0;
-        range.endValue = this.props.property.maximum/2;
-        range.axisFill.fillOpacity = 0.7;
+        range.endValue = 50;
+        range.axisFill.fillOpacity = 0.6;
         range.axisFill.fill = am4core.color("#4ed504");
         range.axisFill.zIndex = - 1;
 
         let range2 = axis.axisRanges.create();
-        range2.value = this.props.property.maximum/2;
-        range2.endValue = this.props.property.maximum;
-        range2.axisFill.fillOpacity = 0.7;
+        range2.value = 50;
+        range2.endValue = 70;
+        range2.axisFill.fillOpacity = 0.6;
         range2.axisFill.fill = am4core.color("#fff20b");
         range2.axisFill.zIndex = - 1;
 
-        // let range3 = axis.axisRanges.create();
-        // range3.value = 90;
-        // range3.endValue = 100;
-        // range3.axisFill.fillOpacity = 1;
-        // range3.axisFill.fill = am4core.color("#DE8F6E");
-        // range3.axisFill.zIndex = - 1;
+        let range3 = axis.axisRanges.create();
+        range3.value = 70;
+        range3.endValue = this.props.property.maximum;
+        range3.axisFill.fillOpacity = 0.6;
+        range3.axisFill.fill = am4core.color("#dd2c00");
+        range3.axisFill.zIndex = - 1;
 
         // Add hand
         let hand = chart.hands.push(new am4charts.ClockHand());
@@ -51,19 +51,19 @@ class GaugeChart extends Component{
         hand.fill = am4core.color("#2D93AD");
         hand.stroke = am4core.color("#2D93AD");
         hand.innerRadius = am4core.percent(20);
-        hand.radius = am4core.percent(80);
+        hand.radius = 60;
         hand.startWidth = 5;
-        hand.events.on("propertychanged", function(ev) {
-            range.endValue = ev.target.value;
-            range2.value = ev.target.value;
-            axis.invalidate();
-        });
+        // hand.events.on("propertychanged", function(ev) {
+        //     range.endValue = ev.target.value;
+        //     range3.value = ev.target.value;
+        //     axis.invalidate();
+        // });
 
         // Add label
         let label = chart.radarContainer.createChild(am4core.Label);
         label.isMeasured = false;
         label.fontSize = 20;
-        label.x = 0;
+        label.x = am4core.percent(50);
         label.y = 20;
         label.horizontalCenter = "middle";
         label.verticalCenter = "top";

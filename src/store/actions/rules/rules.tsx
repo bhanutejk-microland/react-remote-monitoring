@@ -25,6 +25,9 @@ export const setAddToRulesList = (rule) => {
 
 export const addToRulesList = (rule) => {
   return dispatch => {
-    dispatch(setAddToRulesList(rule));
+    axios.post("api/rules/add",rule).then(response => {
+      console.log(response.data);
+      dispatch(setAddToRulesList(rule));
+    })
   }
 }
