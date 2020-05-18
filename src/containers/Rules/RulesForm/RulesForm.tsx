@@ -27,7 +27,6 @@ interface RulesFormState {
   rulesForm: RulesFormModel;
   formIsValid: boolean;
   dynamicPropertiesProps: Array<any>;
-  // displayPeriodField: boolean;
 }
 
 interface FormElement {
@@ -145,6 +144,19 @@ class RulesForm extends Component<RulesFormProps, RulesFormState> {
           valid: false,
           touched: false
         },
+        aggregator: {
+          elementType: "dropdown",
+          elementConfig: {
+            label: "Aggregator",
+            options: ['Minimum', 'Maximum', 'Average']
+          },
+          value: "",
+          validation: {
+            required: true
+          },
+          valid: true,
+          touched: false
+        },
         period: {
           elementType: "input",
           elementConfig: {
@@ -223,10 +235,13 @@ class RulesForm extends Component<RulesFormProps, RulesFormState> {
       formIsValid: !prevState.formIsValid
     }));
     let periodValue:any;
+    let aggregatorValue:any;
     if(this.state.rulesForm.calculation.value === 'Instant'){
       periodValue = '';
+      aggregatorValue = '';
     }else{
       periodValue = this.state.rulesForm.period.value;
+      aggregatorValue = this.state.rulesForm.aggregator.value;
     }
     const rulesData = {
       configType: "rules",
@@ -239,7 +254,8 @@ class RulesForm extends Component<RulesFormProps, RulesFormState> {
       Operator: this.state.rulesForm.operator.value,
       Value: this.state.rulesForm.rulesValue.value,
       Severity: this.state.rulesForm.severity.value,
-      Period: periodValue
+      Period: periodValue,
+      Aggregator: aggregatorValue
     }
 
     this.props.addToRulesList(rulesData);
@@ -260,11 +276,17 @@ class RulesForm extends Component<RulesFormProps, RulesFormState> {
       deviceGroupArray.push(device.groupName);
     });
 
+    if(this.state.rulesForm.calculation.value === 'Instant' || this.state.rulesForm.calculation.value === '' ){
+      formElementsArray.splice(-2,2);
+    }else{ 
+      formElementsArray;
+    }
+
     let form = (
       <form className={classes.DeviceFormContainer}>
         {formElementsArray.map(formElement => {
-          if(formElement.config.elementType === 'dropdown'){            
-            let options = new Array;
+          let options = new Array;
+          if(formElement.config.elementType === 'dropdown'){
             if(formElement.config.elementConfig.label === 'Device Group'){
               options = [...deviceGroupArray];
             }else if(formElement.config.elementConfig.label === 'Field'){
@@ -272,61 +294,39 @@ class RulesForm extends Component<RulesFormProps, RulesFormState> {
             }else{
               options = [...this.state.rulesForm[formElement.id].elementConfig.options]
             }
-            return (
-              <div key={formElement.id} className={classes.DeviceFormContent}>
-                <Input
-                  elementType={formElement.config.elementType}
-                  elementConfig={formElement.config.elementConfig}
-                  value={formElement.config.value}
-                  invalid={!formElement.config.valid}
-                  shouldValidate={formElement.config.validation}
-                  touched={formElement.config.touched}
-                  options={options}
-                  changed={event =>
-                    this.inputChangedHandler(event, formElement.id)
-                  }
-                />
-              </div>
+          }         
+
+          return(
+            formElement.config.elementType === 'input' ? 
+            <div key={formElement.id} className={classes.DeviceFormContent}>
+              <Input
+                elementType={formElement.config.elementType}
+                elementConfig={formElement.config.elementConfig}
+                value={formElement.config.value}
+                invalid={!formElement.config.valid}
+                shouldValidate={formElement.config.validation}
+                touched={formElement.config.touched}
+                changed={event =>
+                  this.inputChangedHandler(event, formElement.id)
+                }
+              />
+            </div> :
+            <div key={formElement.id} className={classes.DeviceFormContent}>
+              <Input
+                elementType={formElement.config.elementType}
+                elementConfig={formElement.config.elementConfig}
+                value={formElement.config.value}
+                invalid={!formElement.config.valid}
+                shouldValidate={formElement.config.validation}
+                touched={formElement.config.touched}
+                options={options}
+                changed={event =>
+                  this.inputChangedHandler(event, formElement.id)
+                }
+              />
+            </div>
             );
-          }else{
-            if(formElement.id === 'period'){
-              if(this.state.rulesForm.calculation.value === 'Periodic'){
-                return (
-                  <div key={formElement.id} className={classes.DeviceFormContent}>
-                    <Input
-                      elementType={formElement.config.elementType}
-                      elementConfig={formElement.config.elementConfig}
-                      value={formElement.config.value}
-                      invalid={!formElement.config.valid}
-                      shouldValidate={formElement.config.validation}
-                      touched={formElement.config.touched}
-                      changed={event =>
-                        this.inputChangedHandler(event, formElement.id)
-                      }
-                    />
-                  </div>
-                );
-              }              
-            }else{
-              return (
-                <div key={formElement.id} className={classes.DeviceFormContent}>
-                  <Input
-                    elementType={formElement.config.elementType}
-                    elementConfig={formElement.config.elementConfig}
-                    value={formElement.config.value}
-                    invalid={!formElement.config.valid}
-                    shouldValidate={formElement.config.validation}
-                    touched={formElement.config.touched}
-                    changed={event =>
-                      this.inputChangedHandler(event, formElement.id)
-                    }
-                  />
-                </div>
-              );
-            }
-          }
-          
-        })}
+          })}
         <div className={classes.BtnGroup}>
           <Button clicked={this.props.cancleForm} btnType="default" disabled={false} icon={<CancelIcon />}>
             CANCEL

@@ -36,7 +36,7 @@ const rulesListInfoHeaders = [
   { id: "ruleName", numeric: false, disablePadding: false, label: "RULE NAME" },
   { id: "ruleDescription", numeric: false, disablePadding: false, label: "RULE DESCRIPTION" },
   { id: "deviceGroup", numeric: false, disablePadding: false, label: "DEVICE GROUP" },
-  { id: "severityLevel", numeric: false, disablePadding: false, label: "DEVERITY LEVEL" }
+  { id: "severityLevel", numeric: false, disablePadding: false, label: "SEVERITY LEVEL" }
 ];
 
 class Rules extends Component<RulesProps, RulesState> {

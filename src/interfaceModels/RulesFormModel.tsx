@@ -11,5 +11,6 @@ export interface RulesFormModel {
   operator: FormDropdownModel;
   rulesValue: FormInputModel;
   severity: FormDropdownModel;
+  aggregator: FormDropdownModel;
   period: FormInputModel;
 }
