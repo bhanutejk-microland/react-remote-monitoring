@@ -236,6 +236,9 @@ class RulesForm extends Component<RulesFormProps, RulesFormState> {
     }));
     let periodValue:any;
     let aggregatorValue:any;
+    let name:string = this.state.rulesForm.ruleName.value;
+    let newKey = name.replace(/ /g, "_");
+
     if(this.state.rulesForm.calculation.value === 'Instant'){
       periodValue = '';
       aggregatorValue = '';
@@ -245,12 +248,13 @@ class RulesForm extends Component<RulesFormProps, RulesFormState> {
     }
     const rulesData = {
       configType: "rules",
-      key: "default_Chiller_Temperature_High",
+      key: newKey,
       Name: this.state.rulesForm.ruleName.value,
       Description: this.state.rulesForm.ruleDesciption.value,
-      DeviceGroup: this.state.rulesForm.deviceGroup.value,
-      Calculation: this.state.rulesForm.calculation.value,
-      Field: this.state.rulesForm.field.value,
+      deviceGroup: this.state.rulesForm.deviceGroup.value,
+      GroupId: this.state.rulesForm.deviceGroup.value,
+      AggregationWindow: this.state.rulesForm.calculation.value,
+      Fields: [this.state.rulesForm.field.value],
       Operator: this.state.rulesForm.operator.value,
       Value: this.state.rulesForm.rulesValue.value,
       Severity: this.state.rulesForm.severity.value,

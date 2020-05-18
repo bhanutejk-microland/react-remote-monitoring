@@ -33,10 +33,10 @@ function Alert(props: AlertProps) {
 }
 
 const rulesListInfoHeaders = [
-  { id: "ruleName", numeric: false, disablePadding: false, label: "RULE NAME" },
-  { id: "ruleDescription", numeric: false, disablePadding: false, label: "RULE DESCRIPTION" },
+  { id: "Name", numeric: false, disablePadding: false, label: "RULE NAME" },
+  { id: "Description", numeric: false, disablePadding: false, label: "RULE DESCRIPTION" },
   { id: "deviceGroup", numeric: false, disablePadding: false, label: "DEVICE GROUP" },
-  { id: "severityLevel", numeric: false, disablePadding: false, label: "SEVERITY LEVEL" }
+  { id: "Severity", numeric: false, disablePadding: false, label: "SEVERITY LEVEL" }
 ];
 
 class Rules extends Component<RulesProps, RulesState> {
