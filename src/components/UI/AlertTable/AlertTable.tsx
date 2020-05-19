@@ -24,7 +24,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEdit, faChartPie, faChartLine } from "@fortawesome/free-solid-svg-icons";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 // import Button from "../Button/Button";
@@ -224,6 +224,14 @@ const useStyles = makeStyles((theme: Theme) =>
       position: "absolute",
       top: 20,
       width: 1
+    },
+    buttonStyle: {
+      margin: "0px 3px"
+    },
+    fontIcon: {
+      margin: "0px 3px",
+      cursor: "pointer",
+      border: "1px solid #000"
     }
   })
 );
@@ -232,12 +240,13 @@ interface TableProps {
   headerCells: HeadCell[];
   dataCells: any;
   uniqueCol: string;
-  renderTelemetry: (deviceId: any) => void;
+  renderTelemetry: (assetId: any) => void;
+  renderAlertData: (event: any,row: any) => void;
   defaultRowText: string;
 }
 
 export default function EnhancedTable(props: TableProps) {
-  const { headerCells, dataCells, uniqueCol, renderTelemetry, defaultRowText } = props;
+  const { headerCells, dataCells, uniqueCol, renderTelemetry, renderAlertData, defaultRowText } = props;
 
   const classes = useStyles();
   const [order, setOrder] = React.useState<Order>("asc");
@@ -366,9 +375,10 @@ export default function EnhancedTable(props: TableProps) {
                     >
                       View
                     </Button> */}
-                    <Button variant="contained" color="primary" onClick={() => renderTelemetry(row['assetId'])}>
-                      View
-                    </Button>
+                      <FontAwesomeIcon border={true} className={classes.fontIcon}  icon={faEdit} size="1x" onClick={(event) => renderAlertData(event,row)}/>
+                    
+                      <FontAwesomeIcon border={true} className={classes.fontIcon} icon={faChartLine} size="1x" onClick={() => renderTelemetry(row['assetId'])} />
+                 
                   </TableCell>
                 </TableRow>
               );
