@@ -39,6 +39,12 @@ class AnomalyBulletChart extends Component {
     // Add data
     chart.data = chartData;
 
+    const dataValues = chartData.map(obj => {
+      return obj.value;
+    })
+
+
+
     // Create axes
     var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
     dateAxis.renderer.labels.template.location = 0.5;
@@ -46,7 +52,7 @@ class AnomalyBulletChart extends Component {
 
     var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
     valueAxis.min = 0;
-    valueAxis.max = 150;
+    valueAxis.max = Math.max(...dataValues);
 
     // Create series
     function createSeries(field, name) {

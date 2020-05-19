@@ -20,9 +20,11 @@ interface AssetDetailsProps {
   match: any;
   assets: any;
   assetAnomalies: any;
+  assetAzureAnomalies: any;
   onInitAssetDetails: (assetId: string) => void;
   onInitAssetProperties: (assetId: string, fromTimeStamp: any, toTimeStamp: any) => void;
   onInitAssetAnomalies: (assetId: string) => void;
+  onInitAssetAzureAnomalies: (assetId: string) => void;
   onInitAssetFaultAnalyisis: (assetId: string) => void;
   assetProperties: any;
   appliedFilterDate: any;
@@ -71,11 +73,8 @@ class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
     let toTimeStamp = Date.parse(today.toString());
     this.props.onInitAssetProperties(assetId, fromTimeStamp, toTimeStamp);
 
-
-    // axios.get("api/anomaly?deviceId=" + assetId).then(response => {
-    //   this.setAssetAnamolies(response.data);
-    // });
     this.props.onInitAssetAnomalies(assetId);
+    this.props.onInitAssetAzureAnomalies(assetId);
     //this.props.onInitAssetFaultAnalyisis(assetId);
   }
 
@@ -89,39 +88,6 @@ class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
       this.props.onInitAssetProperties(assetId, fromTimeStamp, toTimeStamp);
     }
   }
-
-
-  // private setAssetAnamolies = anamolies => {
-  //   const newAnamolies = new Array();
-  //   if (Object.keys(anamolies).length !== 0) {
-  //     Object.keys(anamolies).map(anamolyKey => {
-  //       if (Object.keys(anamolies[anamolyKey].telemetry[0]).includes('expValue')) {
-  //         const telemetryData = new Array();
-  //         anamolies[anamolyKey].telemetry.map(teleData => {
-  //           const newTeleData = {
-  //             date: unixTimestampToDateTimeconverter(teleData.timestamp),
-  //             value1: teleData.tempValue,
-  //             value2: teleData.expValue,
-  //             previousDate: unixTimestampToDateTimeconverter(teleData.timestamp)
-  //           }
-  //           telemetryData.push(newTeleData)
-  //         })
-  //         newAnamolies.push([anamolyKey, telemetryData])
-  //       }
-  //     });
-  //   }
-
-  //   this.setState(prevState => ({
-  //     ...prevState,
-  //     assetDetails: {
-  //       ...prevState.assetDetails,
-  //       assetTabInfo: {
-  //         ...prevState.assetDetails.assetTabInfo,
-  //         anomaly: [...newAnamolies]
-  //       }
-  //     }
-  //   }));
-  // }
 
   private setAssetDetails = assetId => {
     const asset = this.props.assets.find((asset) => asset.assetId === assetId) || {};
@@ -149,10 +115,11 @@ class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
       anomaly: { ...this.props.assetAnomalies }
     }
     if (deviceId.includes('pump')) {
-      tabHeaderInfo = [...tabHeaderInfo, "FAULTS IDENTIFICATION", "FAULTS CLASSIFICATION"];
+      tabHeaderInfo = [...tabHeaderInfo, "AZURE ANOMALY", "FAULTS IDENTIFICATION", "FAULTS CLASSIFICATION"];
+      assetTabInfo['azureAnomaly'] = { ...this.props.assetAzureAnomalies };
       assetTabInfo['faultIdentification'] = [...this.state.assetDetails.assetTabInfo.faultIdentification];
-      assetTabInfo['faultClassification'] = [...this.state.assetDetails.assetTabInfo.faultClassification]; 
-    } 
+      assetTabInfo['faultClassification'] = [...this.state.assetDetails.assetTabInfo.faultClassification];
+    }
 
     return (
       <div style={{ marginTop: "15px", padding: "10px" }}>
@@ -231,6 +198,7 @@ const mapStateToProps = state => {
     assetDetails: state.assetDetail.asset,
     assetProperties: state.assetProperties.properties,
     assetAnomalies: state.assetAnomalies.anomalies,
+    assetAzureAnomalies: state.assetAzureAnomalies.anomalies,
     appliedFilterDate: state.assetDetailsDateFilter.appliedFilterDate
   }
 }
@@ -240,6 +208,7 @@ const mapDispatchToProps = dispatch => {
     onInitAssetDetails: (assetId) => dispatch(actions.initAssetDetails(assetId)),
     onInitAssetProperties: (assetId, fromTimeStamp, toTimeStamp) => dispatch(actions.initAssetProperties(assetId, fromTimeStamp, toTimeStamp)),
     onInitAssetAnomalies: (assetId) => dispatch(actions.initAssetAnomalies(assetId)),
+    onInitAssetAzureAnomalies: (assetId) => dispatch(actions.initAssetAzureAnomalies(assetId))
   }
 }
 
