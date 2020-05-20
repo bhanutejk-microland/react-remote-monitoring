@@ -31,6 +31,7 @@ import assetDetailsDateFilterReducer from './store/reducers/assets/assetDetailsD
 import faultIdentificationReducer from './store/reducers/assets/faultIdentification';
 import assetTrenTelemetricsReducer from './store/reducers/assets/assetTrends';
 import assetTrenTeleDetailsReducer from './store/reducers/assets/assetTrendDetails';
+import assetAzureAnomaliesReducer from './store/reducers/assets/azureAnomaly';
 
 const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] as typeof compose || compose;
 
@@ -57,7 +58,8 @@ const rootReducer = combineReducers({
   assetDetailsDateFilter: assetDetailsDateFilterReducer,
   faultIdentification: faultIdentificationReducer,
   assetTrenTelemetrics: assetTrenTelemetricsReducer,
-  assetTrenTeleDetails: assetTrenTeleDetailsReducer
+  assetTrenTeleDetails: assetTrenTeleDetailsReducer,
+  assetAzureAnomalies: assetAzureAnomaliesReducer
 });
 
 const store = createStore(rootReducer, composeEnhancers(

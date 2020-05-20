@@ -157,16 +157,16 @@ export default function FullWidthTabs(props: TabProps) {
           aria-label="full width tabs example"
         >
           {
-          tabHeaderInfo.map((tabHeader, index) => {
-            return (
-              <Tab
-                className={value === index ? cssClasses.SelectedTab : ""}
-                label={tabHeader}
-                {...a11yProps(index)}
-                key={"tabHeaders" + index}
-              />
-            );
-          })}
+            tabHeaderInfo.map((tabHeader, index) => {
+              return (
+                <Tab
+                  className={value === index ? cssClasses.SelectedTab : ""}
+                  label={tabHeader}
+                  {...a11yProps(index)}
+                  key={"tabHeaders" + index}
+                />
+              );
+            })}
           />
         </Tabs>
       </AppBar>
@@ -189,7 +189,7 @@ export default function FullWidthTabs(props: TabProps) {
                 <TrendsComponent />
               </TabPanel>
             );
-          } else if(tabData === "anomaly") {
+          } else if (tabData === "anomaly" || tabData === "azureAnomaly") {
             return renderAnamolyData(assetTabInfo[tabData], index);
             // return (
             //   <TabPanel
@@ -201,8 +201,8 @@ export default function FullWidthTabs(props: TabProps) {
             //     ITEM {index}
             //   </TabPanel>
             // );
-          }else if(tabData === "faultClassification"){
-            return(
+          } else if (tabData === "faultClassification") {
+            return (
               <TabPanel
                 value={value}
                 index={index}
@@ -210,10 +210,10 @@ export default function FullWidthTabs(props: TabProps) {
                 key={"tabPanel" + index}
               >
                 <FaultClassification assetId={assetId} configType={'FaultClassification'} />
-              </TabPanel> 
+              </TabPanel>
             )
-          }else if(tabData === "faultIdentification"){
-            return(
+          } else if (tabData === "faultIdentification") {
+            return (
               <TabPanel
                 value={value}
                 index={index}

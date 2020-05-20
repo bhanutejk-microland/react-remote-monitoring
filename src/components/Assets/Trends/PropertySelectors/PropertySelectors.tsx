@@ -29,27 +29,3 @@ class PropertySelectors extends Component<PropertySelectorsProps, PropertySelect
 }
 
 export default PropertySelectors;
-
-// import React, { FunctionComponent } from 'react';
-// import PropertySelector from './PropertySelector';
-
-
-// interface PropertySelectorsProps {
-//   propertyList: any
-//   deletePropertySelector: (property: any) => void;
-// }
-
-// const PropertySelectors: FunctionComponent<PropertySelectorsProps> = ({
-//   propertyList,
-//   deletePropertySelector
-// }) => {
-//   return (
-//     <div>
-//       {propertyList.map(property => {
-//         return <PropertySelector key={property} propertyName={property} deletePropertySelector={deletePropertySelector}/>
-//       })}
-//     </div>
-//   );
-// }
-
-// export default PropertySelectors;

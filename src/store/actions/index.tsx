@@ -15,6 +15,7 @@ export { initFilterInfo } from './filters/filters';
 export { applyFilterChanges } from './filters/appliedFilters';
 export { initAssetIndividualTeleProps } from './assets/assetTrends';
 export { initAssetIndividualTeleDetails } from './assets/assetTrendDetails';
+export { initAssetAzureAnomalies } from './assets/azureAnomaly';
 export {
   initKpiTotalAssetsInfo,
   initKpiTotalActiveInfo,
