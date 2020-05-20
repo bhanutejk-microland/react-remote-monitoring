@@ -80,8 +80,8 @@ class DeviceForm extends Component<DeviceFormProps, DeviceFormState > {
       <div className={classes.root}>
         <AppBar position="static">
           <Tabs value={this.state.value} onChange={this.handleChange} aria-label="simple tabs example">
-            <Tab label="Add Device" {...a11yProps(0)} />
-            <Tab label="Add Device Group" {...a11yProps(1)} />
+            <Tab label="Add Asset" {...a11yProps(0)} />
+            <Tab label="Add Asset Group" {...a11yProps(1)} />
           </Tabs>
         </AppBar>
         <TabPanel value={this.state.value} index={0}>

@@ -11,5 +11,5 @@ export interface DeviceFormModel {
   // propertyDescription: FormInputModel;
   // type: FormInputModel;
   // firmWare: FormInputModel;
-  createdAt: FormInputModel;
+  // createdAt: FormInputModel;
 }
