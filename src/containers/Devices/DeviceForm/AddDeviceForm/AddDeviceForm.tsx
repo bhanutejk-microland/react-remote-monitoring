@@ -57,7 +57,7 @@ class AddDeviceForm extends Component<AddDeviceFormProps,AddDeviceFormState>{
               deviceName: {
                 elementType: "input",
                 elementConfig: {
-                  label: "Device Name"
+                  label: "Asset Name"
                 },
                 value: "",
                 validation: {
@@ -69,7 +69,7 @@ class AddDeviceForm extends Component<AddDeviceFormProps,AddDeviceFormState>{
               deviceId: {
                 elementType: "input",
                 elementConfig: {
-                  label: "Device ID"
+                  label: "Asset ID"
                 },
                 value: "",
                 validation: {
@@ -114,18 +114,18 @@ class AddDeviceForm extends Component<AddDeviceFormProps,AddDeviceFormState>{
                 valid: false,
                 touched: false
               },
-              createdAt: {
-                elementType: "",
-                elementConfig: {
-                  label: "Created At"
-                },
-                value: "",
-                validation: {
-                  required: true
-                },
-                valid: false,
-                touched: false
-              }
+              // createdAt: {
+              //   elementType: "",
+              //   elementConfig: {
+              //     label: "Created At"
+              //   },
+              //   value: "",
+              //   validation: {
+              //     required: true
+              //   },
+              //   valid: false,
+              //   touched: false
+              // }
             },
           }
     }
@@ -337,7 +337,7 @@ class AddDeviceForm extends Component<AddDeviceFormProps,AddDeviceFormState>{
             })}
             <div className={classes.DeviceFormContent}>
               <FormControl fullWidth>
-                <InputLabel id="deviceGroup-select-label">Device Group</InputLabel>
+                <InputLabel id="deviceGroup-select-label">Asset Group</InputLabel>
                 <Select
                   labelId="deviceGroup-select-label"
                   id="deviceGroup-select"

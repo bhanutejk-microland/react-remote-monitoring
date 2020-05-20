@@ -5,7 +5,6 @@ import TextField from '@material-ui/core/TextField';
 import Grid from "@material-ui/core/Grid";
 import Input from '../../../../components/UI/Input/Input';
 import Button from '../../../../components/UI/Button/Button';
-import axios from '../../../../axios';
 import { connect } from 'react-redux';
 import * as actions from '../../../../store/actions/index';
 import { unixTimestampToDateTimeconverter } from '../../../../utilities/timeStampConverter';
@@ -50,7 +49,7 @@ class AddDeviceGroupForm extends Component<AddDeviceGroupFormProps,AddDeviceGrou
                 deviceGroupName: {
                     elementType: "input",
                     elementConfig: {
-                    label: "Device Group Name"
+                    label: "Device Asset Name"
                     },
                     value: "",
                     validation: {
@@ -62,7 +61,7 @@ class AddDeviceGroupForm extends Component<AddDeviceGroupFormProps,AddDeviceGrou
                 deviceGroupId: {
                     elementType: "input",
                     elementConfig: {
-                    label: "Device Group ID"
+                    label: "Asset Group ID"
                     },
                     value: "",
                     validation: {
