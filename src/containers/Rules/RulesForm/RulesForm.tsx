@@ -70,7 +70,7 @@ class RulesForm extends Component<RulesFormProps, RulesFormState> {
         deviceGroup: {
           elementType: "dropdown",
           elementConfig: {
-            label: "Device Group",
+            label: "Asset Group",
             options: []
           },
           value: '',
@@ -291,7 +291,7 @@ class RulesForm extends Component<RulesFormProps, RulesFormState> {
         {formElementsArray.map(formElement => {
           let options = new Array;
           if(formElement.config.elementType === 'dropdown'){
-            if(formElement.config.elementConfig.label === 'Device Group'){
+            if(formElement.config.elementConfig.label === 'Asset Group'){
               options = [...deviceGroupArray];
             }else if(formElement.config.elementConfig.label === 'Field'){
               options = [...this.state.dynamicPropertiesProps];

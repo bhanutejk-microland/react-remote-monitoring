@@ -42,7 +42,7 @@ class Trends extends Component<TrendsProps, TrendsState> {
         devices: {
           elementType: "dropdown",
           elementConfig: {
-            label: "DEVICES",
+            label: "ASSETS",
             options: []
           },
           value: "",
@@ -216,7 +216,7 @@ class Trends extends Component<TrendsProps, TrendsState> {
       <form className={classes.PropertyForm}>
         {formElementsArray.map(formElement => {
           let options = new Array;
-          if (formElement.config.elementConfig.label === 'DEVICES') {
+          if (formElement.config.elementConfig.label === 'ASSETS') {
             options = this.props.devicesWithTeleProps.map((device) => { return device.assetId })
           } else {
             options = [...this.state.deviceTeleProps]

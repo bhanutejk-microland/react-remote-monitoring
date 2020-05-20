@@ -6,7 +6,8 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import Input from '../../../../components/UI/Input/Input';
 import { connect } from 'react-redux';
 import * as actions from '../../../../store/actions/index';
-import Button from '../../../../components/UI/Button/Button';import InputLabel from '@material-ui/core/InputLabel';
+import Button from '../../../../components/UI/Button/Button';
+import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -293,7 +294,7 @@ class AddDeviceForm extends Component<AddDeviceFormProps,AddDeviceFormState>{
             deviceFormData : this.state.deviceFormData.concat(newDeviceFormData)
         },
         () => this.props.addDeviceFormDataDispatcher(this.state.deviceFormData))
-        this.props.closeDrawer([200, "Device added successfully!"]);
+        this.props.closeDrawer([200, "Asset added successfully!"]);
         const newDeviceData = {
           deviceId: newDeviceFormData.data.id,
           url: '',
@@ -393,7 +394,7 @@ class AddDeviceForm extends Component<AddDeviceFormProps,AddDeviceFormState>{
                 icon={<AddIcon />}
                 clicked={this.addDeviceHandler}
               >
-                Add Device
+                Add Asset
               </Button>
             </div>
           </form>
