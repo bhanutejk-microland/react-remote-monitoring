@@ -49,7 +49,7 @@ class AddDeviceGroupForm extends Component<AddDeviceGroupFormProps,AddDeviceGrou
                 deviceGroupName: {
                     elementType: "input",
                     elementConfig: {
-                    label: "Device Asset Name"
+                    label: "Asset Name"
                     },
                     value: "",
                     validation: {
@@ -174,7 +174,7 @@ class AddDeviceGroupForm extends Component<AddDeviceGroupFormProps,AddDeviceGrou
             deviceGroupFormData : this.state.deviceGroupFormData.concat(deviceGroupData)
         },
         () => this.props.addDeviceGroupFormDataDispatcher(this.state.deviceGroupFormData))
-        this.props.closeDrawer([200, "Device added successfully!"]);
+        this.props.closeDrawer([200, "Asset added successfully!"]);
       }
     
 
@@ -278,7 +278,7 @@ class AddDeviceGroupForm extends Component<AddDeviceGroupFormProps,AddDeviceGrou
                 icon={<AddIcon />}
                 clicked={this.addDeviceGroupHandler}
               >
-                Add Device Group
+                Add Asset Group
               </Button>
             </div>
           </form>

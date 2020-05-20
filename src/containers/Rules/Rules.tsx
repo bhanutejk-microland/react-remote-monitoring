@@ -35,7 +35,7 @@ function Alert(props: AlertProps) {
 const rulesListInfoHeaders = [
   { id: "Name", numeric: false, disablePadding: false, label: "RULE NAME" },
   { id: "Description", numeric: false, disablePadding: false, label: "RULE DESCRIPTION" },
-  { id: "deviceGroup", numeric: false, disablePadding: false, label: "DEVICE GROUP" },
+  { id: "deviceGroup", numeric: false, disablePadding: false, label: "ASSET GROUP" },
   { id: "Severity", numeric: false, disablePadding: false, label: "SEVERITY LEVEL" }
 ];
 
