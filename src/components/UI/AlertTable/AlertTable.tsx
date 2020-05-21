@@ -375,10 +375,8 @@ export default function EnhancedTable(props: TableProps) {
                     >
                       View
                     </Button> */}
-                      <FontAwesomeIcon border={true} className={classes.fontIcon}  icon={faEdit} size="1x" onClick={(event) => renderAlertData(event,row)}/>
-                    
-                      <FontAwesomeIcon border={true} className={classes.fontIcon} icon={faChartLine} size="1x" onClick={() => renderTelemetry(row['assetId'])} />
-                 
+                      <FontAwesomeIcon title="Edit Status" border={true} className={classes.fontIcon}  icon={faEdit} size="1x" onClick={(event) => renderAlertData(event,row)}/>                    
+                      <FontAwesomeIcon title="View Telemetry" border={true} className={classes.fontIcon} icon={faChartLine} size="1x" onClick={() => renderTelemetry(row['assetId'])} />
                   </TableCell>
                 </TableRow>
               );
