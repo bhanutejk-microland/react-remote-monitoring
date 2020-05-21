@@ -3,6 +3,7 @@ import { DeviceFormModel } from '../../../../interfaceModels/DeviceFormModel';
 import { FormInputModel } from '../../../../interfaceModels/FormInputModel';
 import AddIcon from "@material-ui/icons/Add";
 import CancelIcon from "@material-ui/icons/Cancel";
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Input from '../../../../components/UI/Input/Input';
 import { connect } from 'react-redux';
 import * as actions from '../../../../store/actions/index';
@@ -29,6 +30,8 @@ interface AddDeviceFormState {
     deviceForm: DeviceFormModel;
     value : number;
     formIsValid: boolean;
+    selectedFile: any;
+    text: string;
     deviceGroupValue: string;
     staticProperties: any[],    
     dynamicProperties: any[]
@@ -48,6 +51,8 @@ class AddDeviceForm extends Component<AddDeviceFormProps,AddDeviceFormState>{
         this.state = {
             value: 0, 
             formIsValid: false,
+            selectedFile: null,
+            text: '',
             deviceGroupValue: "",
             staticProperties: [],
             dynamicProperties: [],
@@ -254,6 +259,13 @@ class AddDeviceForm extends Component<AddDeviceFormProps,AddDeviceFormState>{
         }
     }
 
+    onChangeUploadFileHandler = (event) => {
+      this.setState({
+        selectedFile: event.target.files[0],
+        text: event.target.files[0].name
+      })
+    }
+
     addDeviceHandler = () => {
         this.setState(prevState => ({
           formIsValid: !prevState.formIsValid
@@ -273,6 +285,7 @@ class AddDeviceForm extends Component<AddDeviceFormProps,AddDeviceFormState>{
                 longitude: this.state.deviceForm.longitude.value
               }
             ],
+            deviceImageFile: this.state.selectedFile,
             // properties: [
             //   {
             //     // makeNmodel: this.state.deviceForm.makeNModel.value,
@@ -289,21 +302,21 @@ class AddDeviceForm extends Component<AddDeviceFormProps,AddDeviceFormState>{
             teleProperties: [...this.state.dynamicPropertiesValues]
           }
         }
-
-        this.setState({
-            deviceFormData : this.state.deviceFormData.concat(newDeviceFormData)
-        },
-        () => this.props.addDeviceFormDataDispatcher(this.state.deviceFormData))
-        this.props.closeDrawer([200, "Asset added successfully!"]);
-        const newDeviceData = {
-          deviceId: newDeviceFormData.data.id,
-          url: '',
-          modelNumber: `Hitachi ${newDeviceFormData.data.displayName}`,
-          location: newDeviceFormData.data.location[0].address,
-          description: 'Pump Demo',
-          status: 'Online'
-        }
-        this.props.addToDeviceList(newDeviceData);
+        console.log(newDeviceFormData);
+        // this.setState({
+        //     deviceFormData : this.state.deviceFormData.concat(newDeviceFormData)
+        // },
+        // () => this.props.addDeviceFormDataDispatcher(this.state.deviceFormData))
+        // this.props.closeDrawer([200, "Asset added successfully!"]);
+        // const newDeviceData = {
+        //   deviceId: newDeviceFormData.data.id,
+        //   url: '',
+        //   modelNumber: `Hitachi ${newDeviceFormData.data.displayName}`,
+        //   location: newDeviceFormData.data.location[0].address,
+        //   description: 'Pump Demo',
+        //   status: 'Online'
+        // }
+        // this.props.addToDeviceList(newDeviceData);
       }
 
     renderForm = () => {
@@ -384,6 +397,14 @@ class AddDeviceForm extends Component<AddDeviceFormProps,AddDeviceFormState>{
                   </div>
                 )
               })}
+            
+            <div className={classes.DeviceFormContent}>
+              <div className={classes.UploadBtnWrapper}>
+                <button className={classes.Btn} ><CloudUploadIcon /></button>
+                <input type="file" name="myfile" onChange={(event) => this.onChangeUploadFileHandler(event)}/>
+              </div>
+              <div id="file-upload-filename">{this.state.text}</div>
+            </div>
             <div className={classes.BtnGroup}>
               <Button clicked={this.props.cancleForm} btnType="default" disabled={false} icon={<CancelIcon />}>
                 CANCEL
