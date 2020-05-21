@@ -358,7 +358,7 @@ export default function EnhancedTable(props: TableProps) {
                     {
                       enableLinkButton === false ?
                         <Button
-                          disabled={false}
+                          disabled={true}
                           btnType="primary"
                           icon={<FontAwesomeIcon icon={faEye} />}
                         >

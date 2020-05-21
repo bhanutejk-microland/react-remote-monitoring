@@ -122,54 +122,65 @@ const Asset: FunctionComponent<AssetProps> = ({ asset, location, match }) => {
         </ExpansionPanelDetails>
         <Divider />
         <ExpansionPanelActions>
-          <Chip
-            variant="outlined"
-            size="small"
-            avatar={
-              <img
-                src={asset.status === "Running" ? CircleTickIcon : DownTimeIcon}
-                width="100%"
-                style={{ backgroundColor: "#fff", marginLeft: "6px" }}
-              />
-            }
-            label={asset.status}
-            clickable
-            color="primary"
-          />
-          <Link to={`/alerts`}>
-            <Chip
-              variant="outlined"
-              size="small"
-              avatar={
-                <img
-                  src={NotificationIcon}
-                  width="100%"
-                  style={{ backgroundColor: "#fff", marginLeft: "6px" }}
-                />
-              }
-              label="Alerts"
-              clickable
-              color="primary"
-            />
-          </Link>          
-          {match.path !== "/assetDetails/:assetId" ? (
-            <Link to={`assetDetails/${match.params.assetId === undefined ? asset.assetId : match.params.assetId}`}>
+          <Grid container justify="space-between">
+            <Grid item >
               <Chip
                 variant="outlined"
                 size="small"
                 avatar={
                   <img
-                    src={ViewIcon}
+                    src={asset.status === "Running" ? CircleTickIcon : DownTimeIcon}
                     width="100%"
                     style={{ backgroundColor: "#fff", marginLeft: "6px" }}
                   />
                 }
-                label="View"
-                clickable
+                label={asset.status}
+                clickable={false}
                 color="primary"
-              />
-            </Link>
-          ) : null}
+                className={classes.ChipStatus}
+            />
+            </Grid>
+            <Grid item>
+              <Link to={`/alerts`}>
+                <Chip
+                  variant="outlined"
+                  size="small"
+                  avatar={
+                    <img
+                      src={NotificationIcon}
+                      width="100%"
+                      style={{ backgroundColor: "#fff", marginLeft: "6px" }}
+                    />
+                  }
+                  label="Alerts"
+                  clickable
+                  color="primary"
+                  className={classes.ChipStatus}
+                />
+              </Link>          
+              {match.path !== "/assetDetails/:assetId" ? (
+                <Link to={`assetDetails/${match.params.assetId === undefined ? asset.assetId : match.params.assetId}`}>
+                  <Chip
+                    variant="outlined"
+                    size="small"
+                    avatar={
+                      <img
+                        src={ViewIcon}
+                        width="100%"
+                        style={{ backgroundColor: "#fff", marginLeft: "6px" }}
+                      />
+                    }
+                    label="View"
+                    clickable
+                    color="primary"
+                    className={classes.ChipStatus}
+                  />
+                </Link>
+              ) : null}
+            </Grid>
+          </Grid>
+          
+          
         </ExpansionPanelActions>
       </ExpansionPanel>
     </Grid>

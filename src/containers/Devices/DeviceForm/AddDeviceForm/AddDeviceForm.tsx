@@ -13,6 +13,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import classes from '../../DeviceForm/DeviceForm.css';
 import TextField from '@material-ui/core/TextField';
+import { unixTimestampToDateTimeconverter } from '../../../../utilities/timeStampConverter';
 
 interface AddDeviceFormProps { 
     closeDrawer(status: any): any;
@@ -286,7 +287,9 @@ class AddDeviceForm extends Component<AddDeviceFormProps,AddDeviceFormState>{
             //   }
             // ],
             properties:[...this.state.staticPropertiesValues],
-            teleProperties: [...this.state.dynamicPropertiesValues]
+            teleProperties: [...this.state.dynamicPropertiesValues],
+            dateCreated: unixTimestampToDateTimeconverter(new Date()),
+            dateModified: unixTimestampToDateTimeconverter(new Date())
           }
         }
 
@@ -377,7 +380,7 @@ class AddDeviceForm extends Component<AddDeviceFormProps,AddDeviceFormState>{
                       <TextField 
                         id={`${index}`}
                         label={property}
-                        required
+                        disabled={true}
                         onChange={event => this.inputChangedDynamicPropertyValue(event,index,property)}
                       />
                     </FormControl>
