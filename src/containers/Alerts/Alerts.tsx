@@ -17,7 +17,7 @@ import AlertFormComponent from '../Alerts/AlertsFormComponent/AlertsFormComponen
 
 interface AlertsProps { 
   onInitAlerts: () => void;
-  onInitDeviceTelemetry: (deviceId: any) => void;
+  onInitDeviceTelemetry: (deviceId: any, field:string,fromTimeStamp:any,toTimeStamp:any) => void;
   onUpdateAlertFormData: (alertFormData: any) => void;
   alertsListInfo: any;
   deviceTelemetry: any;
@@ -39,6 +39,7 @@ const alertInfoHeaders = [
   { id: "assetId", numeric: false, disablePadding: false, label: "ASSETID" },
   { id: "alertDate", numeric: false, disablePadding: false, label: "DATETIME" },
   { id: "alertSeveriy", numeric: false, disablePadding: false, label: "SEVERITY" },
+  { id: "alertField", numeric: false, disablePadding: false, label: "FIELDS" },
   { id: "alertStatus", numeric: false, disablePadding: false, label: "STATUS" },
   { id: "alertDescription", numeric: false, disablePadding: false, label: "DESCRIPTION" }
 ];
@@ -105,7 +106,7 @@ class Alerts extends Component<AlertsProps, AlertsState> {
     this.toggleAlertDrawer(event);
   }
 
-  renderAlerts = () => {
+  renderAlerts = () => {    
     return (
       <Grid item xs={12} md={12}>
         <ExpansionPanel defaultExpanded>
@@ -126,8 +127,11 @@ class Alerts extends Component<AlertsProps, AlertsState> {
               headerCells={alertInfoHeaders}
               dataCells={this.props.alertsListInfo || []}
               uniqueCol="assetId"
-              renderTelemetry={(deviceId) =>
-                this.props.onInitDeviceTelemetry(deviceId)
+              renderTelemetry={(row) =>{ 
+                let currentTime = new Date(row['alertDate']);
+                let fromTimeStamp = currentTime.setHours(currentTime.getHours() - 1);
+                let toTimeStamp = currentTime.setHours(currentTime.getHours() + 2);
+                this.props.onInitDeviceTelemetry(row['assetId'],row['alertField'],fromTimeStamp,toTimeStamp);}
               }
               renderAlertData={(event, row) => this.fillAlertFormData(event, row)}
               defaultRowText='Loading alerts...!'
@@ -204,7 +208,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onInitAlerts: () => dispatch(actions.initAlerts()),
-    onInitDeviceTelemetry: (deviceId) => dispatch(actions.initDeviceTelemetry(deviceId)),
+    onInitDeviceTelemetry: (deviceId,field,fromTimeStamp,toTimeStamp) => dispatch(actions.initDeviceTelemetry(deviceId,field,fromTimeStamp,toTimeStamp)),
     onUpdateAlertFormData: (alertFormData) => dispatch(actions.updateAlertFormData(alertFormData))
   }
 }

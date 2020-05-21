@@ -16,8 +16,6 @@ import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -25,7 +23,8 @@ import Switch from "@material-ui/core/Switch";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEdit, faChartPie, faChartLine } from "@fortawesome/free-solid-svg-icons";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import Icon from '@material-ui/core/Icon';
+import { AccessAlarm, ThreeDRotation, Create, MultilineChart } from '@material-ui/icons';
 
 // import Button from "../Button/Button";
 import Button from '@material-ui/core/Button';
@@ -229,9 +228,12 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: "0px 3px"
     },
     fontIcon: {
-      margin: "0px 3px",
       cursor: "pointer",
-      border: "1px solid #000"
+      border: "1px solid #3f51b5",
+      background: "#3f51b5",
+      margin: "5px",
+      padding: "5px",
+      color: "#fff"
     }
   })
 );
@@ -375,8 +377,10 @@ export default function EnhancedTable(props: TableProps) {
                     >
                       View
                     </Button> */}
-                      <FontAwesomeIcon title="Edit Status" border={true} className={classes.fontIcon}  icon={faEdit} size="1x" onClick={(event) => renderAlertData(event,row)}/>                    
-                      <FontAwesomeIcon title="View Telemetry" border={true} className={classes.fontIcon} icon={faChartLine} size="1x" onClick={() => renderTelemetry(row['assetId'])} />
+                      {/* <FontAwesomeIcon title="Edit Status" border={true} className={classes.fontIcon}  icon={faEdit} size="2x" onClick={(event) => renderAlertData(event,row)}/>                    
+                      <FontAwesomeIcon title="View Telemetry" border={true} className={classes.fontIcon} icon={faChartLine} size="2x" onClick={() => renderTelemetry(row)} /> */}
+                      <Create titleAccess="Edit Alert" className={classes.fontIcon} onClick={(event) => renderAlertData(event,row)} />
+                      <MultilineChart titleAccess="View Telemetry" className={classes.fontIcon} onClick={() => renderTelemetry(row)} />
                   </TableCell>
                 </TableRow>
               );

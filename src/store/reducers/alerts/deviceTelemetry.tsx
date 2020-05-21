@@ -7,11 +7,11 @@ const initialState = {
 
 const setDeviceTelemetry = (state, action) => {
   const telemetryData = new Array();
-  if (action.telemetryData.length > 0) {
-    action.telemetryData.map( teleData => {
+  if (action.telemetryProperty.telemetryData.length > 0) {
+    action.telemetryProperty.telemetryData.map( teleData => {
       telemetryData.push({
         date: unixTimestampToOnlyDateTimeconverter(teleData.timestamp),
-        value: teleData.temperature
+        value: teleData[action.telemetryProperty.telemetryfield]
       })
     } )
   }
