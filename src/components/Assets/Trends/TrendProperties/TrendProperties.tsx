@@ -21,6 +21,7 @@ interface TrendPropertiesProps {
   trendInfo: any;
   teleProps: any;
   trendTeleValues: any;
+  appliedFilterDate: any;
 }
 
 interface TrendPropertiesState {
@@ -48,18 +49,6 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
       trendPropertyList: [],
       trendInfo: [],
       trendPropertiesForm: {
-        // whereProperty: {
-        //   elementType: "input",
-        //   elementConfig: {
-        //     label: "WHERE"
-        //   },
-        //   value: "",
-        //   validation: {
-        //     required: false
-        //   },
-        //   valid: false,
-        //   touched: false
-        // },
         measure: {
           elementType: "dropdown",
           elementConfig: {
@@ -73,19 +62,6 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
           valid: false,
           touched: false
         },
-        // splityBy: {
-        //   elementType: "dropdown",
-        //   elementConfig: {
-        //     label: "SPLIT BY",
-        //     options: ["temperature", "pressure", "humidity"]
-        //   },
-        //   value: "",
-        //   validation: {
-        //     required: true
-        //   },
-        //   valid: false,
-        //   touched: false
-        // }
       }
     }
   }
@@ -93,6 +69,13 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
   componentDidMount() {
     const currentAssetId = this.props.match.params.assetId;
     this.props.onInitAssetIndividualTeleProps(currentAssetId);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.appliedFilterDate.fromTimestamp !== prevProps.appliedFilterDate.fromTimestamp ||
+      this.props.appliedFilterDate.toTimestamp !== prevProps.appliedFilterDate.toTimestamp) {
+      this.handleToGetIndividualTeleDetails();
+    }
   }
 
   checkValidity = (value, rules) => {
@@ -165,12 +148,22 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
     this.setState({
       trendPropertyList: [...list]
     }, () => {
-      const assetTrendDetails = {
-        assetId: this.props.match.params.assetId,
-        teleProps: [...this.state.trendPropertyList]
-      }
-      this.props.onInitAssetIndividualTeleDetails(assetTrendDetails);
+      this.handleToGetIndividualTeleDetails();
     });
+  }
+
+  handleToGetIndividualTeleDetails = () => {
+    const defaultTimestamp = new Date();
+    const yesterdayTimeStamp = Math.floor(defaultTimestamp.setDate(defaultTimestamp.getDate() - 1));
+    const fromTimeStamp = this.props.appliedFilterDate.fromTimestamp !== '' ? new Date(this.props.appliedFilterDate.fromTimestamp).getTime() : yesterdayTimeStamp;
+    const toTimeStamp = this.props.appliedFilterDate.toTimestamp !== '' ? new Date(this.props.appliedFilterDate.toTimestamp).getTime() : new Date().getTime();
+    const assetTrendDetails = {
+      assetId: this.props.match.params.assetId,
+      teleProps: [...this.state.trendPropertyList],
+      fromTimeStamp,
+      toTimeStamp
+    }
+    this.props.onInitAssetIndividualTeleDetails(assetTrendDetails);
   }
 
   renderForm = () => {
@@ -237,7 +230,8 @@ const mapStateToProps = state => {
   return {
     trendInfo: state.trendsInfo.trends,
     teleProps: state.assetTrenTelemetrics.teleProps,
-    trendTeleValues: state.assetTrenTeleDetails.trendTeleValues
+    trendTeleValues: state.assetTrenTeleDetails.trendTeleValues,
+    appliedFilterDate: state.assetDetailsDateFilter.appliedFilterDate
   };
 }
 
