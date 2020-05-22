@@ -30,6 +30,8 @@ class AnalyticsElementComponent extends Component<AnalyticsElementComponentProps
                       {
                         element.property.value === 'Healthy' ?
                         (<p className={classes.statusIndicator} style={{background:"green"}}>{element.property.value}</p>) :
+                        element.property.value === 'No Fault' ? 
+                        (<p className={classes.statusIndicator} style={{background:"green"}}>{element.property.value}</p>) :
                         (<p className={classes.statusIndicator} style={{background:"red"}}>{element.property.value}</p>)
                       }
                       
