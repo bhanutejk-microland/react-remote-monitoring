@@ -1,17 +1,17 @@
 import * as actionTypes from '../actionTypes';
 import axios from '../../../axios';
 
-export const setDeviceTelemetry = (telemetryData) => {
+export const setDeviceTelemetry = (telemetryData,telemetryfield) => {
   return {
     type: actionTypes.SET_ALERT_TELEMETRY,
-    telemetryData: telemetryData
+    telemetryProperty: {telemetryData,telemetryfield}
   }
 }
 
-export const initDeviceTelemetry = (deviceId) => {
+export const initDeviceTelemetry = (deviceId,field,fromTimeStamp, toTimeStamp) => {
   return dispatch => {
-    axios.get("api/alerts/getTelemetry?deviceId=" + deviceId).then(response => {
-      dispatch(setDeviceTelemetry(response.data))
+    axios.get("api/alerts/getTelemetry?deviceId=" + deviceId+"&field="+field+"&fromTimeStamp="+fromTimeStamp+"&toTimeStamp="+toTimeStamp).then(response => {
+      dispatch(setDeviceTelemetry(response.data,field))
     })
   }
 }

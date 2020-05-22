@@ -17,7 +17,8 @@ const setAlerts = (state, action) => {
         alertStatus: alert.status,
         alertId: alert.id,
         alertDescription: alert.description,
-        partitionId: alert.PartitionId
+        partitionId: alert.PartitionId,
+        alertField: alert.field
       });
     });
   }
