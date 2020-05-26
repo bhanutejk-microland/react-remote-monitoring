@@ -8,7 +8,7 @@ const renameStatus = status => {
   if (status === "Active") {
     return "Running";
   }
-  return "Downtime";
+  return "Idle";
 };
 
 const setAssets = (state, action) => {
@@ -18,9 +18,10 @@ const setAssets = (state, action) => {
       newAssets.push({
         assetId: asset.data.id,
         url: asset.data.url,
-        modelNumber: asset.data.properties[0].makeNmodel,
+        makeNmodel: asset.data.properties[0].makeNmodel,
         location: asset.data.location[0].address,
         description: asset.data.properties[0].description,
+        deviceStatus : asset.data.properties[0].deviceStatus,
         status: renameStatus(asset.status)
       });
     });

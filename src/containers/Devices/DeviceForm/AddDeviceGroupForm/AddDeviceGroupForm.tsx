@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import AddIcon from "@material-ui/icons/Add";
 import CancelIcon from "@material-ui/icons/Cancel";
+import DeleteIcon from "@material-ui/icons/Delete";
 import TextField from '@material-ui/core/TextField';
 import Grid from "@material-ui/core/Grid";
 import Input from '../../../../components/UI/Input/Input';
@@ -72,16 +73,14 @@ class AddDeviceGroupForm extends Component<AddDeviceGroupFormProps,AddDeviceGrou
                 }
             }
         }
-        this.appendStaticInput = this.appendStaticInput.bind(this);
-        this.appendDynamicInput = this.appendDynamicInput.bind(this);
     }
 
-    appendStaticInput() {
+    appendStaticInput = () => {
         var newInput = `inputsStatic-${this.state.inputsStatic.length}`;
         this.setState(prevState => ({ inputsStatic: prevState.inputsStatic.concat([newInput]) }));
     }
   
-    appendDynamicInput() {
+    appendDynamicInput = () => {
       var newInput = `inputsDynamic-${this.state.inputsDynamic.length}`;
       this.setState(prevState => ({ inputsDynamic: prevState.inputsDynamic.concat([newInput]) }));
     }
@@ -190,7 +189,7 @@ class AddDeviceGroupForm extends Component<AddDeviceGroupFormProps,AddDeviceGrou
           <div id="staticInput">
             {this.state.inputsStatic.map((input,id) => 
               <Grid container key={input}>
-                <Grid item md={9}>
+                <Grid item md={11}>
                   <TextField 
                     onChange={event => this.inputChangedStaticValues(event,id)}
                     id={`${input}`}
@@ -198,9 +197,8 @@ class AddDeviceGroupForm extends Component<AddDeviceGroupFormProps,AddDeviceGrou
                     style={{margin: "5px 0", width : "100%"}}
                   />                    
                 </Grid>
-                <Grid item md={3} style={{alignSelf: "center", paddingLeft: "6%"}}>
-                  <Button clicked={this.deleteStaticInput(id)} btnType="primary" disabled={false} icon={<CancelIcon />} width='50%' >
-                  </Button>
+                <Grid item md={1} style={{alignSelf: "center",cursor: "pointer"}}>
+                  <DeleteIcon onClick={this.deleteStaticInput(id)} />    
                 </Grid>                                         
               </Grid>)}
           </div>
@@ -220,7 +218,7 @@ class AddDeviceGroupForm extends Component<AddDeviceGroupFormProps,AddDeviceGrou
             <div id="dynamicInput">
                 {this.state.inputsDynamic.map((input,id) =>
                   <Grid container key={input}>
-                    <Grid item md={9}>
+                    <Grid item md={11}>
                       <TextField 
                         onChange={event => this.inputChangedDynamicValues(event,id)}
                         id={`${input}`}
@@ -228,9 +226,8 @@ class AddDeviceGroupForm extends Component<AddDeviceGroupFormProps,AddDeviceGrou
                         style={{margin: "5px 0",width : "100%"}}
                       />
                     </Grid>
-                    <Grid item md={3} style={{alignSelf: "center", paddingLeft: "6%"}}>
-                      <Button clicked={this.deleteDynamicInput(id)} btnType="primary" disabled={false} icon={<CancelIcon />} width='50%'>                                            
-                      </Button>
+                    <Grid item md={1} style={{alignSelf: "center",cursor: "pointer"}}>
+                      <DeleteIcon onClick={this.deleteDynamicInput(id)} />
                     </Grid>
                   </Grid>)}
             </div>
