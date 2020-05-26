@@ -24,7 +24,6 @@ class XyComparisonChart extends Component {
         }
       })
     }
-    console.log(">>><<<<<<<<<<<<<<<>>>>>>>>>>>>>>>", propData);
     chart.data = propData
     chart.leftAxesContainer.layout = "vertical";
     let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
@@ -55,7 +54,6 @@ class XyComparisonChart extends Component {
   }
 
   addSeries = (valueY, valueAxis, chart) => {
-    console.log("???????", valueY);
     let series = new am4charts.LineSeries();
     var seriesId = chart.series.length + 1;
 
@@ -76,7 +74,6 @@ class XyComparisonChart extends Component {
   componentWillUnmount() {
     if (this.chart) {
       this.chart.dispose();
-      console.log("THIS CHART>>>>>>>", this.chart);
     }
     am4core.disposeAllCharts();
   }

@@ -27,13 +27,12 @@ class AnomalyBulletChart extends Component {
     chart.maskBullets = false;
     let chartData = [];
     if (this.props.data.length > 0) {
-      this.props.data.map((anomalyData) => {
-        chartData.push({
-          date: anomalyData.date,
-          value: anomalyData.value,
-          hideBullet: !anomalyData.showDot,
-          bulletColor: am4core.color("#c00")
-        })
+      chartData = this.props.data.map((anomalyData) => {
+        return {
+          ...anomalyData,
+          bulletColor: am4core.color("#c00"),
+          date: new Date(anomalyData.dateForms.year, anomalyData.dateForms.monthNumber, anomalyData.dateForms.day, anomalyData.dateForms.hours, anomalyData.dateForms.minutes.substr(-2))
+        }
       })
     }
     // Add data

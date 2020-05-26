@@ -46,7 +46,14 @@ class MultiLineChart extends Component {
       bullet.circle.strokeWidth = 2;
 
       // Add data pre-processor
-      series.data = props.chartData.deviceTrends || data;
+      const seriesData = props.chartData.deviceTrends.map(trends => {
+        return {
+          ...trends,
+          date: new Date(trends.dateForms.year, trends.dateForms.monthNumber, trends.dateForms.day, trends.dateForms.hours, trends.dateForms.minutes.substr(-2))
+        }
+      });
+      console.log("MULTI LINE CHART>>>>>>>>>>", seriesData);
+      series.data = seriesData || data;
       series.events.on("beforedatavalidated", function (ev) {
         var source = ev.target.data;
         var data = [];

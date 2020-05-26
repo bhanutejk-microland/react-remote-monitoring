@@ -16,15 +16,6 @@ class XyChart extends Component {
     chart.paddingRight = 20;
 
     let data = [];
-    let visits = 10;
-    for (let i = 1; i < 366; i++) {
-      visits += Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 10);
-      data.push({
-        date: new Date(2018, 0, i),
-        name: "name" + i,
-        value: visits
-      });
-    }
 
     chart.data = this.props.chartData || data;
 
