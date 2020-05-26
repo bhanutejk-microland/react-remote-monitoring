@@ -7,10 +7,7 @@ import Input from '../../../../components/UI/Input/Input';
 import { connect } from 'react-redux';
 import * as actions from '../../../../store/actions/index';
 import Button from '../../../../components/UI/Button/Button';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import classes from '../../DeviceForm/DeviceForm.css';
 import TextField from '@material-ui/core/TextField';
 import { unixTimestampToDateTimeconverter } from '../../../../utilities/timeStampConverter';
@@ -30,7 +27,6 @@ interface AddDeviceFormState {
     deviceForm: DeviceFormModel;
     value : number;
     formIsValid: boolean;
-    deviceGroupValue: string;
     staticProperties: any[],    
     dynamicProperties: any[]
     staticPropertiesValues: any[],    
@@ -49,7 +45,6 @@ class AddDeviceForm extends Component<AddDeviceFormProps,AddDeviceFormState>{
         this.state = {
             value: 0, 
             formIsValid: false,
-            deviceGroupValue: "",
             staticProperties: [],
             dynamicProperties: [],
             staticPropertiesValues: [],
@@ -116,6 +111,19 @@ class AddDeviceForm extends Component<AddDeviceFormProps,AddDeviceFormState>{
                 valid: false,
                 touched: false
               },
+              deviceGroup: {
+                elementType: "dropdown",
+                elementConfig: {
+                  label: "Asset Group",
+                  options: []
+                },
+                value: "",
+                validation: {
+                  required: true
+                },
+                valid: false,
+                touched: false
+              }
               // createdAt: {
               //   elementType: "",
               //   elementConfig: {
@@ -163,23 +171,26 @@ class AddDeviceForm extends Component<AddDeviceFormProps,AddDeviceFormState>{
         for (let inputIdentifier in updatedDeviceForm) {
           formIsValid = updatedDeviceForm[inputIdentifier].valid && formIsValid;
         }
+
+        //render deviceGroup static and dynamic properties
+        if(inputIdentifier === 'deviceGroup'){
+          let allDeviceGroupDetails = this.props.allDeviceGroupDetails;
+          let object = allDeviceGroupDetails.find(o => o.displayName === event.target.value);
+          let updatedStaticProperties = [...object.staticProperties];
+          let updatedDynamicProperties = [...object.dynamicProperties];
+          this.setState({
+            deviceForm: updatedDeviceForm,
+            formIsValid: formIsValid,
+            staticProperties: updatedStaticProperties,
+            dynamicProperties: updatedDynamicProperties
+          })
+        }
+        
         this.setState({
           deviceForm: updatedDeviceForm,
           formIsValid: formIsValid
         });
     };
-
-    handleDeviceGroupChange = (event) => {
-        let allDeviceGroupDetails = this.props.allDeviceGroupDetails;
-        let object = allDeviceGroupDetails.find(o => o.displayName === event.target.value);
-        let updatedStaticProperties = [...object.staticProperties];
-        let updatedDynamicProperties = [...object.dynamicProperties];
-        this.setState({
-          deviceGroupValue : event.target.value,
-          staticProperties: updatedStaticProperties,
-          dynamicProperties: updatedDynamicProperties
-        })
-    }
 
     inputChangedStaticPropertyValue = (event,i,property) => {   
         let newStaticPropertiesValues = [...this.state.staticPropertiesValues];
@@ -266,7 +277,7 @@ class AddDeviceForm extends Component<AddDeviceFormProps,AddDeviceFormState>{
           data: {
             id: this.state.deviceForm.deviceId.value,
             displayName: this.state.deviceForm.deviceName.value,
-            deviceGroups: this.state.deviceGroupValue,
+            deviceGroups: this.state.deviceForm.deviceGroup.value,
             location: [
               {
                 address: this.state.deviceForm.addrerss.value,
@@ -301,7 +312,7 @@ class AddDeviceForm extends Component<AddDeviceFormProps,AddDeviceFormState>{
         const newDeviceData = {
           deviceId: newDeviceFormData.data.id,
           url: '',
-          modelNumber: `Hitachi ${newDeviceFormData.data.displayName}`,
+          makeNmodel: `Hitachi ${newDeviceFormData.data.displayName}`,
           location: newDeviceFormData.data.location[0].address,
           description: 'Pump Demo',
           status: 'Online'
@@ -318,12 +329,13 @@ class AddDeviceForm extends Component<AddDeviceFormProps,AddDeviceFormState>{
           };
           formElementsArray.push(formElement);
         }
-        
+        let deviceGroupOptions = this.props.devicesGroup.map(group => group.groupName);
         let form = (
           <form className={classes.DeviceFormContainer}>
             {
             formElementsArray.map(formElement => {
               return (
+                formElement.config.elementType === 'input' ? 
                 <div key={formElement.id} className={classes.DeviceFormContent}>
                   <Input
                     elementType={formElement.config.elementType}
@@ -337,25 +349,22 @@ class AddDeviceForm extends Component<AddDeviceFormProps,AddDeviceFormState>{
                     }
                   />
                 </div>
+                :
+                <div key={formElement.id} className={classes.DeviceFormContent}>
+                  <Input
+                    elementType={formElement.config.elementType}
+                    elementConfig={formElement.config.elementConfig}
+                    value={formElement.config.value}
+                    invalid={!formElement.config.valid}
+                    shouldValidate={formElement.config.validation}
+                    options={deviceGroupOptions}
+                    touched={formElement.config.touched}
+                    changed={event => this.inputChangedHandler(event, formElement.id)}
+                  />
+                </div>
               );
             })}
-            <div className={classes.DeviceFormContent}>
-              <FormControl fullWidth>
-                <InputLabel id="deviceGroup-select-label">Asset Group</InputLabel>
-                <Select
-                  labelId="deviceGroup-select-label"
-                  id="deviceGroup-select"
-                  value={this.state.deviceGroupValue}
-                  onChange={this.handleDeviceGroupChange}
-                >
-                  {this.props.devicesGroup.map((name,index) => {
-                    return(
-                      <MenuItem key={index} value={name.groupName}>{name.groupName}</MenuItem>
-                    )
-                  })}
-                </Select>
-              </FormControl>
-            </div>
+            
             <h4 style={{marginBottom: "0px"}}>Static Properties</h4>
             {this.state.staticProperties.length > 0 && this.state.staticProperties.map((property,index) => {
               return (

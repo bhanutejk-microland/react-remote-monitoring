@@ -4,5 +4,6 @@ export interface IndividualAssetModel {
   location: string;
   description: string;
   status: string;
+  deviceStatus: string;
   url: string;
 }
