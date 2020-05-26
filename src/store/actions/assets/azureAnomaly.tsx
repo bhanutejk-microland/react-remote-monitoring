@@ -8,9 +8,9 @@ export const setAssetAzureAnomalies = (anomalies) => {
   }
 }
 
-export const initAssetAzureAnomalies = (assetId) => {
+export const initAssetAzureAnomalies = (payload) => {
   return dispatch => {
-    axios.get("api/getAzureAnomaly?deviceId=" + assetId).then(response => {
+    axios.post("api/getAzureAnomaly", payload).then(response => {
       dispatch(setAssetAzureAnomalies(response.data));
     });
   }

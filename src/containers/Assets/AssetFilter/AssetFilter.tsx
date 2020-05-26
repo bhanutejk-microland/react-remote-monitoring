@@ -10,9 +10,9 @@ import { AssetFilterFormModel } from '../../../interfaceModels/AssetFilterFormMo
 import { FormInputModel } from "../../../interfaceModels/FormInputModel";
 import * as actions from '../../../store/actions/index';
 
-interface AssetFilterProps { 
+interface AssetFilterProps {
   cancleForm: (event: any) => void;
-  onAppliedFilterDate: (appliedFilterDate:any) => void;
+  onAppliedFilterDate: (appliedFilterDate: any) => void;
 }
 
 interface AssetFilterState {
@@ -31,10 +31,11 @@ class AssetFilter extends Component<AssetFilterProps, AssetFilterState> {
     this.state = {
       formIsValid: false,
       filterForm: {
-        startDate: {
-          elementType: "date",
+        timePeriod: {
+          elementType: "dropdown",
           elementConfig: {
-            label: "Start Date"
+            label: "TIME PERIOD",
+            options: []
           },
           value: "",
           validation: {
@@ -42,32 +43,7 @@ class AssetFilter extends Component<AssetFilterProps, AssetFilterState> {
           },
           valid: false,
           touched: false
-        },
-        endDate: {
-          elementType: "date",
-          elementConfig: {
-            label: "End Date"
-          },
-          value: "",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        // properties: {
-        //   elementType: "dropdown",
-        //   elementConfig: {
-        //     label: "Properties",
-        //     options: ["Temperature", "Pressure", "Options1"]
-        //   },
-        //   value: "",
-        //   validation: {
-        //     required: true
-        //   },
-        //   valid: false,
-        //   touched: false
-        // }
+        }
       }
     };
   }
@@ -113,11 +89,13 @@ class AssetFilter extends Component<AssetFilterProps, AssetFilterState> {
     this.setState(prevState => ({
       formIsValid: !prevState.formIsValid
     }));
-    const newAppliedFilterDate = {      
-        fromTimestamp: this.state.filterForm.startDate.value,
-        toTimestamp: this.state.filterForm.endDate.value
+    this.props.onAppliedFilterDate(this.state.filterForm.timePeriod.value);
+  }
+
+  getSelectOptions = (elementName) => {
+    if (elementName === 'timePeriod') {
+      return ['Last 1 hour', 'Last 6 hours', 'Last 24 hours', 'Last 1 week', 'Last 1 month'];
     }
-    this.props.onAppliedFilterDate(newAppliedFilterDate);
   }
 
   renderForm = () => {
@@ -133,6 +111,7 @@ class AssetFilter extends Component<AssetFilterProps, AssetFilterState> {
     let form = (
       <form className={classes.FilterFormContainer}>
         {formElementsArray.map(formElement => {
+          const selectOptions = this.getSelectOptions(formElement.id);
           return (
             <div key={formElement.id} className={classes.FilterFormContent}>
               <Input
@@ -142,6 +121,7 @@ class AssetFilter extends Component<AssetFilterProps, AssetFilterState> {
                 invalid={!formElement.config.valid}
                 shouldValidate={formElement.config.validation}
                 touched={formElement.config.touched}
+                options={selectOptions}
                 changed={event =>
                   this.inputChangedHandler(event, formElement.id)
                 }
@@ -179,15 +159,15 @@ class AssetFilter extends Component<AssetFilterProps, AssetFilterState> {
 }
 
 const mapStateToProps = state => {
-  return{
-    appliedFilterDate : state.assetDetailsDateFilter.appliedFilterDate
+  return {
+    appliedFilterDate: state.assetDetailsDateFilter.appliedFilterDate
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAppliedFilterDate : (appliedFilterDate) => dispatch(actions.initAssetDetailsAppliedDateFilter(appliedFilterDate))
+    onAppliedFilterDate: (appliedFilterDate) => dispatch(actions.initAssetDetailsAppliedDateFilter(appliedFilterDate))
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(AssetFilter);
+export default connect(mapStateToProps, mapDispatchToProps)(AssetFilter);

@@ -23,8 +23,8 @@ interface AssetDetailsProps {
   assetAzureAnomalies: any;
   onInitAssetDetails: (assetId: string) => void;
   onInitAssetProperties: (assetId: string, fromTimeStamp: any, toTimeStamp: any) => void;
-  onInitAssetAnomalies: (assetId: string) => void;
-  onInitAssetAzureAnomalies: (assetId: string) => void;
+  onInitAssetAnomalies: (payload: any) => void;
+  onInitAssetAzureAnomalies: (payload: any) => void;
   onInitAssetFaultAnalyisis: (assetId: string) => void;
   assetProperties: any;
   appliedFilterDate: any;
@@ -60,32 +60,30 @@ class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
   }
 
   componentDidMount() {
-    const assetId = this.props.match.params.assetId;
+    const deviceId = this.props.match.params.assetId;
     if (this.props.assets.length > 0) {
-      this.setAssetDetails(assetId);
+      this.setAssetDetails(deviceId);
     } else {
-      this.fetchAssetDetails(assetId);
+      this.fetchAssetDetails(deviceId);
     }
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-    let fromTimeStamp = Date.parse(yesterday.toString());
-    let toTimeStamp = Date.parse(today.toString());
-    this.props.onInitAssetProperties(assetId, fromTimeStamp, toTimeStamp);
+    const toTimestamp = +new Date;
+    const fromTimestamp = toTimestamp - 24 * 60 * 60 * 1000; // 24 hour
+    const payload = { deviceId, fromTimestamp, toTimestamp }
+    this.props.onInitAssetProperties(deviceId, fromTimestamp, toTimestamp);
 
-    this.props.onInitAssetAnomalies(assetId);
-    this.props.onInitAssetAzureAnomalies(assetId);
+    this.props.onInitAssetAnomalies(payload);
+    this.props.onInitAssetAzureAnomalies(payload);
     //this.props.onInitAssetFaultAnalyisis(assetId);
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.appliedFilterDate !== this.props.appliedFilterDate) {
       const assetId = this.props.match.params.assetId;
-      let fromTime = this.props.appliedFilterDate.fromTimestamp;
-      let toTime = this.props.appliedFilterDate.toTimestamp;
-      let fromTimeStamp = Date.parse(fromTime.toString());
-      let toTimeStamp = Date.parse(toTime.toString());
-      this.props.onInitAssetProperties(assetId, fromTimeStamp, toTimeStamp);
+      const { fromTimestamp, toTimestamp } = this.props.appliedFilterDate;
+      this.props.onInitAssetProperties(assetId, fromTimestamp, toTimestamp);
+      const payload = { deviceId: assetId, fromTimestamp, toTimestamp }
+      this.props.onInitAssetAnomalies(payload);
+      this.props.onInitAssetAzureAnomalies(payload);
     }
   }
 
@@ -207,8 +205,8 @@ const mapDispatchToProps = dispatch => {
   return {
     onInitAssetDetails: (assetId) => dispatch(actions.initAssetDetails(assetId)),
     onInitAssetProperties: (assetId, fromTimeStamp, toTimeStamp) => dispatch(actions.initAssetProperties(assetId, fromTimeStamp, toTimeStamp)),
-    onInitAssetAnomalies: (assetId) => dispatch(actions.initAssetAnomalies(assetId)),
-    onInitAssetAzureAnomalies: (assetId) => dispatch(actions.initAssetAzureAnomalies(assetId))
+    onInitAssetAnomalies: (payload) => dispatch(actions.initAssetAnomalies(payload)),
+    onInitAssetAzureAnomalies: (payload) => dispatch(actions.initAssetAzureAnomalies(payload))
   }
 }
 

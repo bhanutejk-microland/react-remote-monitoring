@@ -18,6 +18,7 @@ interface TrendPropertiesProps {
   onInitTrends: (payload: any) => void;
   onInitAssetIndividualTeleProps: (assetId: any) => void;
   onInitAssetIndividualTeleDetails: (assetTrendDetails: any) => void;
+  onInitAssetDetailsAppliedDateFilter: (appliedDateFilter: any) => void;
   trendInfo: any;
   teleProps: any;
   trendTeleValues: any;
@@ -53,7 +54,7 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
           elementType: "dropdown",
           elementConfig: {
             label: "MEASURE",
-            options: ["temperature", "pressure", "humidity"]
+            options: []
           },
           value: "",
           validation: {
@@ -61,7 +62,7 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
           },
           valid: false,
           touched: false
-        },
+        }
       }
     }
   }
@@ -92,6 +93,9 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
   };
 
   inputChangedHandler = (event, inputIdentifier) => {
+    if (inputIdentifier === 'applyFilter') {
+      this.props.onInitAssetDetailsAppliedDateFilter(event.target.value);
+    }
     const updatedTrendPropertiesForm = {
       ...this.state.trendPropertiesForm
     };
@@ -166,6 +170,12 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
     this.props.onInitAssetIndividualTeleDetails(assetTrendDetails);
   }
 
+  getSelectOptions = (elementName) => {
+    if (elementName === 'measure') {
+      return Object.keys(this.props.teleProps);
+    }
+  }
+
   renderForm = () => {
     const formElementsArray: FormElement[] = [];
     for (let key in this.state.trendPropertiesForm) {
@@ -179,6 +189,7 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
     let form = (
       <form>
         {formElementsArray.map(formElement => {
+          const selectOptions = this.getSelectOptions(formElement.id);
           return (
             <div key={formElement.id} style={{ margin: '15px 0' }}>
               <Input
@@ -188,7 +199,7 @@ class TrendProperties extends Component<TrendPropertiesProps, TrendPropertiesSta
                 invalid={!formElement.config.valid}
                 shouldValidate={formElement.config.validation}
                 touched={formElement.config.touched}
-                options={Object.keys(this.props.teleProps)}
+                options={selectOptions}
                 changed={event =>
                   this.inputChangedHandler(event, formElement.id)
                 }
@@ -239,7 +250,8 @@ const mapDispatchToProps = dispatch => {
   return {
     onInitTrends: (payload) => dispatch(actions.initTrends(payload)),
     onInitAssetIndividualTeleProps: (assetId) => dispatch(actions.initAssetIndividualTeleProps(assetId)),
-    onInitAssetIndividualTeleDetails: (assetTrendDetails) => dispatch(actions.initAssetIndividualTeleDetails(assetTrendDetails))
+    onInitAssetIndividualTeleDetails: (assetTrendDetails) => dispatch(actions.initAssetIndividualTeleDetails(assetTrendDetails)),
+    onInitAssetDetailsAppliedDateFilter: (appliedDateFilter) => dispatch(actions.initAssetDetailsAppliedDateFilter(appliedDateFilter))
   };
 }
 

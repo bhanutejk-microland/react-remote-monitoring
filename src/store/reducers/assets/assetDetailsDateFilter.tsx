@@ -1,19 +1,19 @@
 import * as actionTypes from '../../actions/actionTypes';
-import { updateObject, updateArrayObject } from '../../../utilities/reduxStateUpdate';
+import { updateObject } from '../../../utilities/reduxStateUpdate';
 
 const initialState = {
   appliedFilterDate: {
-    fromTimestamp : '',
-    toTimestamp : ''
+    fromTimestamp: '',
+    toTimestamp: ''
   }
 }
 
 const setAppliedDateFilter = (state, action) => {
   const updatedAppliedDateFilter = action.appliedDateFilter;
   const updatedState = {
-    appliedFilterDate : updatedAppliedDateFilter
+    appliedFilterDate: updatedAppliedDateFilter
   }
-  return updateObject(state,updatedState);
+  return updateObject(state, updatedState);
 }
 
 const reducer = (state = initialState, action) => {

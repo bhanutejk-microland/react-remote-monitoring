@@ -8,9 +8,9 @@ export const setAssetAnamolies = (anomalies) => {
   }
 }
 
-export const initAssetAnomalies = (assetId) => {
+export const initAssetAnomalies = (payload) => {
   return dispatch => {
-    axios.get("api/anomaly?deviceId=" + assetId).then(response => {
+    axios.post("api/anomaly", payload).then(response => {
       dispatch(setAssetAnamolies(response.data));
     });
   }
