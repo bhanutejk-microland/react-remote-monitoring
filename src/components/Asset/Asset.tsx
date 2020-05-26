@@ -13,12 +13,10 @@ import { withRouter } from "react-router";
 import Skeleton from "@material-ui/lab/Skeleton";
 
 import classes from "./Asset.css";
-import AssetIcon from "../../assets/icons/water-bomb.svg";
-import NotificationIcon from "../../assets/icons/notification.svg";
-import ViewIcon from "../../assets/icons/view.svg";
 import DownTimeIcon from "../../assets/icons/down-arrow.svg";
 import CircleTickIcon from "../../assets/icons/tick.svg";
 import { IndividualAssetModel } from "../../interfaceModels/IndividualAssetModel";
+import {NotificationsSharp, VisibilitySharp} from '@material-ui/icons';
 
 interface AssetProps {
   asset: IndividualAssetModel;
@@ -103,10 +101,10 @@ const Asset: FunctionComponent<AssetProps> = ({ asset, location, match }) => {
             >
               <div className={classes.AssetCardDetails}>
                 {Object.keys(asset).map((assetKey, index) => {
-                  if (assetKey !== "url" && assetKey !== "assetId" && assetKey !== "assetTabInfo") {
+                  if (assetKey !== "url" && assetKey !== "assetId" && assetKey !== "assetTabInfo" && assetKey !== "deviceStatus") {
                     return (
                       <Grid container key={asset[assetKey] + index}>
-                        <Grid item xs={6}>
+                        <Grid item xs={6} className={classes.AssetPropertyName}>
                           {assetKey}:
                         </Grid>
                         <Grid item xs={6}>
@@ -129,15 +127,15 @@ const Asset: FunctionComponent<AssetProps> = ({ asset, location, match }) => {
                 size="small"
                 avatar={
                   <img
-                    src={asset.status === "Running" ? CircleTickIcon : DownTimeIcon}
+                    src={asset.deviceStatus === "Online" ? CircleTickIcon : DownTimeIcon}
                     width="100%"
                     style={{ backgroundColor: "#fff", marginLeft: "6px" }}
                   />
                 }
-                label={asset.status}
+                label={asset.deviceStatus}
                 clickable={false}
                 color="primary"
-                className={classes.ChipStatus}
+                className={classes.DeviceStatus}
             />
             </Grid>
             <Grid item>
@@ -145,13 +143,7 @@ const Asset: FunctionComponent<AssetProps> = ({ asset, location, match }) => {
                 <Chip
                   variant="outlined"
                   size="small"
-                  avatar={
-                    <img
-                      src={NotificationIcon}
-                      width="100%"
-                      style={{ backgroundColor: "#fff", marginLeft: "6px" }}
-                    />
-                  }
+                  icon={<NotificationsSharp />}
                   label="Alerts"
                   clickable
                   color="primary"
@@ -163,13 +155,7 @@ const Asset: FunctionComponent<AssetProps> = ({ asset, location, match }) => {
                   <Chip
                     variant="outlined"
                     size="small"
-                    avatar={
-                      <img
-                        src={ViewIcon}
-                        width="100%"
-                        style={{ backgroundColor: "#fff", marginLeft: "6px" }}
-                      />
-                    }
+                    icon={<VisibilitySharp />}
                     label="View"
                     clickable
                     color="primary"

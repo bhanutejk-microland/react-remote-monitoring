@@ -1,4 +1,5 @@
 import { FormInputModel } from './FormInputModel';
+import { FormDropdownModel } from './FormDropdownModel';
 
 export interface DeviceFormModel {
   deviceName: FormInputModel;
@@ -7,6 +8,7 @@ export interface DeviceFormModel {
   addrerss: FormInputModel;
   latitude: FormInputModel;
   longitude: FormInputModel;
+  deviceGroup : FormDropdownModel;
   // makeNModel: FormInputModel;
   // propertyDescription: FormInputModel;
   // type: FormInputModel;

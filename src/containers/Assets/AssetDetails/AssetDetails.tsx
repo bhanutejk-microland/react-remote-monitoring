@@ -48,6 +48,7 @@ class AssetDetails extends Component<AssetDetailsProps, AssetDetailsState> {
         location: "",
         description: "",
         status: "",
+        deviceStatus: "",
         assetTabInfo: {
           // properties: [],
           trends: [],

@@ -36,7 +36,7 @@ const setAllDeviceGroupDetails = (state,action) => {
         });
     }
 
-    const updatedAllDeviceGroupDetails = updateArrayObject(state.allDeviceGroupDetails, [...newAllDeviceGroupDetails] );
+    const updatedAllDeviceGroupDetails = updateArrayObject([], [...newAllDeviceGroupDetails] );
     const updatedState = {
         allDeviceGroupDetails: updatedAllDeviceGroupDetails
       }
