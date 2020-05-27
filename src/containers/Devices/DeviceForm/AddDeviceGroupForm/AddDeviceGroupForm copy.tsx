@@ -76,19 +76,12 @@ class AddDeviceGroupForm extends Component<AddDeviceGroupFormProps,AddDeviceGrou
     }
 
     appendStaticInput = () => {
-      let updatedInputsStaticValues = [...this.state.inputsStaticValues];
-      let formDeviceGroupIsValid : boolean;
-      if(this.checkEmptyValue(updatedInputsStaticValues)){
-        console.log(1);
-        formDeviceGroupIsValid = true; 
-      }else{
-        console.log(2);
-        formDeviceGroupIsValid = false; 
-      }
-      var newInput = `inputsStatic-${this.state.inputsStatic.length}`;        
-      this.setState(prevState => ({
-        inputsStatic: prevState.inputsStatic.concat([newInput]),
-        formDeviceGroupIsValid : formDeviceGroupIsValid }));
+        var newInput = `inputsStatic-${this.state.inputsStatic.length}`;        
+        this.setState(prevState => ({ inputsStatic: prevState.inputsStatic.concat([newInput]) }),() => {
+          let updatedInputsStaticValues = [...this.state.inputsStaticValues];
+          let inputStaticlength = this.state.inputsStatic.length - 1;
+          this.checkEmptyValue(updatedInputsStaticValues,updatedInputsStaticValues[inputStaticlength]);
+        });
     }
   
     appendDynamicInput = () => {
@@ -96,17 +89,18 @@ class AddDeviceGroupForm extends Component<AddDeviceGroupFormProps,AddDeviceGrou
       this.setState(prevState => ({ inputsDynamic: prevState.inputsDynamic.concat([newInput]) }),() => {
         let updatedInputsDynamicValues = [...this.state.inputsDynamicvalues];
         let inputsDynamiclength = this.state.inputsDynamic.length - 1;
-        this.checkEmptyValue(updatedInputsDynamicValues);
+        this.checkEmptyValue(updatedInputsDynamicValues,updatedInputsDynamicValues[inputsDynamiclength]);
       });
     }
   
     deleteStaticInput = id => () => {
-      let updatedInputsStaticValues = [...this.state.inputsStaticValues];
-      let formDeviceGroupIsValid = this.checkEmptyValue(updatedInputsStaticValues);
       this.setState({
         inputsStatic: this.state.inputsStatic.filter((s, idx) => id !== idx),
-        inputsStaticValues: this.state.inputsStaticValues.filter((s,idx) => id !== idx),
-        formDeviceGroupIsValid : formDeviceGroupIsValid
+        inputsStaticValues: this.state.inputsStaticValues.filter((s,idx) => id !== idx)
+      },() => {
+        let updatedInputsStaticValues = [...this.state.inputsStaticValues];
+        let inputStaticlength = this.state.inputsStatic.length - 1;
+        this.checkEmptyValue(updatedInputsStaticValues);
       });
     };
   
@@ -117,7 +111,7 @@ class AddDeviceGroupForm extends Component<AddDeviceGroupFormProps,AddDeviceGrou
       },() => {
         let updatedInputsDynamicValues = [...this.state.inputsDynamicvalues];
         let inputsDynamiclength = this.state.inputsDynamic.length - 1;
-        this.checkEmptyValue(updatedInputsDynamicValues);
+        this.checkEmptyValue(updatedInputsDynamicValues,updatedInputsDynamicValues[inputsDynamiclength]);
       });
     };
 
@@ -125,33 +119,25 @@ class AddDeviceGroupForm extends Component<AddDeviceGroupFormProps,AddDeviceGrou
         let updatedInputsStaticValues = [...this.state.inputsStaticValues];
         updatedInputsStaticValues[i] = event.target.value;
         let formDeviceGroupIsValid = this.checkEmptyValue(updatedInputsStaticValues);
-        console.log('formDeviceGroupIsValid',formDeviceGroupIsValid);
         this.setState({
           inputsStaticValues : updatedInputsStaticValues,
-          formDeviceGroupIsValid : !formDeviceGroupIsValid 
+          formDeviceGroupIsValid : formDeviceGroupIsValid 
         });       
-    }
-
-    
-
-    inputChangedDynamicValues = (event,i) => {
-        let updatedInputsDynamicValues = [...this.state.inputsDynamicvalues];
-        updatedInputsDynamicValues[i] = event.target.value;
-        this.setState({inputsDynamicvalues : updatedInputsDynamicValues },() => {
-          this.checkEmptyValue(updatedInputsDynamicValues)
-        });  
     }
 
     checkEmptyValue = (inputValuesArray) => {
       console.log("inputValuesArray",inputValuesArray);
       // console.log("indexof",inputValuesArray.indexOf(value));
       if(inputValuesArray.length !== 0){
-        let emptyValueResultant = inputValuesArray.filter((x) => { return x === ""; });
-        if(emptyValueResultant.length !== 0){
-          return true
-        }
+        inputValuesArray.every((element,index) => {
+          if(element !== ''){
+            return false;
+          }else{
+            return true;
+          }
+        })
       }else{
-        return false;        
+        return false;
       }
 
       // if(inputValuesArray.indexOf(value) !== -1){
@@ -169,6 +155,14 @@ class AddDeviceGroupForm extends Component<AddDeviceGroupFormProps,AddDeviceGrou
       //     formDeviceGroupIsValid : !formDeviceGroupIsValid
       //   });
       // }
+    }
+
+    inputChangedDynamicValues = (event,i) => {
+        let updatedInputsDynamicValues = [...this.state.inputsDynamicvalues];
+        updatedInputsDynamicValues[i] = event.target.value;
+        this.setState({inputsDynamicvalues : updatedInputsDynamicValues },() => {
+          this.checkEmptyValue(updatedInputsDynamicValues,updatedInputsDynamicValues[i])
+        });  
     }
 
     inputChangedDeviceGroupHandler = (event, inputIdentifier) => {
