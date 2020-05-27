@@ -77,13 +77,10 @@ class AddDeviceGroupForm extends Component<AddDeviceGroupFormProps,AddDeviceGrou
 
     appendStaticInput = () => {
       let updatedInputsStaticValues = [...this.state.inputsStaticValues];
-      let formDeviceGroupIsValid : boolean;
-      if(this.checkEmptyValue(updatedInputsStaticValues)){
+      let formDeviceGroupIsValid = false;
+      if(formDeviceGroupIsValid && this.checkEmptyValue(updatedInputsStaticValues)){
         console.log(1);
         formDeviceGroupIsValid = true; 
-      }else{
-        console.log(2);
-        formDeviceGroupIsValid = false; 
       }
       var newInput = `inputsStatic-${this.state.inputsStatic.length}`;        
       this.setState(prevState => ({
@@ -106,7 +103,7 @@ class AddDeviceGroupForm extends Component<AddDeviceGroupFormProps,AddDeviceGrou
       this.setState({
         inputsStatic: this.state.inputsStatic.filter((s, idx) => id !== idx),
         inputsStaticValues: this.state.inputsStaticValues.filter((s,idx) => id !== idx),
-        formDeviceGroupIsValid : formDeviceGroupIsValid
+        formDeviceGroupIsValid : !formDeviceGroupIsValid
       });
     };
   
