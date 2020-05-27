@@ -11,7 +11,7 @@ import { FormInputModel } from "../../../interfaceModels/FormInputModel";
 import * as actions from '../../../store/actions/index';
 
 interface AssetFilterProps {
-  cancleForm: (event: any) => void;
+  cancleForm: (event?: any) => void;
   onAppliedFilterDate: (appliedFilterDate: any) => void;
 }
 
@@ -90,6 +90,7 @@ class AssetFilter extends Component<AssetFilterProps, AssetFilterState> {
       formIsValid: !prevState.formIsValid
     }));
     this.props.onAppliedFilterDate(this.state.filterForm.timePeriod.value);
+    this.props.cancleForm();
   }
 
   getSelectOptions = (elementName) => {
