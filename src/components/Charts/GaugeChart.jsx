@@ -24,21 +24,21 @@ class GaugeChart extends Component{
         chart.logo.__disabled = true;
         // Add ranges
         let range = axis.axisRanges.create();
-        range.value = 0;
-        range.endValue = 50;
+        range.value = this.props.property.minimum;
+        range.endValue = this.props.property.economy;
         range.axisFill.fillOpacity = 0.6;
         range.axisFill.fill = am4core.color("#4ed504");
         range.axisFill.zIndex = - 1;
 
         let range2 = axis.axisRanges.create();
-        range2.value = 50;
-        range2.endValue = 70;
+        range2.value = this.props.property.economy;
+        range2.endValue = this.props.property.buzzer;
         range2.axisFill.fillOpacity = 0.6;
         range2.axisFill.fill = am4core.color("#fff20b");
         range2.axisFill.zIndex = - 1;
 
         let range3 = axis.axisRanges.create();
-        range3.value = 70;
+        range3.value = this.props.property.buzzer;
         range3.endValue = this.props.property.maximum;
         range3.axisFill.fillOpacity = 0.6;
         range3.axisFill.fill = am4core.color("#dd2c00");
