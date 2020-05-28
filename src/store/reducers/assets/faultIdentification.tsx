@@ -5,34 +5,42 @@ const initialState = {
   gaugeInfo: [{
     name : 'head',
     property : {
-      maximum : 0,
-      minimum : 100,
+      minimum : 0,
+      economy : 50,
+      buzzer : 70,
+      maximum : 100,
       value : "50",
-      unit : "%"
+      unit : "mbar"
     }
   },{
     name : 'flow',
     property : {
-      maximum : 0,
-      minimum : 100,
+      minimum : 0,
+      economy : 50,
+      buzzer : 70,
+      maximum : 100,
       value : "50",
-      unit : "%"
+      unit : "m3/hr"
     }
   },{
     name : 'speed',
     property : {
-      maximum : 0,
-      minimum : 5000,
+      minimum : 0,
+      economy : 2500,
+      buzzer : 3500,
+      maximum : 5000,
       value : "3000",
-      unit : "%"
+      unit : "rpm"
     }
   },{
     name : 'torque',
     property : {
-      maximum : 0,
-      minimum : 100,
+      minimum : 0,
+      economy : 50,
+      buzzer : 70,
+      maximum : 100,
       value : "50",
-      unit : "%"
+      unit : "nm"
     }
   },{
     name : 'status',
