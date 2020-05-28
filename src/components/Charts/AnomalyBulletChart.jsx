@@ -36,6 +36,7 @@ class AnomalyBulletChart extends Component {
       })
     }
     // Add data
+    console.log("BULLET>>>>>>>>>>>>>.", this.props.data);
     chart.data = chartData;
 
     const dataValues = chartData.map(obj => {
@@ -71,7 +72,7 @@ class AnomalyBulletChart extends Component {
 
       // Disabling all bullets, except ones that are explicitly enabled via data
       bullet.disabled = true;
-      bullet.propertyFields.disabled = "hideBullet";
+      bullet.propertyFields.disabled = "showDot";
 
       // Allowing controlling pole height via data (negative height means upside down flag)
       // We also instruct pole to draw its color from "bulletColor" in data
