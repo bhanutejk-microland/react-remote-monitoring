@@ -1,0 +1,38 @@
+.pump {
+    background: url("../../assets/icons/InternalGearPump.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center;
+    width: 100%;
+    height: 333px;
+}
+
+.pump_animation {
+    background: url("../../assets/icons/InternalGearPump.gif");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center;
+    width: 100%;
+    height: 333px;
+}
+
+.root{
+    min-width: 275px;
+    margin: 15px;
+    font-size: 17px;
+    text-transform: capitalize;
+}
+
+.cardContent{
+    padding: 5px 15px !important; 
+    padding-bottom: 5px !important;
+}
+
+.propertyValue{
+    padding: 9px 15px !important; 
+    padding-bottom: 9px !important;
+}
+
+.propertyHeading{
+    margin: 0 15px;
+}

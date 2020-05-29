@@ -12,6 +12,7 @@ import Rules from '../containers/Rules/Rules';
 import Alerts from '../containers/Alerts/Alerts';
 import Trends from '../containers/Trends/Trends';
 import Configuration from '../containers/Configuration/Configuration';
+import AssetSimulator from '../containers/AssetSimulator/AssetSimulator';
 
 class App extends Component {
   render() {
@@ -27,6 +28,7 @@ class App extends Component {
             <Route path="/trends" component={Trends} />
             <Route path="/configuration" component={Configuration} />
             <Route path="/assetDetails/:assetId" exact component={AssetDetails} />
+            <Route path="/assetSimulator" component={AssetSimulator} />
           </Switch>
         </Layout>
       </div>
