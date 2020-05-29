@@ -65,3 +65,10 @@ export {
   getIdentificationProbabilityStatusValue,
   getIdentificationCountStatusValue
 } from './assets/faultIdentification';
+
+export { 
+  initAssetSimulator,
+  getSimulatorFaultValue,
+  getAssetHealthyValue,
+  postAssetFaultValue 
+} from './assetSimulator/assetSimulator';
