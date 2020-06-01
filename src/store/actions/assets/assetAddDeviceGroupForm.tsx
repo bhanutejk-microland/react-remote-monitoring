@@ -12,7 +12,7 @@ export const addDeviceGroupFormData = (formData) => {
   let newFormData = {...formData[0]}
   console.log(newFormData);
   return dispatch => {
-    axios.post("http://localhost:3000/api/devices/addDeviceGroup", newFormData).then(response => {
+    axios.post("api/devices/addDeviceGroup", newFormData).then(response => {
         dispatch(setDeviceGroupFormData(response.data));
     });
   }

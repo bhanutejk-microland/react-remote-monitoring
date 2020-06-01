@@ -312,7 +312,7 @@ class AddDeviceForm extends Component<AddDeviceFormProps,AddDeviceFormState>{
         const newDeviceData = {
           deviceId: newDeviceFormData.data.id,
           url: '',
-          makeNmodel: `Hitachi ${newDeviceFormData.data.displayName}`,
+          makeAndmodel: `Hitachi ${newDeviceFormData.data.displayName}`,
           location: newDeviceFormData.data.location[0].address,
           description: 'Pump Demo',
           status: 'Online'

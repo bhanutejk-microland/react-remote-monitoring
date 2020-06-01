@@ -47,6 +47,21 @@ export const postAssetFaultValue = (faultBody) => {
   }
 }
 
+// export const postAssetFaultValue = (faultBody) => {
+//   let axiosConfig = {
+//     headers: {
+//         Authorization : "SharedAccessSignature sr=device-stream.azure-devices.net%2Fdevices%2FML-Pump002&sig=gdJlxrWqIhqDIpZWUyAJg%2BWFK3%2Bs3lkkrTIx6kjRu94%3D&se=1594245566",
+//         "Content-Type": "application/json",
+//         "Access-Control-Allow-Origin": "*"
+//     }
+//   };
+//   return dispatch => {
+//     axios.post("https://device-stream.azure-devices.net/devices/ML-Pump002/messages/events?api-version=2020-03-13",faultBody,axiosConfig).then(response => {
+//       response.data;
+//     });
+//   }
+// }
+
 export const setAssetHealthyValue = (data) => {
   return {
     type : actionTypes.SET_SIMULATOR_HEALTHY_VALUE,
