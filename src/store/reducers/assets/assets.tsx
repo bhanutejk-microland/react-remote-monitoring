@@ -18,7 +18,7 @@ const setAssets = (state, action) => {
       newAssets.push({
         assetId: asset.data.id,
         url: asset.data.url,
-        makeNmodel: asset.data.properties[0].makeNmodel,
+        makeAndmodel: asset.data.properties[0].makeNmodel,
         location: asset.data.location[0].address,
         description: asset.data.properties[0].description,
         deviceStatus : asset.data.properties[0].deviceStatus,

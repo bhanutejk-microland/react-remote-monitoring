@@ -3,7 +3,20 @@ import { updateObject } from '../../../utilities/reduxStateUpdate';
 
 const initialState = {
   assetSimulatorList: {},
-  assetSimulatorValue : {},
+  assetSimulatorValue : {
+    current: 80,
+    dischargePressure: 32,
+    flow: 9.8531,
+    head: 39.499,
+    power: 200,
+    speed: 2833.6,
+    suctionPressure: 28,
+    temperature: 37,
+    torque: 12.118,
+    vibration: 10,
+    voltage: 220,
+  },
+  assetSimulatorFaultValue : {},
 }
 
 const setAssetSimulator = (state, action) => {
@@ -17,7 +30,7 @@ const setSimulatorFaultValue = (state, action) => {
   let newSimulatorFaultValue = action.data;
   let updatedSimulatorFaultValue = updateObject({},newSimulatorFaultValue);
   let updatedState = {
-    assetSimulatorValue : updatedSimulatorFaultValue
+    assetSimulatorFaultValue : updatedSimulatorFaultValue
   }
   return updateObject(state, updatedState);
 }
