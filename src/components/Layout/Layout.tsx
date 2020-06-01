@@ -6,7 +6,8 @@ import {
   faCubes,
   faList,
   faBell,
-  faCogs
+  faCogs,
+  faPlay
 } from "@fortawesome/free-solid-svg-icons";
 import { connect } from 'react-redux';
 
@@ -43,7 +44,8 @@ const menuList = [
   { label: "Alerts", menuIcon: faBell, path: "/alerts" },
   { label: "Rules", menuIcon: faList, path: "/rules" },
   { label: "Trends", menuIcon: faChartBar, path: "/trends" },
-  { label: "Configuration", menuIcon: faCogs, path: "/configuration" }
+  { label: "Configuration", menuIcon: faCogs, path: "/configuration" },
+  { label: "Simulator", menuIcon: faPlay, path: "/assetSimulator"}
 ];
 
 class Layout extends Component<LayoutProps, LayoutState> {
