@@ -33,6 +33,7 @@ import assetTrenTelemetricsReducer from './store/reducers/assets/assetTrends';
 import assetTrenTeleDetailsReducer from './store/reducers/assets/assetTrendDetails';
 import assetAzureAnomaliesReducer from './store/reducers/assets/azureAnomaly';
 import assetSimulatorReducer from './store/reducers/assetSimulator/assetSimulator';
+import trendsFilterDataReducer from './store/reducers/trends/trendsFilter';
 
 const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] as typeof compose || compose;
 
@@ -61,7 +62,8 @@ const rootReducer = combineReducers({
   assetTrenTelemetrics: assetTrenTelemetricsReducer,
   assetTrenTeleDetails: assetTrenTeleDetailsReducer,
   assetAzureAnomalies: assetAzureAnomaliesReducer,
-  assetSimulator: assetSimulatorReducer
+  assetSimulator: assetSimulatorReducer,
+  trendsFilterDataState: trendsFilterDataReducer
 });
 
 const store = createStore(rootReducer, composeEnhancers(
