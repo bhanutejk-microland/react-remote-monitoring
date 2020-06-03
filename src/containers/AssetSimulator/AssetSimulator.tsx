@@ -12,15 +12,19 @@ interface AssetSimulatorProps {
     onGetAssetFaultValue: (faultSelectedValue: any) => void;
     onGetAssetHealthyValue: () => void;
     onPostAssetFaultValue: (faultBody: any) => void;
+    onGetActualFaultValue: (faultSelectedValue: any) => void; 
     assetSimulatorList: any;
     assetSimulatorValue: any;
     assetSimulatorFaultValue: any;
+    actualFaultvalue: any;
 }
 
 interface AssetSimulatorState {
     properties: propertyElement[];
     propertiesValues: any;
     pumpSwitch: boolean;
+    faultIntroduce: boolean;
+    faultSelectedName: string;
 }
 
 interface propertyElement {
@@ -28,9 +32,7 @@ interface propertyElement {
     checked: boolean;
 }
 
-let row:number = 0;
 let startInterval: any;
-let assetPropertyForDispatch : string;
 
 class AssetSimulator extends Component<AssetSimulatorProps, AssetSimulatorState>{
     constructor(props:AssetSimulatorProps){
@@ -67,12 +69,28 @@ class AssetSimulator extends Component<AssetSimulatorProps, AssetSimulatorState>
                 temperature : 0,
                 vibration : 0
             },
-            pumpSwitch : false 
+            pumpSwitch : false,
+            faultIntroduce : false,
+            faultSelectedName : '' 
         }
     }
 
     componentWillUnmount(){
         clearInterval(startInterval);
+    }
+
+    componentDidUpdate(prevProps){
+        if(this.props.assetSimulatorFaultValue !== '' &&
+            prevProps.assetSimulatorFaultValue !== this.props.assetSimulatorFaultValue){
+            let faultBody = this.props.assetSimulatorFaultValue;
+            this.props.onPostAssetFaultValue(faultBody);
+        }
+
+        if(this.props.assetSimulatorValue !== '' &&
+            prevProps.assetSimulatorValue !== this.props.assetSimulatorValue){
+            let faultBody = this.props.assetSimulatorValue;
+            this.props.onPostAssetFaultValue(faultBody);
+        }
     }
 
     handleChange = (event: React.MouseEvent,property) => {
@@ -108,42 +126,51 @@ class AssetSimulator extends Component<AssetSimulatorProps, AssetSimulatorState>
 
         //Post Asset Simulator Data        
         this.setState({
-            properties : updatedProperties
+            properties : updatedProperties,
+            faultIntroduce : !property.checked,
+            faultSelectedName : property.name
         },() => {
             if(!property.checked){
-                this.props.onGetAssetFaultValue({faultValue : property.name});
-                clearInterval(startInterval);
-            }else{
-                this.props.onGetAssetFaultValue({faultValue : "No Value"});
-                if(this.state.pumpSwitch){
-                    this.props.onGetAssetHealthyValue();
-                    let faultBody = this.props.assetSimulatorValue;
-                    this.props.onPostAssetFaultValue(faultBody);
-                    startInterval = setInterval(() => {
-                        this.props.onGetAssetHealthyValue();   
-                        faultBody = this.props.assetSimulatorValue;
-                        this.props.onPostAssetFaultValue(faultBody);         
-                    },60000);
-                }                
-            }      
-            
+                this.props.onGetActualFaultValue({faultValue : property.name});
+            }   
         });
 
     }
 
     handlePumpSwitch = () => {
+        let updatedProperties = new Array();
+        if(this.state.properties.filter(e => e.checked === true).length > 0){        
+            let newpropertiesList = [...this.state.properties]; 
+            newpropertiesList.forEach(element => {
+                if(element.checked){
+                    updatedProperties.push({
+                        name : element.name,
+                        checked : !element.checked
+                    })
+                }else{
+                    updatedProperties.push({
+                        name : element.name,
+                        checked : element.checked
+                    }) 
+                }
+            });
+        }else{
+            updatedProperties = [...this.state.properties];
+        }    
+        
         this.setState({
-            pumpSwitch : !this.state.pumpSwitch
+            pumpSwitch : !this.state.pumpSwitch,
+            properties : updatedProperties
         },() => {
             if(this.state.pumpSwitch){
-                //Post Asset Simulator Data                               
-                this.props.onGetAssetHealthyValue();
                 let faultBody = this.props.assetSimulatorValue;
                 this.props.onPostAssetFaultValue(faultBody);
                 startInterval = setInterval(() => {
-                    this.props.onGetAssetHealthyValue();   
-                    faultBody = this.props.assetSimulatorValue;
-                    this.props.onPostAssetFaultValue(faultBody);         
+                    if(this.state.faultIntroduce){
+                        this.props.onGetAssetFaultValue({faultValue : this.state.faultSelectedName});
+                    }else{
+                        this.props.onGetAssetHealthyValue();
+                    }                       
                 },60000);
             }else{
                 clearInterval(startInterval); 
@@ -194,13 +221,14 @@ class AssetSimulator extends Component<AssetSimulatorProps, AssetSimulatorState>
     renderAssetPropertyValue = () => {
         const propertyValueList = new Array();
         if(this.state.properties.filter(e => e.checked === true).length > 0){
-            for(let key in this.props.assetSimulatorFaultValue){
+            for(let key in this.props.actualFaultvalue){
                 let obj = {
                     propertyName : key,
-                    propertyValue : this.props.assetSimulatorFaultValue[key]
+                    propertyValue : this.props.actualFaultvalue[key]
                 }
                 propertyValueList.push(obj);
-            }
+            }           
+            
         }else{
             for(let key in this.props.assetSimulatorValue){
                 let obj = {
@@ -208,7 +236,7 @@ class AssetSimulator extends Component<AssetSimulatorProps, AssetSimulatorState>
                     propertyValue : this.props.assetSimulatorValue[key]
                 }
                 propertyValueList.push(obj);
-            }
+            }            
         }
 
         
@@ -270,6 +298,7 @@ class AssetSimulator extends Component<AssetSimulatorProps, AssetSimulatorState>
 
 const mapStateToProps = state => {
     return{
+        actualFaultvalue : state.assetSimulator.actualFaultValue,
         assetSimulatorValue : state.assetSimulator.assetSimulatorValue,
         assetSimulatorFaultValue : state.assetSimulator.assetSimulatorFaultValue
     }
@@ -279,7 +308,8 @@ const mapDispatchToProps = dispatch => {
     return{
         onGetAssetFaultValue : (faultSelectedValue) => dispatch(actions.getSimulatorFaultValue(faultSelectedValue)),
         onPostAssetFaultValue :  (faultBody) => dispatch(actions.postAssetFaultValue(faultBody)),
-        onGetAssetHealthyValue : () => dispatch(actions.getAssetHealthyValue())
+        onGetAssetHealthyValue : () => dispatch(actions.getAssetHealthyValue()),
+        onGetActualFaultValue : (faultSelectedValue) => dispatch(actions.getActualFaultValue(faultSelectedValue))
     }
 };
 

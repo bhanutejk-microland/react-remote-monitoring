@@ -1,21 +1,19 @@
 import * as actionTypes from '../actionTypes';
 import axios from '../../../axios';
 
-export const setAssetSimulator = (simulatorData) => {
+export const setActualFaultValue = (data) => {
   return {
-    type: actionTypes.SET_ASSET_SIMULATOR,
-    simulatorData: simulatorData
+    type : actionTypes.SET_ACTUAL_FAULT_VALUE,
+    data : data
   }
 }
 
-export const initAssetSimulator = (faultSelectedValue,row) => {
+
+export const getActualFaultValue = (faultSelectedValue) => {
   return dispatch => {
-    axios.get("api/getPumpSimulatorData").then(response => {
-      dispatch(setAssetSimulator({
-          data : response.data[row],
-          faultValue : faultSelectedValue
-        }));
-    });
+    axios.post("api/getPumpSimulatorData/getFaultValue",faultSelectedValue).then(response => {
+      dispatch(setActualFaultValue(response.data))
+    })
   }
 }
 
