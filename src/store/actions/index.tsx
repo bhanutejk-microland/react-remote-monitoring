@@ -67,8 +67,8 @@ export {
 } from './assets/faultIdentification';
 
 export { 
-  initAssetSimulator,
   getSimulatorFaultValue,
   getAssetHealthyValue,
-  postAssetFaultValue 
+  postAssetFaultValue,
+  getActualFaultValue 
 } from './assetSimulator/assetSimulator';
