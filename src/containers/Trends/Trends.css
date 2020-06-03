@@ -15,3 +15,37 @@
   width: 100%;
   margin: 0 15px;
 }
+
+.FilterFormContainer {
+  display: flex;
+  flex-direction: column;
+  margin: 15px;
+}
+
+.FilterFormContent {
+  padding-top: 15px;
+}
+
+.BtnGroup {
+  padding-top: 15px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.HeaderForRightDrawer {
+  margin-top: 15px;
+  padding: 15px;
+  font-size: 1.5rem;
+  border-bottom: 1px solid #1fa1c7;
+}
+
+.fab {
+  position: fixed !important;
+  bottom: 15px !important;
+  right: 60px !important;
+}
+
+.DrawerContainer {
+  min-width: 300px;
+}

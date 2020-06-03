@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import Grid from "@material-ui/core/Grid";
 import { connect } from 'react-redux';
+import Drawer from "@material-ui/core/Drawer";
+import Fab from "@material-ui/core/Fab";
+import FilterListIcon from "@material-ui/icons/FilterList";
 
 import Input from "../../components/UI/Input/Input";
 import Button from "../../components/UI/Button/Button";
 import Chip from '../../components/UI/Chip/Chip';
 import MultiLineChart from '../../components/Charts/MultiLineChart';
+import TrendsFilter from './TrendsFilter';
 import classes from './Trends.css';
 import * as actions from '../../store/actions/index';
 
@@ -14,6 +18,7 @@ interface TrendsProps {
   onInitDevicesWithTelePropsDetails: (payload: any) => void;
   devicesWithTeleProps: Array<any>;
   devicesTeleDetailsProps: Array<any>;
+  trendsFilterData: any;
 }
 
 interface TrendsState {
@@ -22,6 +27,7 @@ interface TrendsState {
   trendsInfo: Array<any>;
   deviceTeleProps: Array<any>;
   trendTelemetryForm: any;
+  showAlertDrawer: boolean;
 }
 
 interface FormElement {
@@ -34,6 +40,7 @@ class Trends extends Component<TrendsProps, TrendsState> {
   constructor(props: TrendsProps) {
     super(props);
     this.state = {
+      showAlertDrawer: false,
       deviceTeleProps: [],
       formIsValid: false,
       trendPropertyList: [],
@@ -77,6 +84,28 @@ class Trends extends Component<TrendsProps, TrendsState> {
     if (prevProps.devicesWithTeleProps !== this.props.devicesWithTeleProps) {
       this.devicesTelePropsComponentForm();
     }
+    if (prevProps.trendsFilterData !== this.props.trendsFilterData) {
+      this.onInitDevicesWithTelePropsDetailsHandler();
+    }
+  }
+
+  private onInitDevicesWithTelePropsDetailsHandler = () => {
+    if (this.state.trendPropertyList.length > 0) {
+      const { timestamps } = this.props.trendsFilterData;
+      let updatedTrendsFilterData = this.props.trendsFilterData;
+      let updateTimestamps = timestamps;
+      if (timestamps.fromTimestamp === '') {
+        const toTimestamp = +new Date;
+        const fromTimestamp = toTimestamp - 24 * 60 * 60 * 1000; // 24 hour
+        updateTimestamps = { ...timestamps, fromTimestamp, toTimestamp };
+        updatedTrendsFilterData = { ...updatedTrendsFilterData, timestamps: updateTimestamps }
+      }
+      const payload = {
+        trendPropertyList: this.state.trendPropertyList,
+        trendsFilterData: updatedTrendsFilterData
+      }
+      this.props.onInitDevicesWithTelePropsDetails(payload);
+    }
   }
 
   private updatePropertyListState = (selectedDevice, selectedMeasure, updatedPropertyList) => {
@@ -88,7 +117,7 @@ class Trends extends Component<TrendsProps, TrendsState> {
     this.setState({
       trendPropertyList: [...updatedPropertyList],
     }, () => {
-      this.props.onInitDevicesWithTelePropsDetails(this.state.trendPropertyList);
+      this.onInitDevicesWithTelePropsDetailsHandler();
     })
   }
 
@@ -100,7 +129,7 @@ class Trends extends Component<TrendsProps, TrendsState> {
     this.setState({
       trendPropertyList: [...updatedPropertyList]
     }, () => {
-      this.props.onInitDevicesWithTelePropsDetails(this.state.trendPropertyList);
+      this.onInitDevicesWithTelePropsDetailsHandler();
     })
   }
 
@@ -120,7 +149,7 @@ class Trends extends Component<TrendsProps, TrendsState> {
             obj => (obj.divceName === selectedDevice ? Object.assign(obj, { deviceMesures: [...deviceObj.deviceMesures] }) : obj)
           )
         }), () => {
-          this.props.onInitDevicesWithTelePropsDetails(this.state.trendPropertyList);
+          this.onInitDevicesWithTelePropsDetailsHandler();
         });
       }
     }
@@ -194,7 +223,7 @@ class Trends extends Component<TrendsProps, TrendsState> {
             obj => (obj.deviceName === propertyHirc[0] ? Object.assign(obj, { deviceMeasures: [...updatedDeviceMesures] }) : obj)
           )
         }), () => {
-          this.props.onInitDevicesWithTelePropsDetails(this.state.trendPropertyList);
+          this.onInitDevicesWithTelePropsDetailsHandler();
         });
       }
     } else {
@@ -293,11 +322,47 @@ class Trends extends Component<TrendsProps, TrendsState> {
     );
   }
 
+  toggleAlertDrawer = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    this.setState({
+      showAlertDrawer: !this.state.showAlertDrawer
+    });
+  };
+
+  renderFilterContent = () => {
+    return (
+      <Drawer
+        anchor="right"
+        open={this.state.showAlertDrawer}
+        onClose={this.toggleAlertDrawer}
+      >
+        <div className={classes.DrawerContainer}>
+          <TrendsFilter cancleForm={this.toggleAlertDrawer} />
+        </div>
+      </Drawer>
+    );
+  };
+
+  renderFabIcon = () => {
+    return (
+      <Fab
+        color="secondary"
+        className={classes.fab}
+        onClick={this.toggleAlertDrawer}
+      >
+        <FilterListIcon />
+      </Fab>
+    );
+  };
+
   render() {
     return (
       <div>
         <this.devicesTelePropsComponentForm />
         <this.renderRulesListAndComparisonCharts />
+        <this.renderFilterContent />
+        <this.renderFabIcon />
       </div>
     )
   }
@@ -306,7 +371,8 @@ class Trends extends Component<TrendsProps, TrendsState> {
 const mapStateToProps = (state) => {
   return {
     devicesWithTeleProps: state.devicesTeleProps.devicesWithTeleProps,
-    devicesTeleDetailsProps: state.deviceTelePropsDetailsInfo.devicesTeleDetails
+    devicesTeleDetailsProps: state.deviceTelePropsDetailsInfo.devicesTeleDetails,
+    trendsFilterData: state.trendsFilterDataState.trendsFilterData
   };
 }
 

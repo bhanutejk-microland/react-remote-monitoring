@@ -4,8 +4,9 @@ export { initAssetDetails } from './assets/assetDetails';
 export { initAssetProperties } from './assets/assetProperties';
 export { initAssetAnomalies } from './assets/assetAnomalies';
 export { initDeviceTelemetry } from './alerts/deviceTelemetry';
-export { 
-  initAlerts, 
+export { initTrendsFilter } from './trends/trendsFilter';
+export {
+  initAlerts,
   updateAlertFormData
 } from './alerts/alerts';
 export { initTrends } from './trends/trends';
@@ -66,9 +67,17 @@ export {
   getIdentificationCountStatusValue
 } from './assets/faultIdentification';
 
+<<<<<<< HEAD
 export { 
   getSimulatorFaultValue,
   getAssetHealthyValue,
   postAssetFaultValue,
   getActualFaultValue 
+=======
+export {
+  initAssetSimulator,
+  getSimulatorFaultValue,
+  getAssetHealthyValue,
+  postAssetFaultValue
+>>>>>>> development
 } from './assetSimulator/assetSimulator';
