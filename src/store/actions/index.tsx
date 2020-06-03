@@ -67,17 +67,9 @@ export {
   getIdentificationCountStatusValue
 } from './assets/faultIdentification';
 
-<<<<<<< HEAD
 export { 
   getSimulatorFaultValue,
   getAssetHealthyValue,
   postAssetFaultValue,
   getActualFaultValue 
-=======
-export {
-  initAssetSimulator,
-  getSimulatorFaultValue,
-  getAssetHealthyValue,
-  postAssetFaultValue
->>>>>>> development
 } from './assetSimulator/assetSimulator';
