@@ -5,10 +5,7 @@ const initialState = {
 }
 
 const setDashboardMapInfo = (state, action) => {
-  const mapCoords = action.mapInfo.map((divceInfo) => {
-    return [divceInfo.location[0].lattitude, divceInfo.location[0].longitude]
-  });
-  return { mapInfo: [...mapCoords] };
+  return { mapInfo: [...action.mapInfo] };
 }
 
 const reducer = (state = initialState, action) => {

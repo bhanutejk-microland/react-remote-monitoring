@@ -11,6 +11,7 @@ export const setDashboardMapInfo = (mapInfo) => {
 export const initDashboardMapInfo = (appFilters) => {
   return dispatch => {
     axios.post("api/map/location", appFilters).then(response => {
+      console.log("(>>>>>>>>>>>.)", response);
       dispatch(setDashboardMapInfo(response.data));
     });
   }

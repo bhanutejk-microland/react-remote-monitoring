@@ -3,7 +3,7 @@ import * as atlas from "azure-maps-control";
 
 // import Aux from "../../hoc/Aux";
 import keys from '../../config/keys';
-import pump from "../../assets/icons/pump_green.svg";
+import classes from './AzureMap.css';
 
 interface AzureMapProps {
   mapInfo: Array<any>
@@ -24,8 +24,9 @@ export default class AzureMap extends Component<AzureMapProps, AzureMapState> {
 
   componentDidMount() {
     let map = new atlas.Map("map", {
-      center: [78.9629, 20.5937],
-      zoom: 2,
+      center: [77.6906928, 12.984056],
+      // center: [-122.33, 47.64],
+      zoom: 8,
       view: "Auto",
       language: "en-US",
       authOptions: {
@@ -33,92 +34,88 @@ export default class AzureMap extends Component<AzureMapProps, AzureMapState> {
         subscriptionKey: keys.AZURE_MAP_SUB_KEY
       }
     });
-    this.setState({ mapInstant: map });
-    this.initializeMap();
+    this.setState({ mapInstant: map }, () => {
+      this.initializeMap();
+    });
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (prevProps.mapInfo !== this.props.mapInfo) {
       this.initializeMap();
     }
   }
 
   initializeMap() {
-    let categories = ['bar', 'coffee', 'restaurant'];
+    var datasource, popup;
+    var popupTemplate = `<div class="${classes.customInfobox}">
+                          <img src="{img_url}" alt="asset Img" width="100px" height="100px">
+                          <div class="${classes.name}">{name}</div>
+                            {address}
+                        </div>`;
+    //Wait until the map resources are ready.
+    this.state.mapInstant.events.add('ready', () => {
 
-    const mapInfo = this.props.mapInfo;
-    
-    if(this.state.mapInstant){
-      this.state.mapInstant.events.add('ready', () => {
-        //Create a data source and add it to the map.
-        let datasource = new atlas.source.DataSource();
-        this.state.mapInstant.sources.add(datasource);
-  
-        this.state.mapInstant.imageSprite.add(
-          "my-custom-icon",
-          pump
-        ).then(() => {
-          this.state.mapInstant.layers.add(new atlas.layer.SymbolLayer(datasource, '', {
-            iconOptions: {
-              //Pass in the id of the custom icon that was loaded into the map resources.
-              image: 'my-custom-icon',
-  
-              //Optionally scale the size of the icon.
-              size: 0.1
-            },
-            textOptions: {
-              //Convert the temperature property of each feature into a string and concatenate "°F".
-              textField: ['concat', ['to-string', ['get', 'temperature']], '°F'],
-  
-              //Offset the text so that it appears on top of the icon.
-              offset: [0, -2]
-            }
-          }));
-        });
-  
-  
-        //Add a data set to the data source. 
-        if (mapInfo.length > 0) {
-          // mapInfo.map(mapCoords => {
-          //   datasource.add(new atlas.data.Feature(new atlas.data.Point(mapCoords)))
-          // })
-          let atlasCoords = mapInfo.map(mapCoords => {
-            return new atlas.data.Feature(new atlas.data.Point(mapCoords))
-          });
-          datasource.add([...atlasCoords]);
-        }
-  
-        // datasource.add([
-        //   new atlas.data.Feature(new atlas.data.Point([-122.338913, 47.607471])),
-        //   new atlas.data.Feature(new atlas.data.Point([-122.341187, 47.608192])),
-        //   new atlas.data.Feature(new atlas.data.Point([-122.335014, 47.607960])),
-        //   new atlas.data.Feature(new atlas.data.Point([-122.337555, 47.608620])),
-        //   new atlas.data.Feature(new atlas.data.Point([-122.338524, 47.606907])),
-        //   new atlas.data.Feature(new atlas.data.Point([-122.336655, 47.606251])),
-        //   new atlas.data.Feature(new atlas.data.Point([-122.336182, 47.607185])),
-        //   new atlas.data.Feature(new atlas.data.Point([-122.337784, 47.607784])),
-        //   new atlas.data.Feature(new atlas.data.Point([-122.338455, 47.606880])),
-        //   new atlas.data.Feature(new atlas.data.Point([-122.336823, 47.607239])),
-        //   new atlas.data.Feature(new atlas.data.Point([-122.339027, 47.608040])),
-        //   new atlas.data.Feature(new atlas.data.Point([-122.335892, 47.607594]))
-        // ]);
-  
-        //Create a symbol layer for each category.
-        categories.forEach((category) => {
-          //Create a symbol layer for the category. Give each layer an id so we can easily retrieve it later.
-          this.state.mapInstant.layers.add(new atlas.layer.SymbolLayer(datasource, category, {
-            iconOptions: {
-              //The map control has built in icons for bar, coffee and restaurant that we can use.
-              image: category,
-              anchor: 'center',
-              allowOverlap: true
-            },
-  
-            //Create a filter which will only render points for the specified category in this layer.
-            filter: ['==', ['get', 'category'], category]
-          }));
-        });
+      //Create a data source and add it to the map.
+      datasource = new atlas.source.DataSource('', {
+        cluster: true
       });
+      this.state.mapInstant.sources.add(datasource);
+
+      const dataPoints = this.props.mapInfo.map(data => {
+        return new atlas.data.Feature(new atlas.data.Point(data.coordinates), {
+          name: data.name,
+          address: data.address,
+          url: data.url
+        });
+      })
+      //Add the symbol to the data source.
+      datasource.add([...dataPoints]);
+      //Add a layer for rendering point data as symbols.
+      var symbolLayer = new atlas.layer.SymbolLayer(datasource, '', {
+        iconOptions: {
+          image: 'pin-red'
+        }
+      });
+      this.state.mapInstant.layers.add(symbolLayer);
+      //Create a popup but leave it closed so we can update it and display it later.
+      popup = new atlas.Popup({
+        pixelOffset: [0, -18]
+      });
+      //Add a click event to the symbol layer.
+      this.state.mapInstant.events.add('click', symbolLayer, symbolClicked);
+    });
+
+    const symbolClicked = (e) => {
+      //Make sure the event occured on a point feature.
+      if (e.shapes && e.shapes.length > 0) {
+        var content, coordinate;
+        //Check to see if the first value in the shapes array is a Point Shape.
+        if (e.shapes[0] instanceof atlas.Shape && e.shapes[0].getType() === 'Point') {
+          var properties = e.shapes[0].getProperties();
+          content = popupTemplate.replace(/{img_url}/g, properties.url).replace(/{name}/g, properties.name).replace(/{address}/g, properties.address);
+          coordinate = e.shapes[0].getCoordinates();
+        } else if (e.shapes[0].type === 'Feature' && e.shapes[0].geometry.type === 'Point') {
+          //Check to see if the feature is a cluster.
+          if (e.shapes[0].properties.cluster) {
+            content = '<div style="padding:10px;"><b>Cluster of ' + e.shapes[0].properties.point_count + ' Assets</b></div>';
+          } else {
+            //Feature is likely from a VectorTileSource.
+            content = popupTemplate.replace(/{img_url}/g, properties.url).replace(/{name}/g, properties.name).replace(/{address}/g, properties.address);
+          }
+          coordinate = e.shapes[0].geometry.coordinates;
+        }
+        if (content && coordinate) {
+          //Populate the popupTemplate with data from the clicked point feature.
+          popup.setOptions({
+            //Update the content of the popup.
+            content: content,
+            //Update the position of the popup with the symbols coordinate.
+            position: coordinate
+          });
+          //Open the popup.
+          popup.open(this.state.mapInstant);
+        }
+      }
     }
   }
 
