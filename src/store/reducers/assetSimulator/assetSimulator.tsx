@@ -16,14 +16,29 @@ const initialState = {
     vibration: 10,
     voltage: 220,
   },
-  assetSimulatorFaultValue : {},
+  assetSimulatorFaultValue : {
+    current: 0,
+    dischargePressure: 0,
+    flow: 0,
+    head: 0,
+    power: 0,
+    speed: 0,
+    suctionPressure: 0,
+    temperature: 0,
+    torque: 0,
+    vibration: 0,
+    voltage: 0,
+  },
+  actualFaultValue : {}
 }
 
-const setAssetSimulator = (state, action) => {
-  let newAssetSimulatorList = new Array();  
-  newAssetSimulatorList = action.simulatorData.data;
-  let updatedAssetSimulatorList = newAssetSimulatorList[action.simulatorData.faultValue];
-  return { assetSimulatorList: updatedAssetSimulatorList };  
+const setActualFaultValue = (state, action) => {
+  let newActualFaultValue = action.data;
+  let updatedActualFaultValue = updateObject({},newActualFaultValue);
+  let updatedState = {
+    actualFaultValue : updatedActualFaultValue
+  }
+  return updateObject(state, updatedState);
 }
 
 const setSimulatorFaultValue = (state, action) => {
@@ -37,7 +52,7 @@ const setSimulatorFaultValue = (state, action) => {
 
 const setSimulatorHealthyValue = (state,action) => {
   let newSimulatorHealtyValue = action.data;
-  let updatedSimulatorHealthyValue = updateObject({},newSimulatorHealtyValue);
+  let updatedSimulatorHealthyValue = updateObject(state.assetSimulatorValue,newSimulatorHealtyValue);
   let updatedState = {
     assetSimulatorValue : updatedSimulatorHealthyValue
   }
@@ -46,9 +61,9 @@ const setSimulatorHealthyValue = (state,action) => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.SET_ASSET_SIMULATOR: return setAssetSimulator(state, action);
     case actionTypes.SET_SIMULATOR_FAULT_VALUE : return setSimulatorFaultValue(state,action);
     case actionTypes.SET_SIMULATOR_HEALTHY_VALUE : return setSimulatorHealthyValue(state,action);
+    case actionTypes.SET_ACTUAL_FAULT_VALUE : return setActualFaultValue(state,action);
     default: return state;
   }
 }
