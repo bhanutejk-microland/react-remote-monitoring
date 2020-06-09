@@ -8,9 +8,9 @@ export const setRulesListInfo = (rules) => {
   }
 }
 
-export const initRules = () => {
+export const initRules = (appFilterInfo) => {
   return dispatch => {
-    axios.get("api/rules/listRules?configType=rules").then(response => {
+    axios.post("api/rules/listRules?configType=rules",appFilterInfo).then(response => {
       dispatch(setRulesListInfo(response.data));
     });
   }

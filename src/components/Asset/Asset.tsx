@@ -139,7 +139,7 @@ const Asset: FunctionComponent<AssetProps> = ({ asset, location, match }) => {
             />
             </Grid>
             <Grid item>
-              <Link to={`/alerts`}>
+              <Link to={`/alerts/${match.params.assetId === undefined ? asset.assetId : match.params.assetId}`}>
                 <Chip
                   variant="outlined"
                   size="small"

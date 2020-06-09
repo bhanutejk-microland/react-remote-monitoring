@@ -16,11 +16,13 @@ import Drawer from "@material-ui/core/Drawer";
 import AlertFormComponent from '../Alerts/AlertsFormComponent/AlertsFormComponent';
 
 interface AlertsProps { 
-  onInitAlerts: () => void;
+  onInitAlerts: (appFilters:any) => void;
   onInitDeviceTelemetry: (deviceId: any, field:string,fromTimeStamp:any,toTimeStamp:any) => void;
   onUpdateAlertFormData: (alertFormData: any) => void;
   alertsListInfo: any;
   deviceTelemetry: any;
+  match: any;
+  appFilterInfo: any;
 }
 
 interface AlertsState {
@@ -33,6 +35,7 @@ interface AlertsState {
     message: string;
   };
   alertFormData: any;
+  deviceId: string;
 }
 
 const alertInfoHeaders = [
@@ -56,12 +59,29 @@ class Alerts extends Component<AlertsProps, AlertsState> {
         alertType: 'success',
         message: ''
       },
-      alertFormData: {}
+      alertFormData: {},
+      deviceId: ''
     }
   }
 
   componentDidMount() {
-    this.props.onInitAlerts();
+    if(this.props.match.url !== "/alerts"){
+      const deviceId = this.props.match.params.assetId;    
+      const appFilters = {
+        assetIds : deviceId
+      }; 
+      this.props.onInitAlerts(appFilters);
+    }else{
+      const appFilters = this.props.appFilterInfo;
+      this.props.onInitAlerts(appFilters);
+    }    
+  }
+
+  componentDidUpdate(prevProps){
+    const appFilters = this.props.appFilterInfo;
+    if (prevProps.appFilterInfo !== appFilters) {
+      this.props.onInitAlerts(appFilters);      
+    }
   }
 
   renderTelemetry = () => {
@@ -126,7 +146,7 @@ class Alerts extends Component<AlertsProps, AlertsState> {
             <AlertTable
               headerCells={alertInfoHeaders}
               dataCells={this.props.alertsListInfo || []}
-              uniqueCol="assetId"
+              uniqueCol="dateTime"
               renderTelemetry={(row) =>{ 
                 let currentTime = new Date(row['alertDate']);
                 let fromTimeStamp = currentTime.setHours(currentTime.getHours() - 1);
@@ -201,13 +221,14 @@ class Alerts extends Component<AlertsProps, AlertsState> {
 const mapStateToProps = state => {
   return {
     alertsListInfo: state.alertsInfo.alerts,
-    deviceTelemetry: state.deviceTelemetryInfo.deviceTelemetry
+    deviceTelemetry: state.deviceTelemetryInfo.deviceTelemetry,
+    appFilterInfo: state.appliedFilterInfo.appliedFiltersInfo
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onInitAlerts: () => dispatch(actions.initAlerts()),
+    onInitAlerts: (appFilters) => dispatch(actions.initAlerts(appFilters)),
     onInitDeviceTelemetry: (deviceId,field,fromTimeStamp,toTimeStamp) => dispatch(actions.initDeviceTelemetry(deviceId,field,fromTimeStamp,toTimeStamp)),
     onUpdateAlertFormData: (alertFormData) => dispatch(actions.updateAlertFormData(alertFormData))
   }

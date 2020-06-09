@@ -8,9 +8,9 @@ export const setAlertsListInfo = (alerts) => {
   }
 }
 
-export const initAlerts = () => {
+export const initAlerts = (deviceObj) => {
   return dispatch => {
-    axios.get("api/alerts/listAll").then(response => {
+    axios.post("api/alerts/listAll",deviceObj).then(response => {
       dispatch(setAlertsListInfo(response.data));
     }).catch((error) => {
       console.log("MMMMMMMMMMMMMMMM", error)
