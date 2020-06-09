@@ -20,7 +20,7 @@ interface DashboardProps {
   onInitKpiTotalInactiveInfo: (appFilters: any) => void;
   onInitKpiTotalCriticalAlertsInfo: (appFilters: any) => void;
   onInitKpiTotalFletupTimeInfo: (appFilters: any) => void;
-  onInitDashboardAlerts: (appFilters: any) => void;
+  onInitDashboardAlerts: (appFilters: any, fromTimeStamp: any, toTimeStamp: any) => void;
   onInitDashboardMapInfo: (appFilters: any) => void;
   kpiInfo: kpiInfoModel;
   alertsInfo: Array<AlertModel>;
@@ -94,6 +94,8 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
   }
 
   componentDidMount() {
+    const toTimeStamp = +new Date;
+    const fromTimeStamp = toTimeStamp - 24 * 60 * 60 * 1000;
     const appFilters = this.props.appFilterInfo;
     this.props.onInitKpiTotalAssetsInfo(appFilters);
     this.props.onInitKpiTotalActiveInfo(appFilters);
@@ -101,12 +103,14 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
     this.props.onInitKpiTotalInactiveInfo(appFilters);
     this.props.onInitKpiTotalCriticalAlertsInfo(appFilters);
     this.props.onInitKpiTotalFletupTimeInfo(appFilters);
-    this.props.onInitDashboardAlerts(appFilters);
+    this.props.onInitDashboardAlerts(appFilters,fromTimeStamp,toTimeStamp);
     this.props.onInitDashboardMapInfo(appFilters);
   }
 
   componentDidUpdate(prevProps) {
     const appFilters = this.props.appFilterInfo;
+    const toTimeStamp = +new Date;
+    const fromTimeStamp = toTimeStamp - 24 * 60 * 60 * 1000;
     if (prevProps.appFilterInfo !== appFilters) {
       this.props.onInitKpiTotalAssetsInfo(appFilters);
       this.props.onInitKpiTotalActiveInfo(appFilters);
@@ -114,7 +118,7 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
       this.props.onInitKpiTotalInactiveInfo(appFilters);
       this.props.onInitKpiTotalCriticalAlertsInfo(appFilters);
       this.props.onInitKpiTotalFletupTimeInfo(appFilters);
-      this.props.onInitDashboardAlerts(appFilters);
+      this.props.onInitDashboardAlerts(appFilters,fromTimeStamp,toTimeStamp);
       this.props.onInitDashboardMapInfo(appFilters);
     }
   }
@@ -221,7 +225,7 @@ const mapDispatchToProps = dispatch => {
     onInitKpiTotalInactiveInfo: (appFilters) => dispatch(actions.initKpiTotalInactiveInfo(appFilters)),
     onInitKpiTotalCriticalAlertsInfo: (appFilters) => dispatch(actions.initKpiTotalCriticalAlertsInfo(appFilters)),
     onInitKpiTotalFletupTimeInfo: (appFilters) => dispatch(actions.initKpiTotalFletupTimeInfo(appFilters)),
-    onInitDashboardAlerts: (appFilters) => dispatch(actions.initDashboardAlerts(appFilters)),
+    onInitDashboardAlerts: (appFilters,fromTimeStamp,toTimeStamp) => dispatch(actions.initDashboardAlerts(appFilters,fromTimeStamp,toTimeStamp)),
     onInitDashboardMapInfo: (appFilters) => dispatch(actions.initDashboardMapInfo(appFilters))
   }
 }

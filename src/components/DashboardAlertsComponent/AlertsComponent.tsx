@@ -81,7 +81,7 @@ class AlertsComponent extends Component<
           <Table
             headerCells={this.props.alertInfoHeaders}
             dataCells={this.state.alertsInfo}
-            uniqueCol="dateTime"
+            uniqueCol="assetId"
             handleAlertDeletion={(event, assetIds) =>
               this.handleAlertDeletion(event, assetIds)
             }

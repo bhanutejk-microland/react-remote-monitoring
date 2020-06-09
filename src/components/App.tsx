@@ -23,7 +23,7 @@ class App extends Component {
             <Route path="/" exact component={Dashboard} />
             <Route path="/assets" component={Assets} />
             <Route path="/analytics" component={Analytics} />
-            <Route path="/alerts" component={Alerts} />
+            <Route path="/alerts/:assetId?" exact component={Alerts} />
             <Route path="/rules" component={Rules} />
             <Route path="/trends" component={Trends} />
             <Route path="/configuration" component={Configuration} />

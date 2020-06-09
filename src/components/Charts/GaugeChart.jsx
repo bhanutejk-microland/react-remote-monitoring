@@ -25,24 +25,24 @@ class GaugeChart extends Component{
         // Add ranges
         let range = axis.axisRanges.create();
         range.value = this.props.property.minimum;
-        range.endValue = this.props.property.economy;
+        range.endValue = this.props.property.maximum;
         range.axisFill.fillOpacity = 0.6;
         range.axisFill.fill = am4core.color("#4ed504");
         range.axisFill.zIndex = - 1;
 
-        let range2 = axis.axisRanges.create();
-        range2.value = this.props.property.economy;
-        range2.endValue = this.props.property.buzzer;
-        range2.axisFill.fillOpacity = 0.6;
-        range2.axisFill.fill = am4core.color("#fff20b");
-        range2.axisFill.zIndex = - 1;
+        // let range2 = axis.axisRanges.create();
+        // range2.value = this.props.property.economy;
+        // range2.endValue = this.props.property.buzzer;
+        // range2.axisFill.fillOpacity = 0.6;
+        // range2.axisFill.fill = am4core.color("#fff20b");
+        // range2.axisFill.zIndex = - 1;
 
-        let range3 = axis.axisRanges.create();
-        range3.value = this.props.property.buzzer;
-        range3.endValue = this.props.property.maximum;
-        range3.axisFill.fillOpacity = 0.6;
-        range3.axisFill.fill = am4core.color("#dd2c00");
-        range3.axisFill.zIndex = - 1;
+        // let range3 = axis.axisRanges.create();
+        // range3.value = this.props.property.buzzer;
+        // range3.endValue = this.props.property.maximum;
+        // range3.axisFill.fillOpacity = 0.6;
+        // range3.axisFill.fill = am4core.color("#dd2c00");
+        // range3.axisFill.zIndex = - 1;
 
         // Add hand
         let hand = chart.hands.push(new am4charts.ClockHand());

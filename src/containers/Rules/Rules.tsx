@@ -14,9 +14,10 @@ import { RulesListModel } from '../../interfaceModels/RulesListModel';
 import * as actions from '../../store/actions/index';
 
 interface RulesProps { 
-  onInitRules: () => void;
+  onInitRules: (appFilterInfo) => void;
   rulesListInfo: Array<RulesListModel>;
   onAddToRulesList: (rule: any) => void;
+  appFilterInfo: any;
 }
 
 interface RulesState {
@@ -54,7 +55,14 @@ class Rules extends Component<RulesProps, RulesState> {
   }
 
   componentDidMount() {
-    this.props.onInitRules();
+    this.props.onInitRules(this.props.appFilterInfo);
+  }
+
+  componentDidUpdate(prevProps) {
+    const appFilters = this.props.appFilterInfo;
+    if (prevProps.appFilterInfo !== appFilters) {
+      this.props.onInitRules(appFilters);      
+    }
   }
 
   toggleRulesDrawer = (
@@ -164,13 +172,14 @@ class Rules extends Component<RulesProps, RulesState> {
 
 const mapStateToProps = state => {
   return {
-    rulesListInfo: state.rulesInfo.rules
+    rulesListInfo: state.rulesInfo.rules,
+    appFilterInfo: state.appliedFilterInfo.appliedFiltersInfo
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onInitRules: () => dispatch(actions.initRules()),
+    onInitRules: (appFilterInfo) => dispatch(actions.initRules(appFilterInfo)),
     onAddToRulesList: (rule) => dispatch(actions.addToRulesList(rule))
   }
 }
