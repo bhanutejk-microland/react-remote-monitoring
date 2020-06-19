@@ -23,7 +23,6 @@ interface AssetSimulatorState {
     properties: propertyElement[];
     propertiesValues: any;
     pumpSwitch: boolean;
-    faultIntroduce: boolean;
     faultSelectedName: string;
 }
 
@@ -54,6 +53,9 @@ class AssetSimulator extends Component<AssetSimulatorProps, AssetSimulatorState>
                 },{
                     name : "Outlet Deposit",
                     checked : false
+                },{
+                    name : "Anomaly",
+                    checked : false
                 }
             ],
             propertiesValues : {
@@ -70,7 +72,6 @@ class AssetSimulator extends Component<AssetSimulatorProps, AssetSimulatorState>
                 vibration : 0
             },
             pumpSwitch : false,
-            faultIntroduce : false,
             faultSelectedName : '' 
         }
     }
@@ -127,7 +128,6 @@ class AssetSimulator extends Component<AssetSimulatorProps, AssetSimulatorState>
         //Post Asset Simulator Data        
         this.setState({
             properties : updatedProperties,
-            faultIntroduce : !property.checked,
             faultSelectedName : property.name
         },() => {
             if(!property.checked){
@@ -166,7 +166,7 @@ class AssetSimulator extends Component<AssetSimulatorProps, AssetSimulatorState>
                 let faultBody = this.props.assetSimulatorValue;
                 this.props.onPostAssetFaultValue(faultBody);
                 startInterval = setInterval(() => {
-                    if(this.state.faultIntroduce){
+                    if(this.state.properties.filter(e => e.checked === true).length > 0){
                         this.props.onGetAssetFaultValue({faultValue : this.state.faultSelectedName});
                     }else{
                         this.props.onGetAssetHealthyValue();

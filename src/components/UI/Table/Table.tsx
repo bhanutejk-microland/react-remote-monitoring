@@ -28,6 +28,7 @@ import { faEye } from "@fortawesome/free-solid-svg-icons";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Link } from "react-router-dom";
 import Button from "../Button/Button";
+import { VisibilitySharp } from '@material-ui/icons';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -223,6 +224,14 @@ const useStyles = makeStyles((theme: Theme) =>
       position: "absolute",
       top: 20,
       width: 1
+    },
+    fontIcon: {
+      cursor: "pointer",
+      border: "1px solid #3f51b5",
+      background: "#3f51b5",
+      margin: "5px",
+      padding: "5px",
+      color: "#fff"
     }
   })
 );
@@ -349,6 +358,7 @@ export default function EnhancedTable(props: TableProps) {
                         id={labelId}
                         scope="row"
                         padding="none"
+                        align="left"
                       >
                         {row[header.id]}
                       </TableCell>
@@ -366,13 +376,14 @@ export default function EnhancedTable(props: TableProps) {
                       </Button>
                         :
                         <Link to={`/alerts`}>
-                          <Button
+                          {/* <Button
                             disabled={false}
                             btnType="primary"
                             icon={<FontAwesomeIcon icon={faEye} />}
                           >
                             View
-                        </Button>
+                        </Button> */}
+                          <VisibilitySharp titleAccess="Edit Alert" className={classes.fontIcon} />
                         </Link>
                     }
 
