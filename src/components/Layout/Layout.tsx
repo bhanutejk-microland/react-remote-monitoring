@@ -7,7 +7,8 @@ import {
   faList,
   faBell,
   faCogs,
-  faPlay
+  faPlay,
+  faQuestionCircle
 } from "@fortawesome/free-solid-svg-icons";
 import { connect } from 'react-redux';
 
@@ -45,7 +46,8 @@ const menuList = [
   { label: "Rules", menuIcon: faList, path: "/rules" },
   { label: "Trends", menuIcon: faChartBar, path: "/trends" },
   { label: "Configuration", menuIcon: faCogs, path: "/configuration" },
-  { label: "Simulator", menuIcon: faPlay, path: "/assetSimulator"}
+  { label: "Simulator", menuIcon: faPlay, path: "/assetSimulator"},
+  { label: "AR Assist", menuIcon: faQuestionCircle, path: "https://connect.vuforia.com/"}
 ];
 
 class Layout extends Component<LayoutProps, LayoutState> {
