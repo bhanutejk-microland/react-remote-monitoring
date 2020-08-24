@@ -61,4 +61,20 @@ import axios from '../../../axios';
       });
     }
   }
+
+  export const setFaultPredictionValue = (value) => {
+    return {
+      type: actionTypes.SET_CLASSIFICATION_FAULT_PREDICTION,
+      value: value
+    };
+  };
+  
+  export const getFaultPredictionValue = (configType,deviceId,fromTimeStamp,toTimeStamp) => {
+    return dispatch => {
+      axios.get("api/faultClassification/getFaultPrediction?configType="+configType+"&deviceId="+deviceId+"&fromTimeStamp="+fromTimeStamp+"&toTimeStamp="+toTimeStamp).then(response => {
+        dispatch(setFaultPredictionValue(response.data))
+      });
+    }
+  }
+  
   

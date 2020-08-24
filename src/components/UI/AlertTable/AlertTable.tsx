@@ -332,7 +332,6 @@ export default function EnhancedTable(props: TableProps) {
           {stableSort(dataCells, getComparator(order, orderBy))
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row, index) => {
-              console.log("SSSSSSSSSSSSSSSSSSSSSSSSS", row);
               let deviceId = '';
               const isItemSelected = isSelected(`${row[uniqueCol]}`);
               const labelId = `enhanced-table-checkbox-${index}`;

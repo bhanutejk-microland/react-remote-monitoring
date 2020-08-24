@@ -167,7 +167,7 @@ export default function FullWidthTabs(props: TabProps) {
                 />
               );
             })}
-          />
+          
         </Tabs>
       </AppBar>
       <SwipeableViews

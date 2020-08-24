@@ -12,6 +12,7 @@ interface FaultClassificationProps {
     onGetLastTenPrediction: () => void;
     onGetProbabilityStatus: (configType: string, fromTimeStamp:any, toTimeStamp: any) => void;
     onGetCountStatus: (configType: string, fromTimeStamp:any, toTimeStamp: any) => void;
+    onGetFaultPrediction: (configType: string, fromTimeStamp:any, toTimeStamp: any) => void;
     onGetIdentificationGaugeValue: () => void;
     onGetIdentificationLastTenPrediction: () => void;
     onGetIdentificationProbabilityStatus: (configType: string, fromTimeStamp:any, toTimeStamp: any) => void;
@@ -20,6 +21,7 @@ interface FaultClassificationProps {
     predictionList: predictionListModel[];
     analyticalProbabilityInfo: analyticalProbabilityProperties;
     analyticalCountInfo: analyticalCountProperties;
+    analyticalFaultPredictionInfo: analyticalFaultPredictionInfo;
     assetId: string;
     configType: string;
     appliedFilterDate: any;
@@ -45,6 +47,12 @@ interface analyticalCountProperties{
   valueAxes : string;
   categoryAxes : string;
   countList : analyticalCountElement[];
+}
+
+interface analyticalFaultPredictionInfo{
+  valueAxes : string;
+  categoryAxes : string;
+  predictionList : any;
 }
 
 let configType:string;
@@ -86,6 +94,7 @@ class FaultClassification extends Component<FaultClassificationProps> {
     this.props.onGetLastTenPrediction();
     this.props.onGetProbabilityStatus(configType,fromTimeStamp,toTimeStamp);
     this.props.onGetCountStatus(configType,fromTimeStamp,toTimeStamp);
+    this.props.onGetFaultPrediction(configType,fromTimeStamp,toTimeStamp);
   }
 
   invokeIdentificationTabGraph = (configType,fromTimeStamp,toTimeStamp) =>{
@@ -105,6 +114,7 @@ class FaultClassification extends Component<FaultClassificationProps> {
       if(configType === 'FaultClassification'){
         this.props.onGetProbabilityStatus(configType,fromTimeStamp,toTimeStamp);
         this.props.onGetCountStatus(configType,fromTimeStamp,toTimeStamp);
+        this.props.onGetFaultPrediction(configType,fromTimeStamp,toTimeStamp);
       }else{
         this.props.onGetIdentificationProbabilityStatus(configType,fromTimeStamp,toTimeStamp);
         this.props.onGetIdentificationCountStatus(configType,fromTimeStamp,toTimeStamp);
@@ -119,6 +129,7 @@ class FaultClassification extends Component<FaultClassificationProps> {
       if(configType === 'FaultClassification'){
         this.props.onGetProbabilityStatus(configType,fromTimeStamp,toTimeStamp);
         this.props.onGetCountStatus(configType,fromTimeStamp,toTimeStamp);
+        this.props.onGetFaultPrediction(configType,fromTimeStamp,toTimeStamp);
       }else{
         this.props.onGetIdentificationProbabilityStatus(configType,fromTimeStamp,toTimeStamp);
         this.props.onGetIdentificationCountStatus(configType,fromTimeStamp,toTimeStamp);
@@ -135,11 +146,12 @@ class FaultClassification extends Component<FaultClassificationProps> {
       fromTimeStamp = Date.parse(fromTime.toString());
       toTimeStamp = Date.parse(toTime.toString());
       if(configType === 'FaultClassification'){
-        this.props.onGetProbabilityStatus(configType,fromTimeStamp,toTimeStamp)
-        this.props.onGetCountStatus(configType,fromTimeStamp,toTimeStamp) 
+        this.props.onGetProbabilityStatus(configType,fromTimeStamp,toTimeStamp);
+        this.props.onGetCountStatus(configType,fromTimeStamp,toTimeStamp); 
+        this.props.onGetFaultPrediction(configType,fromTimeStamp,toTimeStamp);
       }else{
-        this.props.onGetIdentificationProbabilityStatus(configType,fromTimeStamp,toTimeStamp)
-        this.props.onGetIdentificationCountStatus(configType,fromTimeStamp,toTimeStamp)
+        this.props.onGetIdentificationProbabilityStatus(configType,fromTimeStamp,toTimeStamp);
+        this.props.onGetIdentificationCountStatus(configType,fromTimeStamp,toTimeStamp);
       }      
     }
   }
@@ -157,7 +169,9 @@ class FaultClassification extends Component<FaultClassificationProps> {
         <AnalyticsProbabilityComponent 
           analyticalProbabilityInfo={this.props.analyticalProbabilityInfo}
           analyticalCountInfo={this.props.analyticalCountInfo}
+          analyticalFaultPredictionInfo={this.props.analyticalFaultPredictionInfo}
           onSelectTimePeriod={this.onSelectTimePeriod}
+          configType={this.props.configType}
         />
         <AnalyticsPredictionComponent analyticalPredictionList={this.props.predictionList} />
       </div>
@@ -175,6 +189,7 @@ const mapStateToProps = (state,configType) => {
         predictionList : state.faultClassification.predictionList,
         analyticalProbabilityInfo : state.faultClassification.analyticalProbabilityInfo,
         analyticalCountInfo : state.faultClassification.analyticalCountInfo,
+        analyticalFaultPredictionInfo : state.faultClassification.analyticalFaultPredictionInfo,
         appliedFilterDate : state.assetDetailsDateFilter.appliedFilterDate
     }
     case "FaultIdentification":
@@ -195,7 +210,8 @@ const mapDispatchToProps = (dispatch,configType) => {
         onGetGaugeValue: () => dispatch(actions.getGaugeValue(configType.configType,deviceId)),
         onGetLastTenPrediction: () => dispatch(actions.getLastTenPredictionValue(configType.configType,deviceId)),
         onGetProbabilityStatus: (configType,fromTimeStamp,toTimeStamp) => dispatch(actions.getProbabilityStatusValue(configType,deviceId,fromTimeStamp,toTimeStamp)),
-        onGetCountStatus: (configType,fromTimeStamp,toTimeStamp) => dispatch(actions.getCountStatusValue(configType,deviceId,fromTimeStamp,toTimeStamp))
+        onGetCountStatus: (configType,fromTimeStamp,toTimeStamp) => dispatch(actions.getCountStatusValue(configType,deviceId,fromTimeStamp,toTimeStamp)),
+        onGetFaultPrediction: (configType,fromTimeStamp,toTimeStamp) => dispatch(actions.getFaultPredictionValue(configType,deviceId,fromTimeStamp,toTimeStamp))
       }
     case "FaultIdentification":
       return {

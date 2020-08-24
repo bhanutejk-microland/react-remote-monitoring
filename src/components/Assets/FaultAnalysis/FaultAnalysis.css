@@ -33,3 +33,8 @@
   Tabs.MuiTabs-root{
     min-height: 30px;
   }
+
+  .faultSection{
+    width: 50%;
+    display: inline-block;
+  }
