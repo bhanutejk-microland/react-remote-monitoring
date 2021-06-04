@@ -42,13 +42,14 @@ dateAxis.renderer.minGridDistance = 50;
 // Create series
 function createAxisAndSeries(field, name, opposite, bullet) {
   var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+  valueAxis.baseValue = 0.5;
   if(chart.yAxes.indexOf(valueAxis) != 0){
   	valueAxis.syncWithAxis = chart.yAxes.getIndex(0);
   }
 
   chart.events.on("ready", function(ev) {
     valueAxis.min = 0;
-    valueAxis.max = 120;
+    valueAxis.max = 1;
   });
   
   var series = chart.series.push(new am4charts.LineSeries());
@@ -57,10 +58,14 @@ function createAxisAndSeries(field, name, opposite, bullet) {
   series.strokeWidth = 2;
   series.yAxis = valueAxis;
   series.name = name;
-  series.tooltipText = "{name}: [bold]{valueY}[/]";
+  series.tooltipText = `{name}: [bold]{valueY}[/]
+                          Head: {head}
+                          Flow: {flow}
+                          Speed: {speed}
+                          Torque: {torque}`;
   series.tensionX = 0.8;
   series.showOnInit = true;
-  
+  series.tooltip.pointerOrientation = "vertical";
   var interfaceColors = new am4core.InterfaceColorSet();
   
   switch(bullet) {
@@ -70,6 +75,18 @@ function createAxisAndSeries(field, name, opposite, bullet) {
       bullet.height = 12;
       bullet.horizontalCenter = "middle";
       bullet.verticalCenter = "middle";
+      bullet.adapter.add("fill", function(fill, target){
+          if(target.dataItem.valueY > 0.5){
+              return am4core.color("#FF0000");
+          }
+          return fill;
+      });
+
+      var range = valueAxis.createSeriesRange(series);
+      range.value = 0.5;
+      range.endValue = 1;
+      range.contents.stroke = am4core.color("#FF0000");
+      range.contents.fill = am4core.color("#222d32");
       
       var triangle = bullet.createChild(am4core.Triangle);
       triangle.stroke = interfaceColors.getFor("background");
@@ -79,13 +96,25 @@ function createAxisAndSeries(field, name, opposite, bullet) {
       triangle.height = 12;
       break;
     case "rectangle":
-      var bullet = series.bullets.push(new am4charts.Bullet());
-      bullet.width = 10;
-      bullet.height = 10;
-      bullet.horizontalCenter = "middle";
-      bullet.verticalCenter = "middle";
+      var bullet2 = series.bullets.push(new am4charts.Bullet());
+      bullet2.width = 10;
+      bullet2.height = 10;
+      bullet2.horizontalCenter = "middle";
+      bullet2.verticalCenter = "middle";
+      bullet2.adapter.add("fill", function(fill, target){
+          if(target.dataItem.valueY > 0.5){
+              return am4core.color("#FF0000");
+          }
+          return fill;
+      });
+
+      var range2 = valueAxis.createSeriesRange(series);
+      range2.value = 0.5;
+      range2.endValue = 1;
+      range2.contents.stroke = am4core.color("#FF0000");
+      range2.contents.fill = range2.contents.stroke;
       
-      var rectangle = bullet.createChild(am4core.Rectangle);
+      var rectangle = bullet2.createChild(am4core.Rectangle);
       rectangle.stroke = interfaceColors.getFor("background");
       rectangle.strokeWidth = 2;
       rectangle.width = 10;
@@ -105,7 +134,7 @@ function createAxisAndSeries(field, name, opposite, bullet) {
   valueAxis.renderer.opposite = opposite;
 }
 
-createAxisAndSeries("healthy", "Healthy", false, "circle");
+// createAxisAndSeries("healthy", "Healthy", false, "circle");
 createAxisAndSeries("brokenBlade", "Broken Blade", true, "triangle");
 // createAxisAndSeries("hits", "Hits", true, "rectangle");
 

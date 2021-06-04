@@ -65,7 +65,8 @@ export {
   getIdentificationGaugeValue,
   getIdentificationLastTenPredictionValue,
   getIdentificationProbabilityStatusValue,
-  getIdentificationCountStatusValue
+  getIdentificationCountStatusValue,
+  getIdentificationFaultPredictionValue
 } from './assets/faultIdentification';
 
 export { 

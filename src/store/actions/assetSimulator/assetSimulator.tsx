@@ -67,9 +67,9 @@ export const setAssetHealthyValue = (data) => {
   }
 }
 
-export const getAssetHealthyValue = () => {
+export const getAssetHealthyValue = (position) => {
   return dispatch => {
-    axios.get("api/getPumpSimulatorData/getHealtyValue").then(response => {
+    axios.get("api/getPumpSimulatorData/getHealtyValue?position="+position).then(response => {
       dispatch(setAssetHealthyValue(response.data));
     })
   }

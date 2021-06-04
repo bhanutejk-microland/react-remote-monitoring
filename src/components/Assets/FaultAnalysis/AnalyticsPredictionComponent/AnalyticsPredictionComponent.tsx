@@ -57,7 +57,8 @@ export default function CustomizedTables(props: AnalyticsPredictionComponentProp
                 <StyledTableCell align="left">HEAD</StyledTableCell>
                 <StyledTableCell align="left">FLOW</StyledTableCell>
                 <StyledTableCell align="left">SPEED</StyledTableCell>
-                <StyledTableCell align="left">TORQUE</StyledTableCell>
+                <StyledTableCell align="left">TORQUE</StyledTableCell>                
+                <StyledTableCell align="left">PROBABILITY</StyledTableCell>
                 <StyledTableCell align="left">FAULT STATUS</StyledTableCell>
               </TableRow>
             </TableHead>
@@ -68,7 +69,8 @@ export default function CustomizedTables(props: AnalyticsPredictionComponentProp
                   <StyledTableCell align="left">{row.head}</StyledTableCell>
                   <StyledTableCell align="left">{row.flow}</StyledTableCell>
                   <StyledTableCell align="left">{row.speed}</StyledTableCell>
-                  <StyledTableCell align="left">{row.torque}</StyledTableCell>              
+                  <StyledTableCell align="left">{row.torque}</StyledTableCell>                               
+                  <StyledTableCell align="left">{row.faultProbability >= 45 ? row.faultProbability : row.noFaultProbability >= 45 ? row.noFaultProbability : row.faultProbability }</StyledTableCell>          
                   <StyledTableCell align="left">{row.fault}</StyledTableCell>
                 </StyledTableRow>
               ))}

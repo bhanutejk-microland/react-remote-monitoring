@@ -21,7 +21,7 @@ class PieChart extends Component {
     let pieSeries = chart.series.push(new am4charts.PieSeries());
     pieSeries.dataFields.value = "value";
     pieSeries.dataFields.category = "name";
-    pieSeries.slices.template.propertyFields.fill = "color";
+    // pieSeries.slices.template.propertyFields.fill = "color";
     pieSeries.slices.template.strokeWidth = 2;
     pieSeries.slices.template.strokeOpacity = 1;
 
@@ -30,7 +30,17 @@ class PieChart extends Component {
     pieSeries.hiddenState.properties.endAngle = -90;
     pieSeries.hiddenState.properties.startAngle = -90;
     
-    chart.legend = new am4charts.Legend();
+    // chart.legend = new am4charts.Legend();
+
+    // Modify chart's colors
+    pieSeries.colors.list = [
+      am4core.color("#bec4f8"),
+      am4core.color("#a5abee"),
+      am4core.color("#6a6dde"),
+      am4core.color("#4d42cf"),
+      am4core.color("#713e8d"),
+      am4core.color("#a160a0"),
+    ];
 
     this.chart = chart;
   }

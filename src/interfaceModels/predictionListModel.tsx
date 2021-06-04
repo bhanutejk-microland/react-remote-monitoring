@@ -5,4 +5,6 @@ export interface predictionListModel {
   flow: number;
   torque: number;
   fault: string;
+  faultProbability: number;
+  noFaultProbability: number;
 }

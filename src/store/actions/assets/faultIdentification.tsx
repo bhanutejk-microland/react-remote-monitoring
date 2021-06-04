@@ -11,7 +11,7 @@ export const setIdentificationGaugeValue = (value) => {
 export const getIdentificationGaugeValue = (configType,deviceId) => {
   return dispatch => {
     axios.get("/api/faultIdentification/getFault?configType="+configType+"&deviceId="+deviceId).then(response => {
-      dispatch(setIdentificationGaugeValue(response.data))
+      dispatch(setIdentificationGaugeValue(response.data));
     });
   }
 }
@@ -26,7 +26,7 @@ export const setIdentificationLastTenPredictionValue = (value) => {
 export const getIdentificationLastTenPredictionValue = (configType,deviceId) => {
   return dispatch => {
     axios.get("api/faultIdentification/getLastTenPrediction?configType="+configType+"&deviceId="+deviceId).then(response => {
-      dispatch(setIdentificationLastTenPredictionValue(response.data))
+      dispatch(setIdentificationLastTenPredictionValue(response.data));
     });
   }
 }
@@ -41,7 +41,7 @@ export const getIdentificationLastTenPredictionValue = (configType,deviceId) => 
   export const getIdentificationProbabilityStatusValue = (configType,deviceId,fromTimeStamp,toTimeStamp) => {
     return dispatch => {
       axios.get("api/faultIdentification/getProbabilityStatus?configType="+configType+"&deviceId="+deviceId+"&fromTimeStamp="+fromTimeStamp+"&toTimeStamp="+toTimeStamp).then(response => {
-        dispatch(setIdentificationProbabilityStatusValue(response.data))
+        dispatch(setIdentificationProbabilityStatusValue(response.data));
       });
     }
   }
@@ -56,7 +56,22 @@ export const getIdentificationLastTenPredictionValue = (configType,deviceId) => 
   export const getIdentificationCountStatusValue = (configType,deviceId,fromTimeStamp,toTimeStamp) => {
     return dispatch => {
       axios.get("api/faultIdentification/getCountStatus?configType="+configType+"&deviceId="+deviceId+"&fromTimeStamp="+fromTimeStamp+"&toTimeStamp="+toTimeStamp).then(response => {
-        dispatch(setIdentificationCountStatusValue(response.data))
+        dispatch(setIdentificationCountStatusValue(response.data));
+      });
+    }
+  }
+
+  export const setIdentificationFaultPredictionValue = (value) => {
+    return {
+      type: actionTypes.SET_CLASSIFICATION_FAULT_PREDICTION,
+      value: value
+    };
+  };
+  
+  export const getIdentificationFaultPredictionValue = (configType,deviceId,fromTimeStamp,toTimeStamp) => {
+    return dispatch => {
+      axios.get("api/faultIdentification/getFaultPrediction?configType="+configType+"&deviceId="+deviceId+"&fromTimeStamp="+fromTimeStamp+"&toTimeStamp="+toTimeStamp).then(response => {
+        dispatch(setIdentificationFaultPredictionValue(response.data));
       });
     }
   }

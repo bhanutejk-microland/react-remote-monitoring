@@ -10,7 +10,7 @@ import classes from "../AssetSimulator/AssetSimulator.css";
 
 interface AssetSimulatorProps {
     onGetAssetFaultValue: (faultSelectedValue: any) => void;
-    onGetAssetHealthyValue: () => void;
+    onGetAssetHealthyValue: (position: number) => void;
     onPostAssetFaultValue: (faultBody: any) => void;
     onGetActualFaultValue: (faultSelectedValue: any) => void; 
     assetSimulatorList: any;
@@ -24,6 +24,7 @@ interface AssetSimulatorState {
     propertiesValues: any;
     pumpSwitch: boolean;
     faultSelectedName: string;
+    position: number;
 }
 
 interface propertyElement {
@@ -32,6 +33,8 @@ interface propertyElement {
 }
 
 let startInterval: any;
+
+let position: number = 0;
 
 class AssetSimulator extends Component<AssetSimulatorProps, AssetSimulatorState>{
     constructor(props:AssetSimulatorProps){
@@ -72,7 +75,8 @@ class AssetSimulator extends Component<AssetSimulatorProps, AssetSimulatorState>
                 vibration : 0
             },
             pumpSwitch : false,
-            faultSelectedName : '' 
+            faultSelectedName : '',
+            position: 0 
         }
     }
 
@@ -169,9 +173,13 @@ class AssetSimulator extends Component<AssetSimulatorProps, AssetSimulatorState>
                     if(this.state.properties.filter(e => e.checked === true).length > 0){
                         this.props.onGetAssetFaultValue({faultValue : this.state.faultSelectedName});
                     }else{
-                        this.props.onGetAssetHealthyValue();
+                        if(position === 25){
+                           position = 0; 
+                        }
+                        this.props.onGetAssetHealthyValue(position);     
+                        position++;                  
                     }                       
-                },60000);
+                },1000 * 60 * 60);
             }else{
                 clearInterval(startInterval); 
             }
@@ -191,7 +199,7 @@ class AssetSimulator extends Component<AssetSimulatorProps, AssetSimulatorState>
                                         {property.name}                                    
                                     </Grid>
                                     <Grid item>
-                                        <Switch disabled={!this.state.pumpSwitch} checkedStatus={property.checked} changed={(event) => this.handleChange(event,property)}/>
+                                        <Switch disabled={ true} checkedStatus={property.checked} changed={(event) => this.handleChange(event,property)}/>
                                     </Grid>
                                 </Grid>
                             </CardContent>                            
@@ -308,7 +316,7 @@ const mapDispatchToProps = dispatch => {
     return{
         onGetAssetFaultValue : (faultSelectedValue) => dispatch(actions.getSimulatorFaultValue(faultSelectedValue)),
         onPostAssetFaultValue :  (faultBody) => dispatch(actions.postAssetFaultValue(faultBody)),
-        onGetAssetHealthyValue : () => dispatch(actions.getAssetHealthyValue()),
+        onGetAssetHealthyValue : (position) => dispatch(actions.getAssetHealthyValue(position)),
         onGetActualFaultValue : (faultSelectedValue) => dispatch(actions.getActualFaultValue(faultSelectedValue))
     }
 };

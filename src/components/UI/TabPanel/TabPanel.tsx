@@ -209,7 +209,7 @@ export default function FullWidthTabs(props: TabProps) {
                 dir={theme.direction}
                 key={"tabPanel" + index}
               >
-                <FaultClassification assetId={assetId} configType={'FaultClassification'} />
+                <FaultClassification assetId={assetId} configType={'FaultClassification'} graphType={'LineChart'} />
               </TabPanel>
             )
           } else if (tabData === "faultIdentification") {
@@ -220,7 +220,7 @@ export default function FullWidthTabs(props: TabProps) {
                 dir={theme.direction}
                 key={"tabPanel" + index}
               >
-                <FaultClassification assetId={assetId} configType={'FaultIdentification'} />
+                <FaultClassification assetId={assetId} configType={'FaultIdentification'} graphType={'StackedBarChart'} />
               </TabPanel>
             )
           }

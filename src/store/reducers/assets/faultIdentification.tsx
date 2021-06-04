@@ -58,6 +58,11 @@ const initialState = {
     categoryAxes : "Count Occurence",
     valueAxes : "Count",
     countList : []
+  },
+  analyticalFaultPredictionInfo: {
+    categoryAxes : "Fault Prediction",
+    valueAxes : "Fault %",
+    predictionList : []
   }
 };
 
@@ -127,12 +132,24 @@ const setIdentificationCountStatus = (state,action) => {
   return updateObject(state,updatedState);
 }
 
+const setClassificationFaultprediction = (state,action) => {
+  
+  const updatedPredictionList = updateArrayObject([], action.value);
+  const updatedAnalyticalFaultPredictionInfo = updateObject(state.analyticalFaultPredictionInfo, {predictionList : updatedPredictionList});
+  const updatedState = {
+    analyticalFaultPredictionInfo : updatedAnalyticalFaultPredictionInfo
+  }
+  return updateObject(state,updatedState);
+}
+
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_IDENTIFICATION_GAUGE_VALUE: return setIdentificationGaugeValue(state, action);
     case actionTypes.SET_IDENTIFICATION_LAST_TEN_PREDICTION: return setIdentificationLastTenPrediction(state, action);
     case actionTypes.SET_IDENTIFICATION_PROBABILITY_STATUS: return setIdentificationProbabilityStatus(state,action);
-    case actionTypes.SET_IDENTIFICATION_COUNT_STATUS: return setIdentificationCountStatus(state,action);
+    case actionTypes.SET_IDENTIFICATION_COUNT_STATUS: return setIdentificationCountStatus(state,action);    
+    case actionTypes.SET_CLASSIFICATION_FAULT_PREDICTION: return setClassificationFaultprediction(state,action);
     default: return state;
   }
 }

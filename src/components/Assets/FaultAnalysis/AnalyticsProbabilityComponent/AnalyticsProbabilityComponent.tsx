@@ -7,15 +7,16 @@ import Tab from '@material-ui/core/Tab';
 import XyChartColumnSeries from '../../../Charts/XyChartColumnSeries';
 import PieChart from '../../../Charts/PieChart';
 import MultipleFaultLineChart from '../../../Charts/MultipleFaultLineChart';
+import StackedColumnBarChart from '../../../Charts/StackedColumnBarChart';
 import classes from "../FaultAnalysis.css";
-import SimpleSelect from "../../../UI/Select/Select";
 
 interface AnalyticsElementComponentProps {
-  analyticalProbabilityInfo: analyticalProbabilityProperties,
-  analyticalCountInfo: analyticalCountProperties,
-  analyticalFaultPredictionInfo: analyticalFaultPredictionInfo,
-  onSelectTimePeriod: any,
-  configType: string
+  analyticalProbabilityInfo: analyticalProbabilityProperties;
+  analyticalCountInfo: analyticalCountProperties;
+  analyticalFaultPredictionInfo: analyticalFaultPredictionInfo;
+  onSelectTimePeriod: any;
+  configType: string;
+  graphType: string;
 }
 
 interface analyticalProbabilityElement{
@@ -117,8 +118,8 @@ class AnalyticsProbabilityComponent extends Component<AnalyticsElementComponentP
 
     let section1 = (
       <Grid container justify="space-between">
-        <Grid item xs={12} sm={6} md={6} lg={8}></Grid>
-        <Grid item xs={12} sm={6} md={3} lg={4}>
+        <Grid item xs={12} sm={6} md={6} lg={6}></Grid>
+        <Grid item xs={12} sm={6} md={3} lg={6}>
             <Paper className={classes.root}>
               <Tabs
                 value={this.state.value}
@@ -132,8 +133,78 @@ class AnalyticsProbabilityComponent extends Component<AnalyticsElementComponentP
               >
                 <Tab className={classes.Tabs} label="Today" value="today" />
                 <Tab className={classes.Tabs} label="Last Day" value="lastday" />
-                {/* <Tab className={classes.Tabs} label="Last Week" value="lastweek" />
-                <Tab className={classes.Tabs} label="Last Month" value="lastmonth" /> */}
+                <Tab className={classes.Tabs} label="Last Week" value="lastweek" />
+                <Tab className={classes.Tabs} label="Last Month" value="lastmonth" />
+              </Tabs>
+            </Paper>            
+          </Grid>
+          {/* <Grid item xs={12} sm={6} md={3} lg={2}>
+            <SimpleSelect onSelectFaultName={this.handleFaultName} />
+          </Grid> */}
+          <Grid item xs={12} sm={6} md={6} lg={6}>
+            <PieChart chartData={chartData} />
+          </Grid>
+          <Grid item xs={12} sm={6} md={6} lg={6}>     
+            <StackedColumnBarChart 
+              chartData={chartData2}
+              // faultValue={setFaultValue.replace(/\s+/g, '')}
+              // faultText={this.state.faultText} 
+            />
+            
+          </Grid>
+      </Grid>
+    );
+
+    return section1;
+  }
+
+  renderFaultIdentification = () => {
+    let chartData = new Array();
+    this.props.analyticalProbabilityInfo.probabilityList.map((item,index) => {
+      if(item.value !== undefined){
+        let colors:string ;
+        if(item.name === 'Healthy'){
+          colors = '#66b7dc';
+        }else{
+          colors = '#6771dc';
+        }
+        let obj = {
+          name : item.name,
+          value : item.value,
+          color : colors
+        }
+        chartData.push(obj);
+      }      
+    });
+
+    let chartData2 = new Array();
+    // let setFaultValue:string ;
+    // let setFaultText:string ;
+    chartData2 = this.props.analyticalFaultPredictionInfo.predictionList;
+    // setFaultText = this.state.faultText;
+    // const lower = this.state.faultText;
+    // setFaultValue = lower.charAt(0).toLowerCase() + lower.substring(1);
+    
+
+    let section1 = (
+      <Grid container justify="space-between">
+        <Grid item xs={12} sm={6} md={6} lg={6}></Grid>
+        <Grid item xs={12} sm={6} md={3} lg={6}>
+            <Paper className={classes.root}>
+              <Tabs
+                value={this.state.value}
+                onChange={this.handleChangeSelectTimePeriod}
+                indicatorColor="primary"
+                textColor="primary"
+                variant="scrollable"
+                scrollButtons="auto"
+                aria-label="scrollable auto tabs example"
+                className={classes.Tabs}
+              >
+                <Tab className={classes.Tabs} label="Today" value="today" />
+                <Tab className={classes.Tabs} label="Last Day" value="lastday" />
+                <Tab className={classes.Tabs} label="Last Week" value="lastweek" />
+                <Tab className={classes.Tabs} label="Last Month" value="lastmonth" />
               </Tabs>
             </Paper>            
           </Grid>
@@ -144,11 +215,14 @@ class AnalyticsProbabilityComponent extends Component<AnalyticsElementComponentP
             <PieChart chartData={chartData} />
           </Grid>
           <Grid item xs={12} sm={6} md={6} lg={6}>
-            <MultipleFaultLineChart 
+             
+          <MultipleFaultLineChart 
               chartData={chartData2}
               // faultValue={setFaultValue.replace(/\s+/g, '')}
               // faultText={this.state.faultText} 
-             />
+             /> 
+            
+            
           </Grid>
       </Grid>
     );
@@ -156,40 +230,40 @@ class AnalyticsProbabilityComponent extends Component<AnalyticsElementComponentP
     return section1;
   }
 
-  renderFaultIdentification = () => {
-    let section2 = (
-      <Grid container justify="space-between">
-        <Grid item xs={12} sm={6} md={6} lg={6}></Grid>
-        <Grid item xs={12} sm={6} md={6} lg={6}>
-            <Paper className={classes.root}>
-              <Tabs
-                value={this.state.value}
-                onChange={this.handleChangeSelectTimePeriod}
-                indicatorColor="primary"
-                textColor="primary"
-                variant="scrollable"
-                scrollButtons="auto"
-                aria-label="scrollable auto tabs example"
-                className={classes.Tabs}
-              >
-                <Tab className={classes.Tabs} label="Today" value="today" />
-                <Tab className={classes.Tabs} label="Last Day" value="lastday" />
-                {/* <Tab className={classes.Tabs} label="Last Week" value="lastweek" />
-                <Tab className={classes.Tabs} label="Last Month" value="lastmonth" /> */}
-              </Tabs>
-            </Paper>            
-          </Grid>
-          <Grid item xs={12} sm={6} md={6} lg={6}>
-            <XyChartColumnSeries analyticalInfo={this.props.analyticalProbabilityInfo} />
-          </Grid>
-          <Grid item xs={12} sm={6} md={6} lg={6}>
-            <XyChartColumnSeries analyticalInfo={this.props.analyticalCountInfo} />
-          </Grid>
-      </Grid>
-    );
+  // renderFaultIdentification = () => {
+  //   let section2 = (
+  //     <Grid container justify="space-between">
+  //       <Grid item xs={12} sm={6} md={6} lg={6}></Grid>
+  //       <Grid item xs={12} sm={6} md={6} lg={6}>
+  //           <Paper className={classes.root}>
+  //             <Tabs
+  //               value={this.state.value}
+  //               onChange={this.handleChangeSelectTimePeriod}
+  //               indicatorColor="primary"
+  //               textColor="primary"
+  //               variant="scrollable"
+  //               scrollButtons="auto"
+  //               aria-label="scrollable auto tabs example"
+  //               className={classes.Tabs}
+  //             >
+  //               <Tab className={classes.Tabs} label="Today" value="today" />
+  //               <Tab className={classes.Tabs} label="Last Day" value="lastday" />
+  //               {/* <Tab className={classes.Tabs} label="Last Week" value="lastweek" />
+  //               <Tab className={classes.Tabs} label="Last Month" value="lastmonth" /> */}
+  //             </Tabs>
+  //           </Paper>            
+  //         </Grid>
+  //         <Grid item xs={12} sm={6} md={6} lg={6}>
+  //           <XyChartColumnSeries analyticalInfo={this.props.analyticalProbabilityInfo} />
+  //         </Grid>
+  //         <Grid item xs={12} sm={6} md={6} lg={6}>
+  //           <XyChartColumnSeries analyticalInfo={this.props.analyticalCountInfo} />
+  //         </Grid>
+  //     </Grid>
+  //   );
 
-    return section2;
-  }
+  //   return section2;
+  // }
 
   render() {
     return (
