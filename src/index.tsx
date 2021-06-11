@@ -5,6 +5,10 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 
+import * as serviceWorker from '../src/config/serviceWorker';
+import { runWithAdal } from 'react-adal';
+import { authContext } from '../src/config/adalConfig';
+
 import App from "./components/App";
 import "./index.css";
 // const MicrolandFavIcon = require('./assets/icons/favicon.ico');
@@ -70,11 +74,14 @@ const store = createStore(rootReducer, composeEnhancers(
   applyMiddleware(thunk)
 ));
 
-ReactDOM.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </Provider>,
-  document.getElementById("app")
-);
+runWithAdal(authContext, () => {
+  ReactDOM.render(
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>,
+    document.getElementById("app")
+  );
+});
+

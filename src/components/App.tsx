@@ -13,8 +13,44 @@ import Alerts from '../containers/Alerts/Alerts';
 import Trends from '../containers/Trends/Trends';
 import Configuration from '../containers/Configuration/Configuration';
 import AssetSimulator from '../containers/AssetSimulator/AssetSimulator';
+import { authContext, adalConfig } from '../config/adalConfig';
+import { runWithAdal } from 'react-adal';
+
+const DO_NOT_LOGIN = false;
 
 class App extends Component {
+
+  relogin = () => {
+    authContext.login();
+  }
+
+  compareTime = (user) => {
+    let expiryTime = (user.profile.exp * 1000) - (1000 * 60 * 5);
+    let currentTime = Date.now();
+    if (currentTime > expiryTime) {      
+      localStorage.clear();
+      authContext.acquireTokenRedirect(adalConfig.clientId);
+    }
+  }
+
+  componentDidMount() {   
+
+    runWithAdal(authContext, () => {
+      // TODO : continue your process
+      var user = authContext.getCachedUser();
+      if (user) {
+        console.log(user);
+        console.log(user.userName);
+        setInterval(() => {
+          this.compareTime(user)
+        }, 1000)
+      }
+      else {
+        authContext.login();
+      }
+    }, DO_NOT_LOGIN);
+  }
+
   render() {
     return (
       <div className={classes.Wrapper}>

@@ -10,6 +10,7 @@ import DraftsIcon from '@material-ui/icons/Drafts';
 import SendIcon from '@material-ui/icons/Send';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import { authContext } from '../../../config/adalConfig';
 
 import ProfileImg from '../../../assets/icons/profile_img.png';
 
@@ -82,7 +83,7 @@ export default function CustomizedMenus() {
           <ListItemText style={{ fontSize: '10px' }} primary="(bhanutejk@microland.com)" />
         </StyledMenuItem>
         <StyledMenuItem style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
-          <ListItemText primary="Logout" />
+          <ListItemText primary="Logout" onClick={() => authContext.logOut()} />
         </StyledMenuItem>
       </StyledMenu>
     </div>
